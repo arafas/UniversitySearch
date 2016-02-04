@@ -5,4 +5,4 @@ For the UI protoype of the project, we used POP which is a prototyping applicati
 The link to the UI is below. The website might take a bit of time to load the images.
 
 
-[UI URL]https://popapp.in/w/projects/56b2afac3254c00f60aec884/preview
+[UI URL](https://popapp.in/w/projects/56b2afac3254c00f60aec884/preview)
