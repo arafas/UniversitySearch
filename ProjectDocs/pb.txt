@@ -1,0 +1,56 @@
+As a user of the site, I would like to be able to create an account and sign in so that my home page can be customized with my own courses
+	- 4 days
+	- Priority: High
+
+As an instructor, I would like to be able to delete documents added by students.
+	- 2 days
+	- Priority: High
+
+As an instructor or student, I would like the ability to search across multiple dimensions
+	- 12 days
+	- Priority: High
+
+As an instructor or student, I would like the ability to follow a course
+	- 4 days
+	- Priority: Medium
+
+As an instructor or student, I would like the ability to add tags for course documents
+	- 4 days
+	- Priority: Medium
+
+As an instructor, I would like to be able to approve the documents that get uploaded by the students to my class
+	- 2 days
+	- Priority: Low
+
+As an instructor, I would like to be able to upload course docs
+	- 4 days
+	- Priority: High
+
+As a student, I would like to be able to upload past exams
+	- 4 days
+	- Priority: High
+
+As a student, I would like to be able to search the general Internet in addition to the university courses and professors
+	- 4 days
+	- Priority: Low
+
+As a student, I would like to be able to access basic site functionality from my phone or tablet while on the bus
+	- Ongoing 
+	- Priority: Medium
+
+As an instructor, I would like the ability to batch upload documents
+	- 2 days
+	- Priority: Low
+
+As a user of the website, I would like to be able to search through documents, in addition to courses and instructors
+	- 10 days
+	- Priority: High
+
+As a user of the website, I would like the search to be able to highlight the most relevant results for quick visual parsing
+	- 5 days
+	- Priority: Low
+
+As a user of the website, I would like to be able to use an advanced search feature that can filter through information on the website based on my search criteria. For example, I should be able to search through all documents containing either the word “Exam” OR “Outline”
+	- 10 days
+	- Priority: High
+
