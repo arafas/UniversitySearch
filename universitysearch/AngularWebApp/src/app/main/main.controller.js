@@ -13,12 +13,14 @@
     vm.classAnimation = '';
     vm.creationDate = 1456267200629;
     vm.showToastr = showToastr;
+    vm.name = "World";
+
 
     activate();
 
     function activate() {
       getWebDevTec();
-      $timeout(function() {
+      $timeout(function () {
         vm.classAnimation = 'rubberBand';
       }, 4000);
     }
@@ -31,9 +33,10 @@
     function getWebDevTec() {
       vm.awesomeThings = webDevTec.getTec();
 
-      angular.forEach(vm.awesomeThings, function(awesomeThing) {
+      angular.forEach(vm.awesomeThings, function (awesomeThing) {
         awesomeThing.rank = Math.random();
       });
     }
+
   }
 })();

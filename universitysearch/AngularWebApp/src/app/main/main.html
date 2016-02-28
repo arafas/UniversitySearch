@@ -1,17 +1,24 @@
+<html lang="en">
 <div class="container">
 
   <div>
     <acme-navbar creation-date="main.creationDate"></acme-navbar>
   </div>
 
-  <div class="jumbotron text-center">
+  <div class="jumbotron text-center" ng-init="">
     <h1>'Allo, 'Allo!</h1>
     <p class="lead">
       <img src="assets/images/yeoman.png" alt="I'm Yeoman"><br>
       Always a pleasure scaffolding your apps.
     </p>
+    <!--<p>1 + 2 = {{ 1 + 3 }}</p>
+    <p>Nothing here {{'yet' + '!'}}</p>
+    <p>Hello, {{main.names}}!</p>-->
+    <p>UTORID: <input type="text" ng-model="name"></p>
+    <p>Password: <input type = "text" ng-model="password"></p>
+    <p>{{name}}</p>
     <p class="animated infinite" ng-class="main.classAnimation">
-      <button type="button" class="btn btn-lg btn-success" ng-click="main.showToastr()">Splendid Toastr</button>
+      <button type="button" class="btn btn-lg btn-success" ng-click="main.showToastr()">Sign In!</button>
     </p>
     <p>
       With ♥ thanks to the contributions of<acme-malarkey extra-values="['Yeoman', 'Gulp', 'Angular']"></acme-malarkey>
@@ -32,3 +39,4 @@
   </div>
 
 </div>
+</html>
