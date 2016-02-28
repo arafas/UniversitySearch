@@ -6,25 +6,32 @@
   </div>
 
   <div class="jumbotron text-center" ng-init="">
-    <h1>'Allo, 'Allo!</h1>
+    <h1>Find and Share Files</h1>
     <p class="lead">
       <img src="assets/images/yeoman.png" alt="I'm Yeoman"><br>
-      Always a pleasure scaffolding your apps.
+      A Wealth of Information at your Fingertips.
     </p>
     <!--<p>1 + 2 = {{ 1 + 3 }}</p>
     <p>Nothing here {{'yet' + '!'}}</p>
     <p>Hello, {{main.names}}!</p>-->
-    <p>UTORID: <input type="text" ng-model="name"></p>
-    <p>Password: <input type = "text" ng-model="password"></p>
-    <p>{{name}}</p>
+    <form>
+      <p>UTORID: <input type="text" ng-model="name"></p>
+      <p>Password: <input type = "password" ng-model="password"></p>
+
+      <p>{{name}}</p>
+      <p class="animated infinite" ng-class="main.classAnimation">
+        <button type="button" class="btn btn-lg btn-success" ng-click="main.showToastr()">Sign In!</button>
+      </p>
+    </form>
+    <p> Or </p>
     <p class="animated infinite" ng-class="main.classAnimation">
-      <button type="button" class="btn btn-lg btn-success" ng-click="main.showToastr()">Sign In!</button>
+      <button type="button" class="btn btn-lg btn-success" ng-click="main.showToastr()">Click to Register</button>
     </p>
     <p>
-      With ♥ thanks to the contributions of<acme-malarkey extra-values="['Yeoman', 'Gulp', 'Angular']"></acme-malarkey>
+      <acme-malarkey extra-values="['Convenience','Accessibility']"></acme-malarkey> for <acme-malarkey extra-values="['Students','Instructors']"></acme-malarkey>
     </p>
   </div>
-
+<!--
   <div class="row">
     <div class="col-sm-6 col-md-4" ng-repeat="awesomeThing in main.awesomeThings | orderBy:'rank'">
       <div class="thumbnail">
@@ -39,4 +46,5 @@
   </div>
 
 </div>
+-->
 </html>
