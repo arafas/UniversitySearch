@@ -1,4 +1,6 @@
 <html lang="en">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Raleway|Lato|Droid+Sans|Roboto+Slab">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <div class="container">
 
   <div>
@@ -6,8 +8,11 @@
   </div>
 
   <div class="jumbotron text-center" ng-init="">
-    <h1>Find and Share Files</h1>
-    <p class="lead">
+
+
+
+    <h1 style="font-family: 'Roboto Slab';">Find and Share Files</h1>
+    <p class="lead" style="font-family: 'Lato';">
       <img src="assets/images/yeoman.png" alt="I'm Yeoman"><br>
       A Wealth of Information at your Fingertips.
     </p>
@@ -15,19 +20,19 @@
     <p>Nothing here {{'yet' + '!'}}</p>
     <p>Hello, {{main.names}}!</p>-->
     <form>
-      <p>UTORID: <input type="text" ng-model="name"></p>
-      <p>Password: <input type = "password" ng-model="password"></p>
+      <p style="font-family: 'Lato';">UTORID: <input type="text" ng-model="name"></p>
+      <p style="font-family: 'Lato';">Password: <input type = "password" ng-model="password"></p>
 
       <p>{{name}}</p>
       <p class="animated infinite" ng-class="main.classAnimation">
-        <button type="button" class="btn btn-lg btn-success" ng-click="main.showToastr()">Sign In!</button>
+        <button type="button" class="btn btn-lg btn-success" ng-click="main.showToastr()" style="font-family: 'Droid Sans';">Sign In!</button>
       </p>
     </form>
     <p> Or </p>
     <p class="animated infinite" ng-class="main.classAnimation">
-      <button type="button" class="btn btn-lg btn-success" ng-click="main.showToastr()">Click to Register</button>
+      <button type="button" class="btn btn-lg btn-success" ng-click="main.showToastr()" style="font-family: 'Droid Sans';">Click to Register</button>
     </p>
-    <p>
+    <p style="font-family: 'Raleway';">
       <acme-malarkey extra-values="['Convenience','Accessibility']"></acme-malarkey> for <acme-malarkey extra-values="['Students','Instructors']"></acme-malarkey>
     </p>
   </div>
