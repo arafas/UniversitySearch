@@ -12,6 +12,11 @@
         controller: 'MainController',
         controllerAs: 'main'
       })
+      .when('/register', {
+        templateUrl: 'app/main/register.html',
+        controller: 'RegisterController',
+        controllerAs: 'reg'
+      })
       .otherwise({
         redirectTo: '/'
       });

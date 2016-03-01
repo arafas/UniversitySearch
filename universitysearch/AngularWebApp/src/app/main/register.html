@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up Today</title>
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Raleway|Lato|Droid+Sans|Roboto+Slab">
+</head>
+<body>
+
+<div class="container">
+
+  <div>
+    <acme-navbar creation-date="main.creationDate"></acme-navbar>
+  </div>
+
+  <div class="jumbotron text-center" ng-init="">
+    <h1 style="font-family: 'Roboto Slab';">Register Today</h1>
+
+    <p class="lead" style="font-family: 'Lato';">
+      <p></p>
+      <p>Free for all University of Toronto Students</p>
+    </p>
+
+    <form>
+      <p style="font-family: 'Lato';">Full Name: <input type="text" ng-model="name"></p>
+      <p style="font-family: 'Lato';">UTORID: <input type = "text" ng-model="password"></p>
+      <p style="font-family: 'Lato';">Student Number: <input type="number" ng-model="name"></p>
+      <p style="font-family: 'Lato';">U of T Email: <input type = "text" ng-model="password"></p>
+
+      <p class="animated infinite" ng-class="main.classAnimation">
+        <button type="button" class="btn btn-lg btn-success" ng-click="reg.submit()" style="font-family: 'Droid Sans';">Verify</button>
+      </p>
+
+    </form>
+
+
+  </div>
+
+
+</div>
+</body>
+</html>
