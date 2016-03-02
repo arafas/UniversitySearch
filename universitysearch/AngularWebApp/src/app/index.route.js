@@ -17,6 +17,11 @@
         controller: 'RegisterController',
         controllerAs: 'reg'
       })
+      .when('/sent', {
+        templateUrl: 'app/main/email.html',
+        controller: 'VerifyController',
+        controllerAs: 'verify'
+      })
       .otherwise({
         redirectTo: '/'
       });

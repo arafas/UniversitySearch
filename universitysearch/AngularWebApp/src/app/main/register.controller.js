@@ -46,6 +46,7 @@
     function submit(){
 
         window.alert("sign up");
+        $location.path("/sent");
 
     }
 

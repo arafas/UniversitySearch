@@ -10,7 +10,7 @@
 <div class="container">
 
   <div>
-    <acme-navbar creation-date="main.creationDate"></acme-navbar>
+    <acme-navbar creation-date="reg.creationDate"></acme-navbar>
   </div>
 
   <div class="jumbotron text-center" ng-init="">
@@ -21,17 +21,20 @@
       <p>Free for all University of Toronto Students</p>
     </p>
 
-    <form>
-      <p style="font-family: 'Lato';">Full Name: <input type="text" ng-model="name"></p>
-      <p style="font-family: 'Lato';">UTORID: <input type = "text" ng-model="password"></p>
-      <p style="font-family: 'Lato';">Student Number: <input type="number" ng-model="name"></p>
-      <p style="font-family: 'Lato';">U of T Email: <input type = "email" ng-model="password"></p>
-
+    <ng-form name = "signUp" style="font-family: 'Lato';">
+      <p>Full Name: <input type="text" ng-model="name" required></p>
+      <p>UTORID: <input type = "text" ng-model="password" required></p>
+      <p>Student Number: <input type="text" ng-model="studentno" required></p>
+      <p>U of T Email: <input type = "text" name = "email" ng-model="email" ng-pattern="^[A-Z0-9._%+-]+@mail.utoronto.ca$" required></p>
       <p class="animated infinite" ng-class="main.classAnimation">
         <button type="button" class="btn btn-lg btn-success" ng-click="reg.submit()" style="font-family: 'Droid Sans';">Verify</button>
       </p>
 
-    </form>
+      <div ng-messages="signUp.email.$error">
+        <p ng-message="pattern">You must use a valid U of T email</p>
+      </div>
+
+    </ng-form>
 
 
   </div>
