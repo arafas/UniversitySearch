@@ -22,6 +22,16 @@
         controller: 'VerifyController',
         controllerAs: 'verify'
       })
+      .when('/about',{
+        templateUrl: 'app/main/about.html',
+        controller: 'aboutController',
+        controllerAs: 'about'
+      })
+      .when('/contact', {
+        templateUrl: 'app/main/contact.html',
+        controller: 'contactController',
+        controllerAs: 'cont'
+      })
       .otherwise({
         redirectTo: '/'
       });
