@@ -24,8 +24,8 @@
     <ng-form name = "signUp" style="font-family: 'Lato';">
       <p>Full Name: <input type="text" ng-model="name" required></p>
       <p>UTORID: <input type = "text" ng-model="password" required></p>
-      <p>Student Number: <input type="text" ng-model="studentno" required></p>
-      <p>U of T Email: <input type = "text" name = "email" ng-model="email" ng-pattern="^[A-Z0-9._%+-]+@mail.utoronto.ca$" required></p>
+      <p> Student Number: <input type="text" ng-model="studentno" required></p>
+      <p>       U of T Email: <input type = "text" name = "email" ng-model="email" ng-pattern="^[A-Z0-9._%+-]" required> @mail.utoronto.ca</p>
       <p class="animated infinite" ng-class="main.classAnimation">
         <button type="button" class="btn btn-lg btn-success" ng-click="reg.submit()" style="font-family: 'Droid Sans';">Verify</button>
       </p>
