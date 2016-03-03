@@ -6,9 +6,9 @@
 
   angular
     .module('angularWebApp')
-    .controller('aboutController', aboutController);
+    .controller('AboutController', AboutController);
   /** @ngInject */
-  function RegisterController($timeout, webDevTec, toastr, $location, $http) {
+  function AboutController($timeout, webDevTec, toastr) {
     var vm = this;
 
     vm.awesomeThings = [];

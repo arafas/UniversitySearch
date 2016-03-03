@@ -5,7 +5,7 @@
     .module('angularWebApp')
     .controller('RegisterController', RegisterController);
   /** @ngInject */
-  function RegisterController($timeout, webDevTec, toastr, $location, $http) {
+  function RegisterController($timeout, webDevTec, toastr, $location, $window) {
     var vm = this;
 
     vm.awesomeThings = [];
@@ -45,7 +45,7 @@
 
     function submit(){
 
-        window.alert("sign up");
+        $window.alert("sign up");
         $location.path("/sent");
 
     }

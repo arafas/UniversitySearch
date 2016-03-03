@@ -24,12 +24,12 @@
       })
       .when('/about',{
         templateUrl: 'app/main/about.html',
-        controller: 'aboutController',
+        controller: 'AboutController',
         controllerAs: 'about'
       })
       .when('/contact', {
         templateUrl: 'app/main/contact.html',
-        controller: 'contactController',
+        controller: 'ContactController',
         controllerAs: 'cont'
       })
       .otherwise({

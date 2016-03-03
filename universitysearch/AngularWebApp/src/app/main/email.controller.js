@@ -8,7 +8,7 @@
     .module('angularWebApp')
     .controller('VerifyController', VerifyController);
   /** @ngInject */
-  function RegisterController($timeout, webDevTec, toastr, $location, $http) {
+  function VerifyController($timeout, webDevTec, toastr) {
     var vm = this;
 
     vm.awesomeThings = [];

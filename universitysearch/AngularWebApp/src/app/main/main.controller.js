@@ -5,7 +5,7 @@
     .module('angularWebApp')
     .controller('MainController', MainController);
   /** @ngInject */
-  function MainController($timeout, webDevTec, toastr, $location, $http) {
+  function MainController($timeout, webDevTec, toastr, $location, $window) {
     var vm = this;
 
     vm.url = $location.absUrl;
@@ -42,8 +42,8 @@
     function showToastr() {
       toastr.info('Fork <a href="https://github.com/Swiip/generator-gulp-angular" target="_blank"><b>generator-gulp-angular</b></a>');
       vm.classAnimation = '';
-      window.alert("sign up");
-      window.location(src/main/register.html);
+      //$window.alert("sign up");
+      //window.location(src/main/register.html);
 
     }
 
@@ -59,7 +59,7 @@
       var found = 0;
       var user, pass;
 
-      angular.forEach(vm.users,function(value,index) {
+      angular.forEach(vm.users,function(value) {
 
         if (value.username == username && value.password == password) {
 
@@ -73,17 +73,17 @@
 
 
       if(found == 1) {
-          window.alert("welcome "+user);
+          $window.alert("welcome "+user);
 
       }else{
-          window.alert("Invalid Login");
+          $window.alert("Invalid Login");
       }
 
 
     }
 
     function register() {
-      window.alert("sign up now");
+      $window.alert("sign up now");
       //window.location = "register.html";
       $location.path("/register");
     }

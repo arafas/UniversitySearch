@@ -6,9 +6,9 @@
 
   angular
     .module('angularWebApp')
-    .controller('contactController', contactController);
+    .controller('ContactController', ContactController);
   /** @ngInject */
-  function RegisterController($timeout, webDevTec, toastr, $location, $http) {
+  function ContactController($timeout, webDevTec, toastr) {
     var vm = this;
 
     vm.awesomeThings = [];
