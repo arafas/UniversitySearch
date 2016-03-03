@@ -74,6 +74,8 @@
 
       if(found == 1) {
           $window.alert("welcome "+user);
+          $location.path("/home");
+
 
       }else{
           $window.alert("Invalid Login");

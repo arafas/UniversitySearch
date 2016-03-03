@@ -32,6 +32,11 @@
         controller: 'ContactController',
         controllerAs: 'cont'
       })
+      .when('/home', {
+        templateUrl: 'app/main/homeLoggedIn.html',
+        controller: 'HomeLoggedInController',
+        controllerAs: 'home'
+      })
       .otherwise({
         redirectTo: '/'
       });
