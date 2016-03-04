@@ -7,11 +7,9 @@
         <!-- hibernate dialect -->
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://127.0.0.1:3306/universitysearch</property>
-        <property name="hibernate.connection.password">uEVWI-GbgKlp</property>
         <property name="transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
         <!-- Automatic schema creation (begin) === -->
-        <property name="hibernate.hbm2ddl.auto">create</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
         <!-- Simple memory-only cache -->
         <property name="hibernate.cache.provider_class">org.hibernate.cache.HashtableCacheProvider</property>
         <!-- Enable Hibernate's automatic session context management -->
