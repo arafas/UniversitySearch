@@ -7,7 +7,6 @@
         <!-- hibernate dialect -->
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
         <!-- Automatic schema creation (begin) === -->
         <property name="hibernate.hbm2ddl.auto">update</property>
         <!-- Simple memory-only cache -->

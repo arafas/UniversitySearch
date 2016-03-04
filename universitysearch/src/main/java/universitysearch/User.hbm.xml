@@ -20,5 +20,6 @@
       <property name="isProf" column="is_prof" type="int"/>
       <property name="isAdmin" column="is_admin" type="int"/>
       <property name="emailVer" column="email_ver" type="int"/>
+      <property name="emailHash" column="email_hash" type="string"/>
    </class>
 </hibernate-mapping>
