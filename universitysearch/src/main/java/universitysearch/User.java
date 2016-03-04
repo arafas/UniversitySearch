@@ -2,11 +2,11 @@ package universitysearch;
 
 public class User {
 	   private int id;
-	   private String email, password, firstName, lastName;   
+	   private String email, password, firstName, lastName, emailHash;   
 	   private int isProf, isAdmin, emailVer;
 
 	   public User() {}
-	   public User(String email, String pass, String fName, String lName, int isPr, int isAd, int emailVer) {
+	   public User(String email, String pass, String fName, String lName, int isPr, int isAd, int emailVer, String emailHash) {
 		  this.email = email;
 		  this.password = pass;
 	      this.firstName = fName;
@@ -14,6 +14,7 @@ public class User {
 	      this.isProf = isPr;
 	      this.isAdmin = isAd;
 	      this.emailVer = emailVer;
+	      this.emailHash = emailHash;
 	   }
 	   public int getId() {
 	      return id;
@@ -27,6 +28,13 @@ public class User {
 	   }
 	   public void setEmail(String email) {
 		      this.email = email;
+	   }
+	   
+	   public String getEmailHash() {
+		      return emailHash;
+	   }
+	   public void setEmailHash(String emailHash) {
+		      this.emailHash = emailHash;
 	   }
 	   
 	   public String getPassword() {

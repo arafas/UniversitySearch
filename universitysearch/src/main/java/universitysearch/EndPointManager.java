@@ -20,7 +20,7 @@ public class EndPointManager {
 	@GET
 	@Path("/{param}")
 	public Response getMsg(@PathParam("param") String input) throws SQLException {
-		/*
+		
 		//String output = "Jersey say : " + columnName;
 		//String tableOption = "read";
 		// can me read, write, modify
@@ -30,8 +30,8 @@ public class EndPointManager {
 		
 	    UserManager UM = new UserManager();
 	    UM.setFactory(factory);
-	    //Integer empID1 = UM.addUser(input, "test", "test", "test", 0, 0, 0);
-        */
+	    Integer empID1 = UM.addUser(input, "test", "test", "test", 0, 0, 0, "HASH TEST");
+        
         return Response.status(200).entity(input).build();
     }
  

@@ -39,7 +39,7 @@ public class UserManager extends DBManager {
 		this.factory = factory;
 	}
 	/* Method to CREATE a user in the database */
-	public Integer addUser(String email, String pass, String fName, String lName, int isPr, int isAd, int emailVer){
+	public Integer addUser(String email, String pass, String fName, String lName, int isPr, int isAd, int emailVer, String emailHash){
 		Session session = factory.openSession();
 	    Transaction tx = null;
 		Integer userID = null;
@@ -49,7 +49,7 @@ public class UserManager extends DBManager {
         
 		try{
 	         tx = session.beginTransaction();
-	         User employee = new User(email, pass, fName, lName, isPr, isAd, emailVer);
+	         User employee = new User(email, pass, fName, lName, isPr, isAd, emailVer, emailHash);
 	         userID = (Integer) session.save(employee); 
 	         tx.commit();
 		}catch (HibernateException e) {

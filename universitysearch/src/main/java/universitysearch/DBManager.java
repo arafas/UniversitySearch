@@ -22,9 +22,9 @@ public class DBManager {
     	if (factory == null) {
     		Configuration cfg = new Configuration();
     		cfg.setProperty("hibernate.connection.url", "jdbc:mysql://" + System.getenv().get("OPENSHIFT_MYSQL_DB_HOST") + ":" +
-                    System.getenv("OPENSHIFT_MYSQL_DB_PORT"));
+                    System.getenv("OPENSHIFT_MYSQL_DB_PORT") + "/universitysearch");
     		cfg.setProperty("hibernate.connection.username", System.getenv("OPENSHIFT_MYSQL_DB_USERNAME"));
-    		cfg.setProperty("hibernate.connection.password", System.getenv("OPENSHIFT_MYSQL_DB_USERNAME"));
+    		cfg.setProperty("hibernate.connection.password", System.getenv("OPENSHIFT_MYSQL_DB_PASSWORD"));
     		factory = cfg.configure().buildSessionFactory();
     }
     	return factory;
