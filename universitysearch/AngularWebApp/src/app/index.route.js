@@ -12,6 +12,31 @@
         controller: 'MainController',
         controllerAs: 'main'
       })
+      .when('/register', {
+        templateUrl: 'app/main/register.html',
+        controller: 'RegisterController',
+        controllerAs: 'reg'
+      })
+      .when('/sent', {
+        templateUrl: 'app/main/email.html',
+        controller: 'VerifyController',
+        controllerAs: 'verify'
+      })
+      .when('/about',{
+        templateUrl: 'app/main/about.html',
+        controller: 'AboutController',
+        controllerAs: 'about'
+      })
+      .when('/contact', {
+        templateUrl: 'app/main/contact.html',
+        controller: 'ContactController',
+        controllerAs: 'cont'
+      })
+      .when('/home', {
+        templateUrl: 'app/main/homeLoggedIn.html',
+        controller: 'HomeLoggedInController',
+        controllerAs: 'home'
+      })
       .otherwise({
         redirectTo: '/'
       });
