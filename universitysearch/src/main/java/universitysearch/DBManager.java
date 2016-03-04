@@ -2,17 +2,18 @@ package universitysearch;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.*;
 
 /**
  * Created by zubairbaig on 2/19/16.
+ * Edited by  jacobsteele on 3/03/16.
  */
 public class DBManager {
     public Connection conn;
 
-    public String connectDB() throws SQLException {
+    public int connectDB(String input) throws SQLException {
         conn = null;
-        Statement stmt = null;
-        String test = "";
+        int test = 0;
         try {
 
             //STEP 1: Register JDBC driver
@@ -23,25 +24,17 @@ public class DBManager {
                     System.getenv("OPENSHIFT_MYSQL_DB_PORT") + "/universitysearch",
                     System.getenv("OPENSHIFT_MYSQL_DB_USERNAME"), System.getenv("OPENSHIFT_MYSQL_DB_PASSWORD"));
 
-            test = getName();
-
+            if (conn != null && input != ""){            	            	
+            	UserManager userManager = new UserManager();
+            	//userManager.setConn(conn);
+            	//test = userManager.addUser(input, "test", "test", "test", 0, 0, 0);
+            }
+            
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return test;
-
     }
+    
 
-    public String getName() throws SQLException {
-        String name = "";
-        Statement stmt;
-        //STEP 4: Execute a query
-        stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM users");
-
-        while (rs.next()) {
-           name =  rs.getString("name");
-        }
-        return name;
-    }
 }
