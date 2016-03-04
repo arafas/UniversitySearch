@@ -2,19 +2,17 @@ package universitysearch;
 
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
-import com.sun.org.apache.xerces.internal.impl.dv.util.HexBin;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.io.IOUtils;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.io.*;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
-import java.security.DigestInputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Map;
@@ -29,14 +27,12 @@ public class FileUpload {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public UploadedFile processFileUpload(@FormDataParam("file") InputStream fileInputStream,
-                                  @FormDataParam("file") FormDataContentDisposition contentDispositionHeader) {
+                                          @FormDataParam("file") FormDataContentDisposition contentDispositionHeader) {
 
-        Map<String, String> map =  contentDispositionHeader.getParameters();
+        Map<String, String> map = contentDispositionHeader.getParameters();
         UploadedFile file = new UploadedFile();
         file.setFileName("testFileName");
         saveFile(fileInputStream, contentDispositionHeader);
-
-
 
 
         return file;
