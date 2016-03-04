@@ -1,14 +1,5 @@
 package universitysearch;
 
-import java.io.IOException;
-import java.sql.*;
-import java.util.*;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.core.Response;
-
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
