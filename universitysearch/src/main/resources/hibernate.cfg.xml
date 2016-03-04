@@ -16,6 +16,6 @@
         <!-- ############################################ -->
         <!-- # mapping files with external dependencies # -->
         <!-- ############################################ -->
-        <mapping resource="universitysearch/User.hbm.xml" />
+        <mapping resource="User.hbm.xml" />
     </session-factory>
 </hibernate-configuration>
