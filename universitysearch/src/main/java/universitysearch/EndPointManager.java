@@ -16,31 +16,23 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Path("/hello")
-public class HelloWorldService {
-	private static SessionFactory factory; 
+public class EndPointManager {
 	@GET
 	@Path("/{param}")
 	public Response getMsg(@PathParam("param") String input) throws SQLException {
- 
+		/*
 		//String output = "Jersey say : " + columnName;
 		//String tableOption = "read";
 		// can me read, write, modify
 		//String tableName = "users";
 		// can be any table name
-        //DBManager dbManager = new DBManager();
-        //int test = dbManager.connectDB(input);
-		try{
-	       factory = new Configuration().configure().buildSessionFactory();
-	    }catch (Throwable ex) { 
-	       System.err.println("Failed to create sessionFactory object." + ex);
-	       throw new ExceptionInInitializerError(ex); 
-	    }
+        SessionFactory factory = DBManager.getSessionFactory();
+		
 	    UserManager UM = new UserManager();
 	    UM.setFactory(factory);
-	    /* Add input user records in database */
-	    Integer empID1 = UM.addUser(input, "test", "test", "test", 0, 0, 0);
-        
-        return Response.status(200).entity(empID1).build();
+	    //Integer empID1 = UM.addUser(input, "test", "test", "test", 0, 0, 0);
+        */
+        return Response.status(200).entity(input).build();
     }
  
 }

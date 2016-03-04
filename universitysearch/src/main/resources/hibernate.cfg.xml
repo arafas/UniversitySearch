@@ -8,7 +8,6 @@
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="hibernate.connection.url">jdbc:mysql://127.0.0.1:3306/universitysearch</property>
-        <property name="hibernate.connection.username">admin9uUsKeh</property>
         <property name="hibernate.connection.password">uEVWI-GbgKlp</property>
         <property name="transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
         <!-- Automatic schema creation (begin) === -->
