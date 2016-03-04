@@ -2,46 +2,47 @@ package universitysearch;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.*;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Response;
+
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 /**
  * Created by zubairbaig on 2/19/16.
+ * Edited by  jacobsteele on 3/03/16.
  */
 public class DBManager {
-    public Connection conn;
-
-    public String connectDB() throws SQLException {
-        conn = null;
-        Statement stmt = null;
-        String test = "";
-        try {
-
-            //STEP 1: Register JDBC driver
-            Class.forName("com.mysql.jdbc.Driver");
-
-            //STEP 2: Open a connection
-            conn = DriverManager.getConnection("jdbc:mysql://" + System.getenv().get("OPENSHIFT_MYSQL_DB_HOST") + ":" +
-                    System.getenv("OPENSHIFT_MYSQL_DB_PORT") + "/universitysearch",
-                    System.getenv("OPENSHIFT_MYSQL_DB_USERNAME"), System.getenv("OPENSHIFT_MYSQL_DB_PASSWORD"));
-
-            test = getName();
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return test;
-
-    }
-
-    public String getName() throws SQLException {
-        String name = "";
-        Statement stmt;
-        //STEP 4: Execute a query
-        stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM users");
-
-        while (rs.next()) {
-           name =  rs.getString("name");
-        }
-        return name;
+    private static SessionFactory factory; 
+    public static synchronized SessionFactory getSessionFactory() {
+    	if (factory == null) {
+    		Configuration cfg = new Configuration();
+    		cfg.setProperty("hibernate.connection.url", "jdbc:mysql://" + System.getenv().get("OPENSHIFT_MYSQL_DB_HOST") + ":" +
+                    System.getenv("OPENSHIFT_MYSQL_DB_PORT"));
+    		cfg.setProperty("hibernate.connection.username", System.getenv("OPENSHIFT_MYSQL_DB_USERNAME"));
+    		cfg.setProperty("hibernate.connection.password", System.getenv("OPENSHIFT_MYSQL_DB_USERNAME"));
+    		factory = cfg.configure().buildSessionFactory();
+    	}
+    	return factory;
+    	/*
+    	try{
+    		Configuration cfg = new Configuration();
+    		cfg.setProperty("hibernate.connection.url", "jdbc:mysql://" + System.getenv().get("OPENSHIFT_MYSQL_DB_HOST") + ":" +
+                    System.getenv("OPENSHIFT_MYSQL_DB_PORT"));
+    		cfg.setProperty("hibernate.connection.username", System.getenv("OPENSHIFT_MYSQL_DB_USERNAME"));
+    		cfg.setProperty("hibernate.connection.password", System.getenv("OPENSHIFT_MYSQL_DB_USERNAME"));
+    		factory = cfg.configure().buildSessionFactory();
+    	}catch (Throwable ex) { 
+    		System.err.println("Failed to create sessionFactory object." + ex);
+    		throw new ExceptionInInitializerError(ex); 
+    	}
+    	UserManager UM = new UserManager();
+    	UM.setFactory(factory);
+    	Integer userID = UM.addUser(input, "test", "test", "test", 0, 0, 0);
+    	return userID;*/
     }
 }
