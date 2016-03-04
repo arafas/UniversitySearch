@@ -7,14 +7,11 @@ import java.sql.*;
  * Created by zubairbaig on 2/19/16.
  */
 public class DBManager {
-    public Connection conn;
+    public static Connection conn;
 
-    public String connectDB() throws SQLException {
+    public static Connection connectDB() throws SQLException {
         conn = null;
-        Statement stmt = null;
-        String test = "";
         try {
-
             //STEP 1: Register JDBC driver
             Class.forName("com.mysql.jdbc.Driver");
 
@@ -23,12 +20,10 @@ public class DBManager {
                     System.getenv("OPENSHIFT_MYSQL_DB_PORT") + "/universitysearch",
                     System.getenv("OPENSHIFT_MYSQL_DB_USERNAME"), System.getenv("OPENSHIFT_MYSQL_DB_PASSWORD"));
 
-            test = getName();
-
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return test;
+        return conn;
 
     }
 

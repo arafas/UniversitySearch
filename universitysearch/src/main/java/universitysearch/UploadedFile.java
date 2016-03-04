@@ -3,7 +3,7 @@ package universitysearch;
 /**
  * Created by zubairbaig on 3/3/16.
  */
-public class File {
+public class UploadedFile {
     private String filename;
 
     public String getFilename() {
