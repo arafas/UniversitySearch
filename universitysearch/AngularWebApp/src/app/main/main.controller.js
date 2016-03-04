@@ -5,7 +5,7 @@
     .module('angularWebApp')
     .controller('MainController', MainController);
   /** @ngInject */
-  function MainController($timeout, webDevTec, toastr, $location, $window) {
+  function MainController($timeout, webDevTec, toastr, $location, $window, $cookies, $rootScope) {
     var vm = this;
 
     vm.url = $location.absUrl;
@@ -74,6 +74,14 @@
 
       if(found == 1) {
           $window.alert("welcome "+user);
+
+
+          $rootScope.globals = {
+            currentUser: {
+            username: username,
+            }
+          };
+          $cookies.put('globals', $rootScope.globals);
           $location.path("/home");
 
 
