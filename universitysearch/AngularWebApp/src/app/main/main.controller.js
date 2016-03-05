@@ -78,7 +78,7 @@
 
           $rootScope.globals = {
             currentUser: {
-            username: username,
+            username: username
             }
           };
           $cookies.put('globals', $rootScope.globals);

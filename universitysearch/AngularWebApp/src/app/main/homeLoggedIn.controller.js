@@ -6,19 +6,20 @@
 
   angular
     .module('angularWebApp')
-    .controller('HomeController', HomeController);
+    .controller('HomeLoggedInController', HomeLoggedInController);
   /** @ngInject */
-  function HomeController($timeout, webDevTec, toastr) {
+  function HomeLoggedInController($timeout, webDevTec, toastr, $rootScope) {
     var vm = this;
 
     vm.awesomeThings = [];
     vm.classAnimation = '';
     vm.creationDate = 1456267200629;
     vm.showToastr = showToastr;
-    vm.submit = submit;
+    vm.logout = logout;
+    vm.user = $rootScope.globals.currentUser;
 
-    vm.users=[{username:'sulaim11',password:'123'},
-      {username:'user',password:'p'}];
+    //vm.users=[{username:'sulaim11',password:'123'},
+      //{username:'user',password:'p'}];
     vm.loggedin = [];
 
     vm.orderProp = 'age';
@@ -44,6 +45,20 @@
       angular.forEach(vm.awesomeThings, function (awesomeThing) {
         awesomeThing.rank = Math.random();
       });
+    }
+
+    function logout(){
+
+      //var globalCookie = $cookie.get('globals');
+
+      /*$rootScope.globals = {
+        currentUser: {
+          username: ''
+        }
+      };*/
+      //$cookie.put('globals', $rootScope.globals);
+      //$location.path("/");
+
     }
 
 
