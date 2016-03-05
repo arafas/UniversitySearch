@@ -1,65 +1,232 @@
 package universitysearch;
 
-import java.util.List; 
-import java.util.Date;
-import java.util.Iterator; 
- 
-import org.hibernate.HibernateException; 
-import org.hibernate.Session; 
+import java.util.List;
+import javax.ws.rs.core.MediaType;
+
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
- 
+import org.hibernate.criterion.Conjunction;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Restrictions;
 
-/**
- * Created  by jacobsteele on 3/03/16.
- */
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
+
 public class UserManager extends DBManager {
-	private static SessionFactory factory; 
-	
-	/*
-	public Connection conn = null;
-		
-	public String getFirstName(String columnName) throws SQLException {
-	        String name = "";
-	        Statement stmt = conn.createStatement();
-	        //STEP 4: Execute a query
-	        ResultSet rs = stmt.executeQuery("SELECT * FROM users");
-	        while (rs.next()) {
-	           name =  rs.getString(columnName);
-	        }
-	        return name;		
-	}
+	private static SessionFactory factory;
 
-	public void setConn(Connection conn) {
-		this.conn = conn;
-	}*/
-	
 	public void setFactory(SessionFactory factory) {
 		this.factory = factory;
 	}
-	/* Method to CREATE a user in the database */
-	public Integer addUser(String email, String pass, String fName, String lName, int isPr, int isAd, int emailVer, String emailHash){
-		Session session = factory.openSession();
-	    Transaction tx = null;
-		Integer userID = null;
-		//User user = new User(email, pass, fName, lName, isPr, isAd, emailVer);
-		//String addUser = "INSERT INTO `universitysearch`.`users` (`email`, `password`, `first_name`, `last_name`) VALUES ('" + 
-		//email + "', '"+ pass + "', '" + fName + "', '" + lName + ")" ; 
-        
-		try{
-	         tx = session.beginTransaction();
-	         User employee = new User(email, pass, fName, lName, isPr, isAd, emailVer, emailHash);
-	         userID = (Integer) session.save(employee); 
-	         tx.commit();
-		}catch (HibernateException e) {
-	    	if (tx!=null)
-	        	tx.rollback();
-	        e.printStackTrace(); 
-	 	}finally {
-	        session.close(); 
-	    }
+
+	/**
+	 * Add user to database
+	 * 
+	 * @param fName First Name
+	 * @param lName Last Name
+	 * @param utorid
+	 * @param studentNumber
+	 * @param email
+	 * @param pass
+	 */
+	public Integer registerUser(String fName, String lName, String utorid, String studentNumber, String email,
+			String pass) {
+		// Generate user object from user input
+		User user = new User(fName, lName, utorid, studentNumber, email, generateHash(pass));
+
+		// Generate email hash for verification link
+		String hash = generateHash();
+
+		user.setHash(hash);
+		Integer userID = addUser(user);
+
+		ClientResponse x = sendEmailActivationLink(email, hash);
+
 		return userID;
 	}
 
+	/**
+	 * Generate 32 character hash between 1-1000 This hash is used in
+	 * verification link for user registration
+	 * 
+	 * @return random hash
+	 */
+	private String generateHash() {
+		String random = Integer.toString((int) (Math.random() * 1000));
+
+		MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("MD5");
+			md.update(random.getBytes(Charset.forName("UTF-8")), 0, random.length());
+		} catch (NoSuchAlgorithmException e1) {
+			e1.printStackTrace();
+		}
+
+		return new BigInteger(1, md.digest()).toString(16);
+	}
+
+	/**
+	 * Generate 32 character hash between 1-1000 This hash is used in
+	 * verification link for user registration
+	 * 
+	 * @return random hash
+	 */
+	private String generateHash(String str) {
+		MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("MD5");
+			md.update(str.getBytes(Charset.forName("UTF-8")), 0, str.length());
+		} catch (NoSuchAlgorithmException e1) {
+			e1.printStackTrace();
+		}
+
+		return new BigInteger(1, md.digest()).toString(16);
+	}
+
+	/**
+	 * Send email to user in order to activate account
+	 * 
+	 * @param email
+	 * @param hash
+	 * @return
+	 */
+	private ClientResponse sendEmailActivationLink(String email, String hash) {
+		String message = "";
+		try {
+			message = getEmailMessage(email, hash);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
+		Client client = Client.create();
+		client.addFilter(new HTTPBasicAuthFilter("api", "key-a49503cc806520f40a0d7fda93f0db02"));
+		WebResource webResource = client.resource(
+				"https://api.mailgun.net/v3/sandboxd510e265a8d14ebe98f08606a1f19327.mailgun.org" + "/messages");
+		MultivaluedMapImpl formData = new MultivaluedMapImpl();
+		formData.add("from", "Chocolate Thunder <mailgun@sandboxd510e265a8d14ebe98f08606a1f19327.mailgun.org>");
+		formData.add("to", email);
+		formData.add("subject", "Activate Your Account");
+		formData.add("text", message);
+		return webResource.type(MediaType.APPLICATION_FORM_URLENCODED).post(ClientResponse.class, formData);
+	}
+
+	/**
+	 * Generate email message with user activation link
+	 * 
+	 * @param email users' email
+	 * @param hash hash verification code
+	 * @return email message to send to user
+	 * @throws UnsupportedEncodingException
+	 */
+	private String getEmailMessage(String email, String hash) throws UnsupportedEncodingException {
+		StringBuilder msg = new StringBuilder();
+
+		msg.append("Thanks for signing up!");
+		msg.append("\n");
+		msg.append("Your account has been created, you can login after you have activated your account by pressing the url below.");
+
+		msg.append("\n");
+		msg.append("\n");
+
+		msg.append("------------------------");
+		msg.append("\n");
+		msg.append("Username: " + email);
+		msg.append("\n");
+		msg.append("------------------------");
+
+		msg.append("\n");
+		msg.append("\n");
+
+		msg.append("Please click this link to activate your account:");
+		msg.append("\n");
+		msg.append("http://localhost:3000/#/activate/email/" + URLEncoder.encode(email, "UTF-8") + "/hash/" + hash);
+
+		return msg.toString();
+	}
+
+	/**
+	 * Set the active to 1 in database
+	 * 
+	 * @param email
+	 * @param hash
+	 */
+	public void activateUser(String email, String hash) {
+		Session session = factory.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			Criteria criteria = session.createCriteria(User.class);
+
+			Criterion emailValue = Restrictions.eq("email", email);
+			Criterion hashValue = Restrictions.eq("hash", hash);
+			Criterion activeValue = Restrictions.eq("active", 0);
+
+			// Create object of Conjunction
+			Conjunction objConjunction = Restrictions.conjunction();
+
+			// Add multiple condition separated by AND clause within brackets.
+			objConjunction.add(emailValue);
+			objConjunction.add(hashValue);
+			objConjunction.add(activeValue);
+
+			criteria.add(objConjunction);
+
+			List<?> userList = criteria.list();
+
+			// Check to see if user is found
+			if (userList.size() > 0) {
+				User user = (User) userList.get(0);
+				user.setActive(1);
+				session.update(user);
+			}
+
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+	}
+
+	/**
+	 * Add user to database
+	 * 
+	 * @param user object based on user input
+	 * @param hash used to generate user validation link
+	 * @return user id of newly added user
+	 */
+	private Integer addUser(User user) {
+		Session session = factory.openSession();
+		Transaction tx = null;
+		Integer userID = null;
+
+		try {
+			tx = session.beginTransaction();
+			userID = (Integer) session.save(user);
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+
+		return userID;
+	}
 }
