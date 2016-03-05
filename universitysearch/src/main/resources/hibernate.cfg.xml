@@ -17,5 +17,8 @@
         <!-- # mapping files with external dependencies # -->
         <!-- ############################################ -->
         <mapping resource="User.hbm.xml" />
+        <mapping resource="File.hbm.xml" />
+        <mapping resource="Course.hbm.xml" />
+        <mapping resource="FileCourse.hbm.xml" />
     </session-factory>
 </hibernate-configuration>
