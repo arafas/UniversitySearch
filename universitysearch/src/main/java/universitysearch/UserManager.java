@@ -117,7 +117,7 @@ public class UserManager extends DBManager {
 				"https://api.mailgun.net/v3/sandboxd510e265a8d14ebe98f08606a1f19327.mailgun.org" + "/messages");
 		MultivaluedMapImpl formData = new MultivaluedMapImpl();
 		formData.add("from", "Chocolate Thunder <mailgun@sandboxd510e265a8d14ebe98f08606a1f19327.mailgun.org>");
-		formData.add("to", "sampourcyrous1@hotmail.com");
+		formData.add("to", email);
 		formData.add("subject", "Activate Your Account");
 		formData.add("text", message);
 		return webResource.type(MediaType.APPLICATION_FORM_URLENCODED).post(ClientResponse.class, formData);
@@ -152,7 +152,7 @@ public class UserManager extends DBManager {
 
 		msg.append("Please click this link to activate your account:");
 		msg.append("\n");
-		msg.append("http://localhost:3000/rest/hello/activate/email/" + URLEncoder.encode(email, "UTF-8") + "/hash/" + hash);
+		msg.append("http://localhost:3000/#/activate/email/" + URLEncoder.encode(email, "UTF-8") + "/hash/" + hash);
 
 		return msg.toString();
 	}
