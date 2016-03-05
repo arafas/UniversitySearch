@@ -5,15 +5,15 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-public class FileManager extends DBManager {
+public class CourseManager extends DBManager {
 	private static SessionFactory factory;
 	
 	public void setFactory(SessionFactory factory) {
 		this.factory = factory;
 	}
 	
-	/* Method to add a file to the database */
-	public Integer addFile(String fName, String fPath, String fDesc, String fHash, int fSize, int fOwn){
+	/* Method to add a course to the database */
+	public Integer addCourse(String cName, String cDesc, String cCode, int pID){
 		Session session = factory.openSession();
 	    Transaction tx = null;
 		Integer userID = null;
@@ -23,8 +23,8 @@ public class FileManager extends DBManager {
         
 		try{
 	         tx = session.beginTransaction();
-	         File file = new File (fName, fPath, fDesc, fHash, fSize, fOwn);
-	         userID = (Integer) session.save(file); 
+	         Course course = new Course(cName, cDesc, cCode, pID);
+	         userID = (Integer) session.save(course); 
 	         tx.commit();
 		}catch (HibernateException e) {
 	    	if (tx!=null)
