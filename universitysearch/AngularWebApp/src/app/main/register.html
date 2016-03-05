@@ -21,7 +21,7 @@
       <p>Free for all University of Toronto Students.</p>
     </p>
 
-    <ng-form name="signUp" style="font-family: 'Lato';" novalidate>
+    <ng-form ng-hide="hideForm" name="signUp" style="font-family: 'Lato';" novalidate>
       <p><label>First Name:</label><input type="text" name="firstName" ng-model="user.firstName" required></p>
       <p><label>First Name:</label><input type="text" name="lastName" ng-model="user.lastName" required></p>
       <p><label>UTORID:</label><input type="text" name="utorid" ng-model="user.utorid" required></p>

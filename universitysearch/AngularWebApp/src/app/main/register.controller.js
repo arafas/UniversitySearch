@@ -58,17 +58,16 @@
   /** @ngInject */
   
   function RegisterController($scope, $http) {
+      $scope.hideForm = false;
 
-      //Page.setTitle('Register');
       $scope.add = function(user) {
 
         $scope.jsonObj = angular.toJson(user, false);
-        console.log($scope.jsonObj);
         
         $http.post('rest/hello/add', user)
               .success(function(data, status, headers, config) {
+                $scope.hideForm = true;
                 $scope.registerResponse = data;
-                console.log(data);
                 })
              
                 .error(function(data, status, headers, config) {
