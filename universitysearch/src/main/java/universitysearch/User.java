@@ -1,10 +1,9 @@
 package universitysearch;
 
-
 public class User {
 
 	private int id;
-	
+
 	private String email, password, firstName, lastName, hash, utorid, studentNumber, creationDate;
 	private int isProf, isAdmin, active;
 
@@ -27,7 +26,7 @@ public class User {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -39,7 +38,7 @@ public class User {
 	public String getLastName() {
 		return lastName;
 	}
-	
+
 	public void setLastName(String lName) {
 		this.lastName = lName;
 	}
@@ -59,7 +58,7 @@ public class User {
 	public void setStudentNumber(String studentNumber) {
 		this.studentNumber = studentNumber;
 	}
-	
+
 	public String getEmail() {
 		return email;
 	}
@@ -67,7 +66,7 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	public String getPassword() {
 		return password;
 	}
@@ -99,7 +98,7 @@ public class User {
 	public void setActive(int active) {
 		this.active = active;
 	}
-	
+
 	public String getHash() {
 		return hash;
 	}
@@ -107,7 +106,7 @@ public class User {
 	public void setHash(String hash) {
 		this.hash = hash;
 	}
-	
+
 	public String getCreationDate() {
 		return creationDate;
 	}

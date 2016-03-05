@@ -51,7 +51,7 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.25</version>
-		</dependency>     
+		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
@@ -63,15 +63,30 @@
 			<artifactId>jersey-server</artifactId>
 			<version>1.8</version>
 		</dependency>
-        <dependency>
-            <groupId>org.apache.derby</groupId>
-            <artifactId>derbyclient</artifactId>
-            <version>10.10.1.1</version>
-        </dependency>
-        <dependency>
-    		<groupId>mysql</groupId>
-    		<artifactId>mysql-connector-java</artifactId>
-    		<version>5.1.37</version>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-json</artifactId>
+			<version>1.8</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>1.8</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey.contribs</groupId>
+			<artifactId>jersey-multipart</artifactId>
+			<version>1.18</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbyclient</artifactId>
+			<version>10.10.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.37</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -79,10 +94,10 @@
 			<version>5.1.0.Final</version>
 		</dependency>
 		<dependency>
-    		<groupId>javassist</groupId>
-   			<artifactId>javassist</artifactId>
-    		<version>3.12.1.GA</version>
-		</dependency> 
+			<groupId>javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.12.1.GA</version>
+		</dependency>
 	</dependencies>
 	<profiles>
 		<profile>
