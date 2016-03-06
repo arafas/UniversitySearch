@@ -1,16 +1,13 @@
 package universitysearch;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
+import com.sun.jersey.core.header.FormDataContentDisposition;
+import com.sun.jersey.multipart.FormDataParam;
 import org.hibernate.SessionFactory;
 
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.io.InputStream;
 import java.sql.SQLException;
 
 @Path("/hello")
@@ -55,6 +52,18 @@ public class EndPointManager {
 		Integer userID = UM.registerUser(fName, lName, utorid, studentNumber, email, pass);
 
 		return "Your account has been made, please verify it by clicking the activation link that has been send to your email.";
+	}
+
+	@POST
+	@Path("/fileUpload")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addFile(@FormDataParam("file") InputStream fileInputStream,
+						  @FormDataParam("file") FormDataContentDisposition contentDispositionHeader) {
+
+		FileUpload fileUpload = new FileUpload();
+		fileUpload.saveFile(fileInputStream, contentDispositionHeader);
+		return Response.status(200).entity("pass").build();
 	}
 
 	@GET

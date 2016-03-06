@@ -31,7 +31,7 @@
                         var file = files[i];
                         if (!file.$error) {
                             Upload.upload({
-                                url: '/rest/fileUpload',
+                                url: '/rest/hello/fileUpload',
                                 data: {"file": file}
                             });
 
