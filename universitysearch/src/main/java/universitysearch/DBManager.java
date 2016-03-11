@@ -17,7 +17,7 @@ public class DBManager {
     		cfg.setProperty("hibernate.connection.username", System.getenv("OPENSHIFT_MYSQL_DB_USERNAME"));
     		cfg.setProperty("hibernate.connection.password", System.getenv("OPENSHIFT_MYSQL_DB_PASSWORD"));
     		factory = cfg.configure().buildSessionFactory();
-    	}
+    }
     	return factory;
     	/*
     	try{
@@ -30,7 +30,7 @@ public class DBManager {
     	}catch (Throwable ex) { 
     		System.err.println("Failed to create sessionFactory object." + ex);
     		throw new ExceptionInInitializerError(ex); 
-    	}
+        }
     	UserManager UM = new UserManager();
     	UM.setFactory(factory);
     	Integer userID = UM.addUser(input, "test", "test", "test", 0, 0, 0);
