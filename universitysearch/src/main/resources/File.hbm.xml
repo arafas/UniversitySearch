@@ -13,7 +13,7 @@
             <property name="fileName" column="name" type="string" />
         </properties>
         <property name="filePath" column="path" type="string" />
-        <property name="fileSize" column="size" type="int" />
+        <property name="fileSize" column="size" type="long" />
         <property name="fileDesc" column="description" type="string" />
         <property name="fileHash" column="hash" type="string" />
         <property name="fileOwner" column="owner_id" type="int" />

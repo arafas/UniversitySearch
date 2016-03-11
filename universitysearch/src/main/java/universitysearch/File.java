@@ -4,12 +4,13 @@ public class File {
 private int id;
 	
 	private String fileName, filePath, fileDesc, fileHash;
-	private int fileSize, fileOwner;
+	private int fileOwner;
+	private long fileSize;
 
 	public File() {
 	}
 	
-	public File(String fName, String fPath, String fDesc, String fHash, int fSize, int fOwn) {
+	public File(String fName, String fPath, String fDesc, String fHash, long fSize, int fOwn) {
 		this.fileName = fName;
 		this.filePath = fPath;
 		this.fileDesc = fDesc;
@@ -53,10 +54,10 @@ private int id;
 		this.fileHash = fHash;
 	}
 	
-	public int getFileSize() {
+	public long getFileSize() {
 		return fileSize;
 	}
-	public void setFileSize(int fSize) {
+	public void setFileSize(long fSize) {
 		this.fileSize = fSize;
 	}
 	
