@@ -5,7 +5,7 @@
     .module('angularWebApp')
     .controller('MainController', MainController);
   /** @ngInject */
-  function MainController($timeout, webDevTec, toastr, $location, $window, $cookies, $rootScope, $http) {
+  function MainController($timeout, webDevTec, toastr, $location, $window, $cookies, $rootScope, $http, md5) {
     var vm = this;
 
     vm.url = $location.absUrl;
@@ -61,17 +61,26 @@
       var found = 0;
       var user, pass;
 
-      //need to connect to actual end point
+      /*testing
+      var userhash;
+      userhash= md5.createHash(username || '');
+      $window.alert("Hash is " + userhash); */
 
+
+
+      //need to connect to actual end point
       /*
-      $http.post('/rest/hello/signin', { username: username, password: password })
+
+      var passhash = md5.createHash(password || '');
+      $http.post('/rest/hello/signin', { username: username, password: passhash })
          .success(function (response) {
               var data = response;
           })
         .error(function (response){
           $window.alert("Invalid Login");
         });
-     */
+
+      */
 
       angular.forEach(vm.users,function(value) {
 
