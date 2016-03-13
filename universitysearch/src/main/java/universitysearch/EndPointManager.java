@@ -80,4 +80,17 @@ public class EndPointManager {
 		return "Your account has been activated, you can now login";
 	}
 
+	@GET
+	@Path("/search/{searchterm}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response search(@PathParam("searchterm") String searchTerm) {
+		SessionFactory sessionFactory = DBManager.getSessionFactory();
+
+		MasterSearch masterSearch = new MasterSearch();
+		masterSearch.setFactory(sessionFactory);
+
+		String jsonResp = masterSearch.searchCoursesAndFiles(searchTerm);
+
+		return Response.status(200).entity(jsonResp).build();
+	}
 }

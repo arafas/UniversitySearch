@@ -2,6 +2,7 @@ package universitysearch;
 
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.TopDocs;
 import org.hibernate.SessionFactory;
@@ -43,7 +44,7 @@ public class FileUpload {
 
             // creating an instance of the Searcher class to the query the index
             Searcher searcher = new Searcher(Paths.get(System.getenv("OPENSHIFT_DATA_DIR") + "/index"));
-            TopDocs result = searcher.findByContent("Collaborated", 100);
+            TopDocs result = searcher.findByContent("zubair", 100);
 //            for (result.)
 //            searcher.close();
 
@@ -54,9 +55,16 @@ public class FileUpload {
         }
     }
 
-    private void initializeFileIndexing(File file2) throws IOException {
+    private void initializeFileIndexing(File file) throws IOException {
         // Initiate index of the file
-        IndexItem item = PDFSearcher.indexPDF(file2);
+        String ext = FilenameUtils.getExtension(file.getName());
+        IndexItem item = null;
+        if (ext.equals("pdf")) {
+            item = PDFSearcher.indexPDF(file);
+        } else if (ext.equals("txt")) {
+            item = PDFSearcher.indexTxt(file);
+        }
+
         Path path = Paths.get(System.getenv("OPENSHIFT_DATA_DIR") + "/index");
         Indexer indexer = new Indexer(path);
         indexer.index(item);
