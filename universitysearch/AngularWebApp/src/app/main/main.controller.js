@@ -64,7 +64,7 @@
       //need to connect to actual end point
 
       /*
-      $http.post('/api/authenticate', { username: username, password: password })
+      $http.post('/rest/hello/signin', { username: username, password: password })
          .success(function (response) {
               var data = response;
           })
