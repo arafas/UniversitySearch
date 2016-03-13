@@ -8,7 +8,7 @@
     .module('angularWebApp')
     .controller('HomeLoggedInController', HomeLoggedInController);
   /** @ngInject */
-  function HomeLoggedInController($timeout, webDevTec, toastr, $rootScope) {
+  function HomeLoggedInController($timeout, webDevTec, toastr, $rootScope, $cookies, $location, $http) {
     var vm = this;
 
     vm.awesomeThings = [];
@@ -16,6 +16,7 @@
     vm.creationDate = 1456267200629;
     vm.showToastr = showToastr;
     vm.logout = logout;
+    vm.user_info = $cookies.getObject('globals').currentUser.username;//.username;
     vm.user = $rootScope.globals.currentUser;
 
     //vm.users=[{username:'sulaim11',password:'123'},
@@ -51,13 +52,12 @@
 
       //var globalCookie = $cookie.get('globals');
 
-      /*$rootScope.globals = {
-        currentUser: {
-          username: ''
-        }
-      };*/
-      //$cookie.put('globals', $rootScope.globals);
-      //$location.path("/");
+      $rootScope.globals = {};
+      //$cookies.put('globals', $rootScope.globals);
+      $cookies.remove('globals');
+      $http.defaults.headers.common.Authorization = 'Basic ';
+      //$cookies.globals = $rootScope.globals;
+      $location.path("/");
 
     }
 

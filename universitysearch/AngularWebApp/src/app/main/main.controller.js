@@ -5,7 +5,7 @@
     .module('angularWebApp')
     .controller('MainController', MainController);
   /** @ngInject */
-  function MainController($timeout, webDevTec, toastr, $location, $window, $cookies, $rootScope) {
+  function MainController($timeout, webDevTec, toastr, $location, $window, $cookies, $rootScope, $http) {
     var vm = this;
 
     vm.url = $location.absUrl;
@@ -28,9 +28,11 @@
       {username:'user',password:'p'}];
     vm.loggedin = [];
 
+
     vm.orderProp = 'age';
 
     activate();
+
 
     function activate() {
       getWebDevTec();
@@ -59,6 +61,18 @@
       var found = 0;
       var user, pass;
 
+      //need to connect to actual end point
+
+      /*
+      $http.post('/api/authenticate', { username: username, password: password })
+         .success(function (response) {
+              var data = response;
+          })
+        .error(function (response){
+          $window.alert("Invalid Login");
+        });
+     */
+
       angular.forEach(vm.users,function(value) {
 
         if (value.username == username && value.password == password) {
@@ -81,7 +95,9 @@
             username: username
             }
           };
-          $cookies.put('globals', $rootScope.globals);
+          //$cookies.globals = $rootScope.globals;
+          $http.defaults.headers.common['Authorization'] = 'Basic ' + username;
+          $cookies.putObject('globals', $rootScope.globals);
           $location.path("/home");
 
 

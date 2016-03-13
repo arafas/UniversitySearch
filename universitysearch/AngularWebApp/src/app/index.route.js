@@ -6,6 +6,9 @@
     .config(routeConfig);
 
   function routeConfig($routeProvider) {
+
+
+
     $routeProvider
       .when('/', {
         templateUrl: 'app/main/main.html',
@@ -40,6 +43,10 @@
       .otherwise({
         redirectTo: '/'
       });
+
+   // $locationProvider.html5Mode(true);
   }
+
+
 
 })();
