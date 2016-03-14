@@ -10,7 +10,7 @@ import javax.ws.rs.core.Response;
 import java.io.InputStream;
 import java.sql.SQLException;
 
-@Path("/hello")
+@Path("/rest")
 public class EndPointManager {
 
 	@GET
@@ -78,6 +78,28 @@ public class EndPointManager {
 		UM.activateUser(email, hash);
 
 		return "Your account has been activated, you can now login";
+	}
+	
+	@POST
+	@Path("/signin")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response signInUser(User user) {
+		String email = user.getEmail();
+		String password = user.getPassword();
+		
+		// Aquire DB connection and add user
+		SessionFactory factory = DBManager.getSessionFactory();
+
+		UserManager UM = new UserManager();
+		UM.setFactory(factory);
+		User userInfo = UM.signInUser(email, password);
+		
+		if(userInfo == null) {
+			return Response.status(403).entity("Incorrect username or password. Please check if you have activated your account.").build();
+		} else {
+			return Response.status(200).entity(userInfo).build();
+		}
 	}
 
 }

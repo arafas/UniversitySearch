@@ -42,7 +42,7 @@
 
 	/** @ngInject */
 
-	function RegisterController($scope, $http) {
+	function RegisterController($http) {
 		var vm = this;
 
 		vm.hideForm = false;

@@ -6,13 +6,13 @@
 
 	/** @ngInject */
 
-	function ActivateController($scope, $http, $routeParams) {
+	function ActivateController($http, $routeParams) {
 		var vm = this;
 
 		var email = $routeParams.email;
 		var hash = $routeParams.hash;
 
-		var url = 'rest/hello/activate/email/' + email + '/hash/' + hash;
+		var url = 'rest/activate/email/' + email + '/hash/' + hash;
 
 		$http.get(url).success(function(data, status, headers, config) {
 			vm.activateResponse = data;
