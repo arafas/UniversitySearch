@@ -44,9 +44,6 @@
     function showToastr() {
       toastr.info('Fork <a href="https://github.com/Swiip/generator-gulp-angular" target="_blank"><b>generator-gulp-angular</b></a>');
       vm.classAnimation = '';
-      //$window.alert("sign up");
-      //window.location(src/main/register.html);
-
     }
 
     function getWebDevTec() {
@@ -57,7 +54,7 @@
       });
     }
 
-    function submitCredentials(username, password){
+    function submitCredentials(email, password){
       var found = 0;
       var user, pass;
 
@@ -66,22 +63,17 @@
       userhash= md5.createHash(username || '');
       $window.alert("Hash is " + userhash); */
 
-
-
-      //need to connect to actual end point
-      /*
-
       var passhash = md5.createHash(password || '');
-      $http.post('/rest/hello/signin', { username: username, password: passhash })
+      $http.post('/rest/signin', {email: email, password: passhash})
          .success(function (response) {
               var data = response;
+              console.log(response);
           })
         .error(function (response){
           $window.alert("Invalid Login");
         });
 
-      */
-
+      /*
       angular.forEach(vm.users,function(value) {
 
         if (value.username == username && value.password == password) {
@@ -113,13 +105,11 @@
       }else{
           $window.alert("Invalid Login");
       }
-
+		*/
 
     }
 
     function register() {
-      $window.alert("sign up now");
-      //window.location = "register.html";
       $location.path("/register");
     }
 
