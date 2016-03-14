@@ -40,6 +40,11 @@
         controller: 'HomeLoggedInController',
         controllerAs: 'home'
       })
+      .when('/activate/email/:email/hash/:hash', {
+        templateUrl: 'app/main/activate.html',
+        controller: 'ActivateController',
+        controllerAs: 'activate'
+      })
       .otherwise({
         redirectTo: '/'
       });
