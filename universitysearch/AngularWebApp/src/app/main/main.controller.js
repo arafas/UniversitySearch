@@ -57,55 +57,72 @@
     function submitCredentials(email, password){
       var found = 0;
       var user, pass;
+      var username = email;
+      var password = password;
 
       /*testing
-      var userhash;
-      userhash= md5.createHash(username || '');
-      $window.alert("Hash is " + userhash); */
+       var userhash;
+       userhash= md5.createHash(username || '');
+       $window.alert("Hash is " + userhash); */
 
       var passhash = md5.createHash(password || '');
       $http.post('/rest/signin', {email: email, password: passhash})
-         .success(function (response) {
-              var data = response;
-              console.log(response);
-          })
-        .error(function (response){
-          $window.alert("Invalid Login");
-        });
-
-      /*
-      angular.forEach(vm.users,function(value) {
-
-        if (value.username == username && value.password == password) {
-
-          found = 1;
-          user = value.username;
-          pass = value.password;
-          vm.loggedin.push({username:user,password:pass});
-
-        }
-      })
-
-
-      if(found == 1) {
-          $window.alert("welcome "+user);
-
-
+        .success(function (response) {
+          var data = response;
+          console.log(response);
           $rootScope.globals = {
-            currentUser: {
-            username: username
-            }
+            currentUser: response
+
           };
           //$cookies.globals = $rootScope.globals;
           $http.defaults.headers.common['Authorization'] = 'Basic ' + username;
           $cookies.putObject('globals', $rootScope.globals);
           $location.path("/home");
+          /*rootScope.globals = {
+           currentUser: {
+           username: username
+           }
+           }*/
 
 
-      }else{
+        })
+        .error(function (response){
           $window.alert("Invalid Login");
-      }
-		*/
+        });
+
+      /*
+       angular.forEach(vm.users,function(value) {
+
+       if (value.username == username && value.password == password) {
+
+       found = 1;
+       user = value.username;
+       pass = value.password;
+       vm.loggedin.push({username:user,password:pass});
+
+       }
+       })
+
+
+       if(found == 1) {
+       $window.alert("welcome "+user);
+
+
+       $rootScope.globals = {
+       currentUser: {
+       username: username
+       }
+       };
+       //$cookies.globals = $rootScope.globals;
+       $http.defaults.headers.common['Authorization'] = 'Basic ' + username;
+       $cookies.putObject('globals', $rootScope.globals);
+       $location.path("/home");
+
+
+       }else{
+       $window.alert("Invalid Login");
+       }*/
+
 
     }
 

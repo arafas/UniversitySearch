@@ -16,8 +16,8 @@
     vm.creationDate = 1456267200629;
     vm.showToastr = showToastr;
     vm.logout = logout;
-    vm.user_info = $cookies.getObject('globals').currentUser.username;//.username;
-    vm.user = $rootScope.globals.currentUser;
+    vm.user_info = $cookies.getObject('globals').currentUser.firstName;//.username;
+    //vm.user = $rootScope.globals.currentUser;
 
     //vm.users=[{username:'sulaim11',password:'123'},
       //{username:'user',password:'p'}];
