@@ -5,7 +5,7 @@
     .module('angularWebApp')
     .controller('MainController', MainController);
   /** @ngInject */
-  function MainController($timeout, webDevTec, toastr, $location, $window, $cookies, $rootScope) {
+  function MainController($timeout, webDevTec, toastr, $location, $window, $cookies, $rootScope, $http, md5) {
     var vm = this;
 
     vm.url = $location.absUrl;
@@ -28,9 +28,11 @@
       {username:'user',password:'p'}];
     vm.loggedin = [];
 
+
     vm.orderProp = 'age';
 
     activate();
+
 
     function activate() {
       getWebDevTec();
@@ -59,6 +61,27 @@
       var found = 0;
       var user, pass;
 
+      /*testing
+      var userhash;
+      userhash= md5.createHash(username || '');
+      $window.alert("Hash is " + userhash); */
+
+
+
+      //need to connect to actual end point
+      /*
+
+      var passhash = md5.createHash(password || '');
+      $http.post('/rest/hello/signin', { username: username, password: passhash })
+         .success(function (response) {
+              var data = response;
+          })
+        .error(function (response){
+          $window.alert("Invalid Login");
+        });
+
+      */
+
       angular.forEach(vm.users,function(value) {
 
         if (value.username == username && value.password == password) {
@@ -81,7 +104,9 @@
             username: username
             }
           };
-          $cookies.put('globals', $rootScope.globals);
+          //$cookies.globals = $rootScope.globals;
+          $http.defaults.headers.common['Authorization'] = 'Basic ' + username;
+          $cookies.putObject('globals', $rootScope.globals);
           $location.path("/home");
 
 

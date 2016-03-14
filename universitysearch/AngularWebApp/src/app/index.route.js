@@ -6,6 +6,9 @@
     .config(routeConfig);
 
   function routeConfig($routeProvider) {
+
+
+
     $routeProvider
       .when('/', {
         templateUrl: 'app/main/main.html',
@@ -37,9 +40,18 @@
         controller: 'HomeLoggedInController',
         controllerAs: 'home'
       })
+      .when('/activate/email/:email/hash/:hash', {
+        templateUrl: 'app/main/activate.html',
+        controller: 'ActivateController',
+        controllerAs: 'activate'
+      })
       .otherwise({
         redirectTo: '/'
       });
+
+   // $locationProvider.html5Mode(true);
   }
+
+
 
 })();

@@ -1,9 +1,10 @@
 <html lang="en">
-  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Raleway|Lato|Droid+Sans|Roboto+Slab">
-  <div class="container">
+<link rel="stylesheet" type="text/css"
+      href="https://fonts.googleapis.com/css?family=Raleway|Lato|Droid+Sans|Roboto+Slab">
+<div class="container">
 
     <div>
-      <acme-navbar creation-date="main.creationDate"></acme-navbar>
+        <acme-navbar creation-date="main.creationDate"></acme-navbar>
     </div>
 
     <div class="jumbotron text-center" ng-init="">
@@ -15,27 +16,38 @@
       <!--<img src="assets/images/LogoReversedBlue.jpg" alt="I'm Yeoman"><br>-->
         <p></p>
         <p>A Wealth of Information at your Fingertips.</p>
-      </p>
-      <p></p>
-      <ng-form name = "login" style="font-family: 'Lato';" novalidate>
-        <p>UTORID: <input type="text" ng-model="name" required></p>
-        <p>Password: <input type = "password" ng-model="password" required></p>
-      <!--<li ng-repeat="phone in main.phones | orderBy:main.orderProp">{{phone}}</li>-->
-      <!--<p>{{name}}</p>-->
-        <p class="animated infinite" ng-class="main.classAnimation">
-          <button type="button" class="btn btn-lg btn-success" ng-click="main.submitCredentials(name, password)" style="font-family: 'Droid Sans';" ng-disabled=!login.$valid ng-keydown="$event.which === 13 && main.submitCredentials(name, password)">Sign In!</button>
         </p>
-      </ng-form>
-      <p> Or </p>
-      <p class="animated infinite" ng-class="main.classAnimation">
-      <!--rather than ng-click="main.showToastr()"-->
-        <button type="button" class="btn btn-lg btn-success" ng-click="main.register()" ng-keydown="$event.which === 13 && main.register()" style="font-family: 'Droid Sans';">Click to Register</button>
-      </p>
-      <p style="font-family: 'Raleway';">
-        <acme-malarkey extra-values="['Convenience','Accessibility']" style="color:#5cd6d6;"></acme-malarkey> for <acme-malarkey extra-values="['Students','Instructors']" style="color:#5cd6d6;"></acme-malarkey>
-      </p>
-
+        <p></p>
+        <ng-form name="login" style="font-family: 'Lato';" novalidate>
+            <p>UTORID: <input type="text" ng-model="name" required></p>
+            <p>Password: <input type="password" ng-model="password" required></p>
+            <!--<li ng-repeat="phone in main.phones | orderBy:main.orderProp">{{phone}}</li>-->
+            <!--<p>{{name}}</p>-->
+            <p class="animated infinite" ng-class="main.classAnimation">
+                <button type="button" class="btn btn-lg btn-success" ng-click="main.submitCredentials(name, password)"
+                        style="font-family: 'Droid Sans';" ng-disabled=!login.$valid
+                        ng-keydown="$event.which === 13 && main.submitCredentials(name, password)">Sign In!
+                </button>
+            </p>
+        </ng-form>
+        <p> Or </p>
+        <p class="animated infinite" ng-class="main.classAnimation">
+            <!--rather than ng-click="main.showToastr()"-->
+            <button type="button" class="btn btn-lg btn-success" ng-click="main.register()"
+                    ng-keydown="$event.which === 13 && main.register()" style="font-family: 'Droid Sans';">Click to
+                Register
+            </button>
+        </p>
+        <p style="font-family: 'Raleway';">
+            <acme-malarkey extra-values="['Convenience','Accessibility']" style="color:#5cd6d6;"></acme-malarkey>
+            for
+            <acme-malarkey extra-values="['Students','Instructors']" style="color:#5cd6d6;"></acme-malarkey>
+        </p>
     </div>
-  </div>
+
+    <div class="row">
+        <file-upload></file-upload>
+    </div>
+</div>
 
 </html>

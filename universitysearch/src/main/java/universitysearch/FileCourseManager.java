@@ -5,7 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-public class FileManager extends DBManager {
+public class FileCourseManager extends DBManager {
 	private static SessionFactory factory;
 	
 	public void setFactory(SessionFactory factory) {
@@ -13,15 +13,18 @@ public class FileManager extends DBManager {
 	}
 	
 	/* Method to add a file to the database */
-	public Integer addFile(String fName, String fPath, String fDesc, String fHash, long fSize, int fOwn){
+	public Integer linkCourse(int fileID, int courseID, int userID){
 		Session session = factory.openSession();
 	    Transaction tx = null;
-		Integer userID = null;
-
+		Integer linkID = null;
+		//User user = new User(email, pass, fName, lName, isPr, isAd, emailVer);
+		//String addUser = "INSERT INTO `universitysearch`.`users` (`email`, `password`, `first_name`, `last_name`) VALUES ('" + 
+		//email + "', '"+ pass + "', '" + fName + "', '" + lName + ")" ; 
+        
 		try{
 	         tx = session.beginTransaction();
-	         File file = new File (fName, fPath, fDesc, fHash, fSize, fOwn);
-	         userID = (Integer) session.save(file); 
+	         FileCourse file_course = new FileCourse (fileID, courseID, userID);
+	         linkID = (Integer) session.save(file_course); 
 	         tx.commit();
 		}catch (HibernateException e) {
 	    	if (tx!=null)
@@ -30,6 +33,6 @@ public class FileManager extends DBManager {
 	 	}finally {
 	        session.close(); 
 	    }
-		return userID;
+		return linkID;
 	}
 }
