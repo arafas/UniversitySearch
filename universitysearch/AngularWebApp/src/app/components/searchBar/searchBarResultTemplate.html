@@ -1,0 +1,39 @@
+<div id="searchResultTemplate.html">
+
+    <table class="">
+        <tr data-ng-if="match.model.course_divider">
+            <td>
+                Courses
+            </td>
+        </tr>
+        <tr data-ng-if="match.model.courseCode">
+            <td class="course_code">
+                <div>
+                    <a>{{ match.model.courseCode }}</a>
+                </div>
+            </td>
+            <td class="course_name">
+                <div>
+                    <a>{{ match.model.courseName }}</a>
+                </div>
+            </td>
+        </tr>
+        <tr data-ng-if="match.model.file_divider">
+            <td>
+                Files
+            </td>
+        </tr>
+        <tr data-ng-if="match.model.filePath">
+            <td class="file_name">
+                <div>
+                    <a>{{ match.model.fileName }}</a>
+                </div>
+            </td>
+            <td class="file_desc">
+                <div>
+                    <a>{{ match.model.fileDesc }}</a>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

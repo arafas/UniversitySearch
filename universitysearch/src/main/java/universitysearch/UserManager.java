@@ -152,7 +152,7 @@ public class UserManager extends DBManager {
 
 		msg.append("Please click this link to activate your account:");
 		msg.append("\n");
-		msg.append("http://localhost:3000/#/activate/email/" + URLEncoder.encode(email, "UTF-8") + "/hash/" + hash);
+		msg.append(System.getenv("OPENSHIFT_GEAR_DNS") + "/#/activate/email/" + URLEncoder.encode(email, "UTF-8") + "/hash/" + hash);
 
 		return msg.toString();
 	}

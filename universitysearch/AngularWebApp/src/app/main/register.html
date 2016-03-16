@@ -33,7 +33,7 @@
       <p><label>Password:</label><input type="password" name="password" ng-model="user.password" required></p>
       <p><label>Confirm Password:</label><input type="password" name="password2" ng-model="password2" ui-validate="'$value==user.password'" ui-validate-watch="'user.password'" required></p>
       <p class="animated infinite" ng-class="main.classAnimation">
-        <button type="submit" class="btn btn-lg btn-success" style="font-family: 'Droid Sans';" ng-disabled=!signUp.$valid ng-click=add(user)>Verify</button>
+        <button type="submit" class="btn btn-lg btn-success" style="font-family: 'Droid Sans';" ng-disabled=!signUp.$valid ng-click=reg.add(user)>Verify</button>
       </p>
 
       <span ng-show="user.password != password2">Passwords do not match.</span>

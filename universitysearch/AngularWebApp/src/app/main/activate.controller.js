@@ -1,8 +1,9 @@
 (function() {
 	'use strict';
 
-	angular.module('angularWebApp').controller('ActivateController',
-			ActivateController);
+	angular
+    .module('angularWebApp')
+    .controller('ActivateController', ActivateController);
 
 	/** @ngInject */
 
@@ -20,5 +21,4 @@
 			alert("AJAX failed to get data, status=" + status);
 		});
 	}
-
 })();
