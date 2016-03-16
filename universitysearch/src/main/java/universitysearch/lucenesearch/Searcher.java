@@ -17,12 +17,14 @@ public class Searcher {
 
     public IndexSearcher searcher;
     private QueryParser contentQueryParser;
+    private IndexReader indexReader;
 
     public Searcher(Path indexDir) throws IOException {
         // open the index directory to search
         Directory directory = FSDirectory.open(indexDir);
-        IndexReader indexReader = DirectoryReader.open(directory);
+        indexReader = DirectoryReader.open(directory);
         searcher = new IndexSearcher(indexReader);
+
         StandardAnalyzer analyzer = new StandardAnalyzer();
 
         // defining the query parser to search items by content field.
@@ -60,10 +62,10 @@ public class Searcher {
         TopDocs queryResults = searcher.search(finalQuery.build(), numOfResults);
 
 
-        if (queryResults.totalHits > 0)
+        if (queryResults.totalHits > 0) {
             return queryResults;
-        else
-            return null;
+        }
+        else return null;
 
     }
 

@@ -27,7 +27,7 @@
             vm.onSelect = onSelect;
 
             function search(val) {
-                var url = "rest/search/" + val;
+                var url = "rest/API/search/" + val;
                 return $http.get(url)
                     .then(function (response) {
                         var returnArr = [];
