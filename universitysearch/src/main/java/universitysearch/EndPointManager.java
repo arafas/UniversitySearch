@@ -10,7 +10,7 @@ import javax.ws.rs.core.Response;
 import java.io.InputStream;
 import java.sql.SQLException;
 
-@Path("/hello")
+@Path("/rest")
 public class EndPointManager {
 
 	@GET

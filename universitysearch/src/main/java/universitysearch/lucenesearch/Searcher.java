@@ -43,7 +43,7 @@ public class Searcher {
         String fuzzySearchQueryString = queryString + "~";
         String wildCardSearchQueryString = queryString + "*";
 
-        Query query = contentQueryParser.parse(fuzzySearchQueryString);
+//        Query query = contentQueryParser.parse(fuzzySearchQueryString);
 //        Query query = new FuzzyQuery(new Term("ContentText", queryString));
 //        BooleanQuery.Builder finalQuery = new BooleanQuery.Builder();
 //        finalQuery.add(query, BooleanClause.Occur.SHOULD);
@@ -55,7 +55,7 @@ public class Searcher {
 
         // execute the query and get the results
         BooleanQuery.Builder finalQuery = new BooleanQuery.Builder();
-        finalQuery.add(query, BooleanClause.Occur.SHOULD);
+//        finalQuery.add(query, BooleanClause.Occur.SHOULD);
         finalQuery.add(query2, BooleanClause.Occur.SHOULD);
         TopDocs queryResults = searcher.search(finalQuery.build(), numOfResults);
 
