@@ -13,14 +13,14 @@ public class FileManager extends DBManager {
 	}
 	
 	/* Method to add a file to the database */
-	public Integer addFile(String fName, String fPath, String fDesc, String fHash, long fSize, int fOwn){
+	public Integer addFile(String fName, String fPath, String fDesc, String fHash, long fSize, int fOwn, String tHash){
 		Session session = factory.openSession();
 	    Transaction tx = null;
 		Integer userID = null;
 
 		try{
 	         tx = session.beginTransaction();
-	         File file = new File (fName, fPath, fDesc, fHash, fSize, fOwn);
+	         File file = new File (fName, fPath, fDesc, fHash, fSize, fOwn, tHash);
 	         userID = (Integer) session.save(file); 
 	         tx.commit();
 		}catch (HibernateException e) {

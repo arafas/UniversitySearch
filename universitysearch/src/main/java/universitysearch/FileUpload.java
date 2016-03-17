@@ -18,7 +18,8 @@ public class FileUpload {
 
     public void saveFile(InputStream fileInputStream, FormDataContentDisposition contentDispositionHeader) {
         File uploads = new File(System.getenv("OPENSHIFT_DATA_DIR"));
-        File file2 = new File(uploads, contentDispositionHeader.getFileName());
+        String tHash = DigestUtils.md5Hex(String.valueOf(System.currentTimeMillis()));
+        File file2 = new File(uploads, tHash + "-" + contentDispositionHeader.getFileName());
         try {
             long fileSize = Files.copy(fileInputStream, file2.toPath());
             FileInputStream fileHash = new FileInputStream(file2);
@@ -28,13 +29,12 @@ public class FileUpload {
                 substring(0,file2.getAbsolutePath().lastIndexOf(File.separator));
          // get the path of the file without the filename
             String obfuscatedFilePath = filePathHash + filePath.replace(System.getenv("OPENSHIFT_DATA_DIR"), "").replace("\\", "/") + "/";
-
             FileManager fm = new FileManager();
             // Aquire DB connection
             SessionFactory factory = DBManager.getSessionFactory();
             fm.setFactory(factory);
-
-            int res = fm.addFile(file2.getName(), obfuscatedFilePath, "uploadedFile", digestString, fileSize, 1);
+            String fileName = file2.getName();
+            int res = fm.addFile(fileName, obfuscatedFilePath, "uploadedFile", digestString, fileSize, 1, tHash);
 
             fileInputStream.close();
 
@@ -45,9 +45,10 @@ public class FileUpload {
     
     public void saveFile(File fileInput, FileManager fm, String coursePath, int userID) {
       // Method used for saving files from CMD line
+      String tHash = DigestUtils.md5Hex(String.valueOf(System.currentTimeMillis()));
       
       File uploads = new File(System.getenv("OPENSHIFT_DATA_DIR") + coursePath);
-      File file2 = new File(uploads, fileInput.getName());
+      File file2 = new File(uploads, tHash + "-" + fileInput.getName());
       FileInputStream fis = null;
       try {
           fis = new FileInputStream(fileInput);
@@ -63,7 +64,6 @@ public class FileUpload {
           String fileCheck = DigestUtils.md5Hex(fileHash);
           // get the md5 of the content in the file
           String filePathHash = DigestUtils.md5Hex(System.getenv("OPENSHIFT_DATA_DIR"));
-
           String obfuscatedFilePath = filePathHash  + coursePath;
           // obscure the path to the data directory
           
@@ -72,8 +72,7 @@ public class FileUpload {
           System.out.println(fileName);
           System.out.println(fileCheck);
           System.out.println(obfuscatedFilePath);
-          
-          int res = fm.addFile(fileName, obfuscatedFilePath, "uploadedFile", fileCheck, fileSize, userID);
+          int res = fm.addFile(fileName, obfuscatedFilePath, "uploadedFile", fileCheck, fileSize, userID, tHash);
           fis.close();
           fileHash.close();
           fis.close();
