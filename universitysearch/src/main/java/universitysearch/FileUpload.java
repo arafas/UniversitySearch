@@ -71,6 +71,7 @@ public class FileUpload {
           System.out.println(fileName);
           System.out.println(fileCheck);
           System.out.println(obfuscatedFilePath);
+          System.out.println(tHash);
           int res = fm.addFile(fileName, obfuscatedFilePath, "uploadedFile", fileCheck, fileSize, userID, tHash);
           fis.close();
           fileHash.close();
