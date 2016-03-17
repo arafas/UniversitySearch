@@ -46,7 +46,6 @@ public class FileUpload {
     public void saveFile(File fileInput, FileManager fm, String coursePath, int userID) {
       // Method used for saving files from CMD line
       String tHash = DigestUtils.md5Hex(String.valueOf(System.currentTimeMillis()));
-      System.out.println(tHash);
       File uploads = new File(System.getenv("OPENSHIFT_DATA_DIR") + coursePath);
       File file2 = new File(uploads, tHash + "-" + fileInput.getName());
       FileInputStream fis = null;
