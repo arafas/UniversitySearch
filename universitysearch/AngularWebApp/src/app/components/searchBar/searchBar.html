@@ -4,7 +4,6 @@
        data-typeahead-loading="loadingSearch" data-typeahead-no-results="noResults"
        typeahead-on-select="sbc.onSelect($item, $model, $label)" class="form-control">
 <i data-ng-show="loadingSearch" class="glyphicon glyphicon-refresh"></i>
-<div data-ng-show="noResults">
+<div data-ng-show="sbc.showGlyphiconNoResults(noResults, sbc.selectedTerm)">
   <i class="glyphicon glyphicon-remove"></i> No Results Found
 </div>
-

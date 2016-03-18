@@ -1,9 +1,12 @@
 package universitysearch;
 
+import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.highlight.*;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -40,9 +43,17 @@ public class MasterSearch extends DBManager{
             if (results !=  null) {
                 ScoreDoc[] hits = results.scoreDocs;
 
-                for (int i = 0; i < hits.length; i++) {
-                    Document d = searcher.searcher.doc(hits[i].doc);
-                    String fileTitle = d.get("title");
+                Document document;
+                Query queryObj = searcher.contentQueryParser.parse(query);
+                QueryScorer queryScorer = new QueryScorer(queryObj);
+                SimpleHTMLFormatter htmlFormatter = new SimpleHTMLFormatter("<mark><strong>", "</strong></mark>");
+                SimpleHTMLEncoder htmlEncoder = new SimpleHTMLEncoder();
+                Highlighter highlighter = new Highlighter(htmlFormatter, htmlEncoder, queryScorer);
+
+                for (ScoreDoc hit : hits) {
+                    document = searcher.searcher.doc(hit.doc);
+                    String fileTitle = document.get("title");
+                    String text = document.get("content");
 
                     String sql = "SELECT * FROM files WHERE name = :fileTitle";
 
@@ -50,6 +61,18 @@ public class MasterSearch extends DBManager{
                     sqlQuery.setParameter("fileTitle", fileTitle);
                     sqlQuery.addEntity(File.class);
                     File file = (File) sqlQuery.uniqueResult();
+
+                    TokenStream tokenStream = TokenSources.getTokenStream(searcher.indexReader, hit.doc, "content", searcher.analyzer);
+                    try {
+                        TextFragment[] textFragments = highlighter.getBestTextFragments(tokenStream, text, false, 1);
+                        for (TextFragment textFragment : textFragments) {
+                            if (textFragment != null && textFragment.getScore() > 0) {
+                                file.setBlurb(textFragment.toString().replace("\n", " ").trim());
+                            }
+                        }
+                    } catch (InvalidTokenOffsetsException e) {
+                        e.printStackTrace();
+                    }
                     searchResult.addFile(file);
                 }
             }
