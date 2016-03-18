@@ -16,8 +16,9 @@ import java.nio.file.Path;
 public class Searcher {
 
     public IndexSearcher searcher;
-    private QueryParser contentQueryParser;
-    private IndexReader indexReader;
+    public QueryParser contentQueryParser;
+    public IndexReader indexReader;
+    public StandardAnalyzer analyzer;
 
     public Searcher(Path indexDir) throws IOException {
         // open the index directory to search
@@ -25,7 +26,7 @@ public class Searcher {
         indexReader = DirectoryReader.open(directory);
         searcher = new IndexSearcher(indexReader);
 
-        StandardAnalyzer analyzer = new StandardAnalyzer();
+        analyzer = new StandardAnalyzer();
 
         // defining the query parser to search items by content field.
 //        contentQueryParser = new QueryParser(IndexItem.CONTENT, analyzer);
@@ -42,8 +43,8 @@ public class Searcher {
      */
     public TopDocs findByContent(String queryString, int numOfResults) throws ParseException, IOException {
         // create query from the incoming query string.
-        String fuzzySearchQueryString = queryString + "~";
-        String wildCardSearchQueryString = queryString + "*";
+//        String fuzzySearchQueryString = queryString + "~";
+//        String wildCardSearchQueryString = queryString + "*";
 
 //        Query query = contentQueryParser.parse(fuzzySearchQueryString);
 //        Query query = new FuzzyQuery(new Term("ContentText", queryString));
@@ -52,7 +53,7 @@ public class Searcher {
 //        Query query1 = new WildcardQuery(new Term("ContentText", queryString));
 //        finalQuery.add(query1, BooleanClause.Occur.SHOULD);
 //        contentQueryParser.
-        Query query2 = contentQueryParser.parse(wildCardSearchQueryString);
+        Query query2 = contentQueryParser.parse(queryString);
 
 
         // execute the query and get the results
