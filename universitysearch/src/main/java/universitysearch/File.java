@@ -3,7 +3,9 @@ package universitysearch;
 public class File {
 private int id;
 	
-	private String fileName, filePath, fileDesc, fileHash;
+	private String fileName, filePath, fileDesc, fileHash, blurb;
+
+
 	private int fileOwner;
 	private long fileSize;
 
@@ -17,6 +19,14 @@ private int id;
 		this.fileHash = fHash;
 		this.fileSize = fSize;
 		this.fileOwner = fOwn;
+	}
+
+	public String getBlurb() {
+		return blurb;
+	}
+
+	public void setBlurb(String blurb) {
+		this.blurb = blurb;
 	}
 
 	public int getId() {

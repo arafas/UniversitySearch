@@ -139,8 +139,11 @@
             <artifactId>lucene-queryparser</artifactId>
             <version>5.5.0</version>
         </dependency>
-
-
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-highlighter</artifactId>
+            <version>5.5.0</version>
+        </dependency>
     </dependencies>
     <profiles>
         <profile>

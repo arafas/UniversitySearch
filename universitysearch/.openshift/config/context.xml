@@ -16,7 +16,7 @@
   limitations under the License.
 -->
 <!-- The contents of this file will be loaded for each web application -->
-<Context>
+<Context path="/files" aliases="/static=${OPENSHIFT_DATA_DIR}">
     <!-- Default set of monitored resources -->
     <WatchedResource>WEB-INF/web.xml</WatchedResource>
 
@@ -43,7 +43,7 @@
               maxWait="10000"
               factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
               />
-               
+
     <Resource name="jdbc/PostgreSQLDS"
               url="jdbc:postgresql://${OPENSHIFT_POSTGRESQL_DB_HOST}:${OPENSHIFT_POSTGRESQL_DB_PORT}/${OPENSHIFT_APP_NAME}"
               driverClassName="org.postgresql.Driver"
