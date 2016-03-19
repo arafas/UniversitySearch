@@ -11,7 +11,7 @@
       var email = $routeParams.email;
       var hash = $routeParams.hash;
 
-      var url = 'rest/hello/activate/email/' + email + '/hash/' + hash;
+      var url = 'rest/API/activate/email/' + email + '/hash/' + hash;
 
       $http.get(url)
               .success(function(data, status, headers, config) {

@@ -64,7 +64,7 @@
 
         $scope.jsonObj = angular.toJson(user, false);
         
-        $http.post('rest/hello/add', user)
+        $http.post('rest/API/add', user)
               .success(function(data, status, headers, config) {
                 $scope.hideForm = true;
                 $scope.registerResponse = data;
