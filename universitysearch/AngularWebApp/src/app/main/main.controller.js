@@ -66,7 +66,7 @@
        $window.alert("Hash is " + userhash); */
 
       var passhash = md5.createHash(password || '');
-      $http.post('/rest/signin', {email: email, password: passhash})
+      $http.post('/rest/API/signin', {email: email, password: passhash})
         .success(function (response) {
           var data = response;
           console.log(response);
