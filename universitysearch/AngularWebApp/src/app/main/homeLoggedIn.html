@@ -14,12 +14,16 @@
       <acme-navbar creation-date="home.creationDate"></acme-navbar>
     </div>
 
-    <h1 style="font-family: 'Roboto Slab';">Welcome</h1>
+    <h1 style="font-family: 'Roboto Slab';">Welcome {{home.user_info}}</h1>
 
     <p class="lead" style="font-family: 'Lato';">
     <p></p>
-    <p>Hey!
+    <p>Hey!</p>
     </p>
+
+    <p> <!-- class="animated infinite" ng-class="main.classAnimation">-->
+      <!--rather than ng-click="main.showToastr()"-->
+      <button type="button" class="btn btn-lg btn-success" ng-click="home.logout()" ng-keydown="$event.which === 13 && home.logout()" style="font-family: 'Droid Sans';">Logout</button>
     </p>
   </div>
 
