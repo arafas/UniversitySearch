@@ -1,13 +1,13 @@
 (function() {
-  'use strict';
+	'use strict';
 
-  angular
-    .module('angularWebApp')
-    .controller('RegisterController', RegisterController);
+  	angular
+    	.module('angularWebApp')
+    	.controller('RegisterController', RegisterController);
   /** @ngInject */
   /*
   function RegisterController($timeout, webDevTec, toastr, $location, $window) {
-    
+
     var vm = this;
 
     vm.awesomeThings = [];
@@ -51,29 +51,31 @@
         $location.path("/sent");
 
     }
-      
+
   }
   */
 
   /** @ngInject */
-  
+
+
   function RegisterController($scope, $http) {
       $scope.hideForm = false;
 
       $scope.add = function(user) {
 
         $scope.jsonObj = angular.toJson(user, false);
-        
+
         $http.post('rest/API/add', user)
               .success(function(data, status, headers, config) {
                 $scope.hideForm = true;
                 $scope.registerResponse = data;
                 })
-             
+
                 .error(function(data, status, headers, config) {
                 alert("AJAX failed to get data, status=" + status);
               });
       }
     }
-    
+
+
 })();

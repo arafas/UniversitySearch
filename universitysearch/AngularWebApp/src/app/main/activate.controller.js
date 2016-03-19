@@ -1,12 +1,13 @@
 (function() {
   'use strict';
+  'use strict';
 
   angular
     .module('angularWebApp')
     .controller('ActivateController', ActivateController);
 
   /** @ngInject */
-  
+
   function ActivateController($scope, $http, $routeParams) {
       var email = $routeParams.email;
       var hash = $routeParams.hash;
@@ -21,5 +22,5 @@
                 alert("AJAX failed to get data, status=" + status);
               });
     }
-    
+
 })();
