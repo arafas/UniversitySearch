@@ -7,7 +7,7 @@
   /** @ngInject */
   /*
   function RegisterController($timeout, webDevTec, toastr, $location, $window) {
-    
+
     var vm = this;
 
     vm.awesomeThings = [];
@@ -51,30 +51,31 @@
         $location.path("/sent");
 
     }
-      
+
   }
   */
 
   /** @ngInject */
 
-	function RegisterController($http) {
-		var vm = this;
 
-		vm.hideForm = false;
+  function RegisterController($scope, $http) {
+      $scope.hideForm = false;
 
-		vm.add = function(user) {
-			vm.jsonObj = angular.toJson(user, false);
+      $scope.add = function(user) {
 
-			$http.post('rest/add', user).success(
-					function(data, status, headers, config) {
-						vm.hideForm = true;
-						vm.registerResponse = data;
-					})
+        $scope.jsonObj = angular.toJson(user, false);
 
-			.error(function(data, status, headers, config) {
-				alert("AJAX failed to get data, status=" + status);
-			});
-		}
-	}
-    
+        $http.post('rest/API/add', user)
+              .success(function(data, status, headers, config) {
+                $scope.hideForm = true;
+                $scope.registerResponse = data;
+                })
+
+                .error(function(data, status, headers, config) {
+                alert("AJAX failed to get data, status=" + status);
+              });
+      }
+    }
+
+
 })();
