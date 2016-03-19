@@ -1,15 +1,9 @@
 package universitysearch;
 
 public class File {
-private int id;
-	
-<<<<<<< HEAD
-	private String fileName, filePath, fileDesc, fileHash, timeHash;
-=======
-	private String fileName, filePath, fileDesc, fileHash, blurb;
+private int id;	
+	private String fileName, filePath, fileDesc, fileHash, timeHash, blurb;
 
-
->>>>>>> develop
 	private int fileOwner;
 	private long fileSize;
 

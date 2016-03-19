@@ -55,7 +55,6 @@ public class FileUpload {
             e.printStackTrace();
         }
     }
-<<<<<<< HEAD
     
     public void saveFile(File fileInput, FileManager fm, String coursePath, int userID) {
       // Method used for saving files from CMD line
@@ -94,8 +93,7 @@ public class FileUpload {
       } catch (IOException e) {
           e.printStackTrace();
       }
-  }
-=======
+   }
 
     private void initializeFileIndexing(File file) throws IOException {
         // Initiate index of the file
@@ -121,6 +119,5 @@ public class FileUpload {
 //            System.out.println("The document does not contain the search keyword");
 //
 //    }
->>>>>>> develop
 }
 
