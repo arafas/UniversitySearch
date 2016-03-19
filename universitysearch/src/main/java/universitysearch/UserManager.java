@@ -152,7 +152,7 @@ public class UserManager extends DBManager {
 
 		msg.append("Please click this link to activate your account:");
 		msg.append("\n");
-		msg.append("http://localhost:3000/#/activate/email/" + URLEncoder.encode(email, "UTF-8") + "/hash/" + hash);
+		msg.append(System.getenv("OPENSHIFT_GEAR_DNS") + "/#/activate/email/" + URLEncoder.encode(email, "UTF-8") + "/hash/" + hash);
 
 		return msg.toString();
 	}
@@ -228,5 +228,47 @@ public class UserManager extends DBManager {
 		}
 
 		return userID;
+	}
+	
+	public User signInUser(String username, String password) {
+		Session session = factory.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			Criteria criteria = session.createCriteria(User.class);
+
+			Criterion emailValue = Restrictions.eq("email", username);
+			Criterion passwordValue = Restrictions.eq("password", password);
+			Criterion activeValue = Restrictions.eq("active", 1);
+
+			// Create object of Conjunction
+			Conjunction objConjunction = Restrictions.conjunction();
+
+			// Add multiple condition separated by AND clause within brackets.
+			objConjunction.add(emailValue);
+			objConjunction.add(passwordValue);
+			objConjunction.add(activeValue);
+
+			criteria.add(objConjunction);
+
+			List<?> userList = criteria.list();
+
+			// Check to see if user is found
+			if (userList.size() > 0) {
+				System.out.println("FOUND!!");
+				User user = (User) userList.get(0);
+				return user;
+			}
+
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		
+		return null;
 	}
 }
