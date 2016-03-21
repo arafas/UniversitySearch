@@ -32,4 +32,65 @@ public class FileManager extends DBManager {
 	    }
 		return userID;
 	}
+	
+	public void removeFile(int fileID) {
+	    //Delete File from database based on entered ID
+	    Session session = factory.openSession();
+	    Transaction tx = null;
+	    try{
+	        //SomeEntity ent = session.get(SomeEntity.class, '1234');
+	        //session.delete(ent);
+	        tx = session.beginTransaction();
+	        File file = new File();
+	        file.setId(fileID);
+	        session.delete(file); 
+	        tx.commit();
+	    }catch (HibernateException e) {
+	        if (tx!=null)
+	            tx.rollback();
+	        e.printStackTrace(); 
+	    }finally {
+	        session.close(); 
+	    }
+	}
+	
+    public void modifyFile(int fileID, String fName, String fPath, String fDesc, String fHash, long fSize, int fOwn) {
+      // Set elements to null that you do not want updated, or for long/ints set to -1
+      // fileID is required
+      Session session = factory.openSession();
+      Transaction tx = null;
+      try{
+          tx = session.beginTransaction();
+          File file = (File) session.load(File.class, fileID);
+          // This point file is loaded from DB
+          
+          if (fName != null) {
+            file.setFileName(fName);
+          }
+          if (fPath != null) {
+            file.setFilePath(fPath);
+          }
+          if (fDesc != null) {
+            file.setFileDesc(fDesc);
+          }
+          if (fHash != null) {
+            file.setFileHash(fHash);
+          }
+          if (fSize != -1) {
+            file.setFileSize(fSize);
+          }
+          if (fOwn != -1) {
+            file.setFileOwner(fOwn);
+          }
+          
+          session.update(file); 
+          tx.commit();
+      }catch (HibernateException e) {
+          if (tx!=null)
+              tx.rollback();
+          e.printStackTrace(); 
+      }finally {
+          session.close(); 
+      }
+  }
 }
