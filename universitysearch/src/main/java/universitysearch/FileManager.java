@@ -54,7 +54,7 @@ public class FileManager extends DBManager {
 	    }
 	}
 	
-    public void modifyFile(int fileID, String fName, String fPath, String fDesc, String fHash, long fSize, int fOwn) {
+    public void modifyFile(int fileID, String fName, String fPath, String fDesc, String fHash, long fSize, int fOwn, String tHash) {
       // Set elements to null that you do not want updated, or for long/ints set to -1
       // fileID is required
       Session session = factory.openSession();
@@ -81,6 +81,9 @@ public class FileManager extends DBManager {
           }
           if (fOwn != -1) {
             file.setFileOwner(fOwn);
+          }
+          if (tHash != null) {
+            file.setTimeHash(tHash);
           }
           
           session.update(file); 
