@@ -5,7 +5,7 @@
     .module('angularWebApp')
     .controller('MainController', MainController);
   /** @ngInject */
-  function MainController($timeout, webDevTec, toastr, $location, $window) {
+  function MainController($timeout, webDevTec, toastr, $location, $window, $cookies, $rootScope, $http, md5) {
     var vm = this;
 
     vm.url = $location.absUrl;
@@ -28,9 +28,11 @@
       {username:'user',password:'p'}];
     vm.loggedin = [];
 
+
     vm.orderProp = 'age';
 
     activate();
+
 
     function activate() {
       getWebDevTec();
@@ -42,9 +44,6 @@
     function showToastr() {
       toastr.info('Fork <a href="https://github.com/Swiip/generator-gulp-angular" target="_blank"><b>generator-gulp-angular</b></a>');
       vm.classAnimation = '';
-      //$window.alert("sign up");
-      //window.location(src/main/register.html);
-
     }
 
     function getWebDevTec() {
@@ -55,38 +54,79 @@
       });
     }
 
-    function submitCredentials(username, password){
+    function submitCredentials(email, password){
       var found = 0;
       var user, pass;
+      var username = email;
+      var password = password;
 
-      angular.forEach(vm.users,function(value) {
+      /*testing
+       var userhash;
+       userhash= md5.createHash(username || '');
+       $window.alert("Hash is " + userhash); */
 
-        if (value.username == username && value.password == password) {
+      var passhash = md5.createHash(password || '');
+      $http.post('/rest/API/signin', {email: email, password: passhash})
+        .success(function (response) {
+          var data = response;
+          console.log(response);
+          $rootScope.globals = {
+            currentUser: response
 
-          found = 1;
-          user = value.username;
-          pass = value.password;
-          vm.loggedin.push({username:user,password:pass});
-
-        }
-      })
-
-
-      if(found == 1) {
-          $window.alert("welcome "+user);
+          };
+          //$cookies.globals = $rootScope.globals;
+          $http.defaults.headers.common['Authorization'] = 'Basic ' + username;
+          $cookies.putObject('globals', $rootScope.globals);
           $location.path("/home");
+          /*rootScope.globals = {
+           currentUser: {
+           username: username
+           }
+           }*/
 
 
-      }else{
+        })
+        .error(function (response){
           $window.alert("Invalid Login");
-      }
+        });
+
+      /*
+       angular.forEach(vm.users,function(value) {
+
+       if (value.username == username && value.password == password) {
+
+       found = 1;
+       user = value.username;
+       pass = value.password;
+       vm.loggedin.push({username:user,password:pass});
+
+       }
+       })
+
+
+       if(found == 1) {
+       $window.alert("welcome "+user);
+
+
+       $rootScope.globals = {
+       currentUser: {
+       username: username
+       }
+       };
+       //$cookies.globals = $rootScope.globals;
+       $http.defaults.headers.common['Authorization'] = 'Basic ' + username;
+       $cookies.putObject('globals', $rootScope.globals);
+       $location.path("/home");
+
+
+       }else{
+       $window.alert("Invalid Login");
+       }*/
 
 
     }
 
     function register() {
-      $window.alert("sign up now");
-      //window.location = "register.html";
       $location.path("/register");
     }
 
