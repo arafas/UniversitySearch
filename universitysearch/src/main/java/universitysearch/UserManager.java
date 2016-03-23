@@ -271,4 +271,65 @@ public class UserManager extends DBManager {
 		
 		return null;
 	}
+	
+    public void removeUser(int userID) {
+      //Delete File from database based on entered ID
+      Session session = factory.openSession();
+      Transaction tx = null;
+      try{
+          //SomeEntity ent = session.get(SomeEntity.class, '1234');
+          //session.delete(ent);
+          tx = session.beginTransaction();
+          User user = new User();
+          user.setId(userID);
+          session.delete(user); 
+          tx.commit();
+      }catch (HibernateException e) {
+          if (tx!=null)
+              tx.rollback();
+          e.printStackTrace(); 
+      }finally {
+          session.close(); 
+      }
+  }
+  
+  public void modifyUser(User user) {
+    // Set elements to null that you do not want updated, or for long/ints set to -1
+    // userID is required
+    Session session = factory.openSession();
+    Transaction tx = null;
+    try{
+        tx = session.beginTransaction();
+        User userUp = (User) session.load(User.class, user.getId());
+        // This point file is loaded from DB
+        
+        if (user.getFirstName() != null) {
+          userUp.setFirstName(user.getFirstName());
+        }
+        if (user.getLastName() != null) {
+          userUp.setLastName(user.getLastName());
+        }
+        if (user.getUtorid() != null) {
+          userUp.setUtorid(user.getUtorid());
+        }
+        if (user.getStudentNumber() != null) {
+          userUp.setStudentNumber(user.getStudentNumber());
+        }
+        if (user.getEmail() != null) {
+          userUp.setEmail(user.getEmail());
+        }
+        if (user.getPassword() != null) {
+          userUp.setPassword(user.getPassword());
+        }
+        
+        session.update(userUp); 
+        tx.commit();
+    }catch (HibernateException e) {
+        if (tx!=null)
+            tx.rollback();
+        e.printStackTrace(); 
+    }finally {
+        session.close(); 
+    }
+}
 }

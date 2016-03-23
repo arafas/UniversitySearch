@@ -9,13 +9,16 @@
         <id name="id" type="int" column="file_id">
             <generator class="identity" />
         </id>
-        <properties name="NAME_UNIQUE" unique="true">
-            <property name="fileName" column="name" type="string" />
-        </properties>
+        <property name="fileName" column="name" type="string" />
         <property name="filePath" column="path" type="string" />
         <property name="fileSize" column="size" type="long" />
         <property name="fileDesc" column="description" type="string" />
-        <property name="fileHash" column="hash" type="string" />
+        <properties name="NAME_UNIQUE" unique="true">
+        	<property name="fileHash" column="hash" type="string" />
+        </properties>
         <property name="fileOwner" column="owner_id" type="int" />
+        <properties name="HASH_UNIQUE" unique="true">
+        	<property name="timeHash" column="hash_timestamp" type="string" />
+        </properties>
     </class>
 </hibernate-mapping>

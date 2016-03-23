@@ -1,10 +1,8 @@
 package universitysearch;
 
 public class File {
-private int id;
-	
-	private String fileName, filePath, fileDesc, fileHash, blurb;
-
+private int id;	
+	private String fileName, filePath, fileDesc, fileHash, timeHash, blurb;
 
 	private int fileOwner;
 	private long fileSize;
@@ -12,13 +10,14 @@ private int id;
 	public File() {
 	}
 	
-	public File(String fName, String fPath, String fDesc, String fHash, long fSize, int fOwn) {
+	public File(String fName, String fPath, String fDesc, String fHash, long fSize, int fOwn, String tHash) {
 		this.fileName = fName;
 		this.filePath = fPath;
 		this.fileDesc = fDesc;
 		this.fileHash = fHash;
 		this.fileSize = fSize;
 		this.fileOwner = fOwn;
+		this.timeHash = tHash;
 	}
 
 	public String getBlurb() {
@@ -76,5 +75,12 @@ private int id;
 	}
 	public void setFileOwner(int fOwn) {
 		this.fileOwner = fOwn;
+	}
+	
+	public String getTimeHash() {
+	    return fileHash;
+	}
+	public void setTimeHash(String tHash) {
+	  this.timeHash = tHash;
 	}
 }
