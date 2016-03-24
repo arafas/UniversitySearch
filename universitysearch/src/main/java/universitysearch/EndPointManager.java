@@ -106,6 +106,11 @@ public class EndPointManager {
 		} else {
 			HttpSession jsessid = request.getSession(true);
 			jsessid.setAttribute("userId", userInfo.getId());
+			jsessid.setAttribute("loggedIn", true);
+			
+            //setting session to expiry in 30 mins
+			jsessid.setMaxInactiveInterval(30*60);
+			
 			JSONObject jsonObject = null;
 
 			try {
@@ -124,9 +129,11 @@ public class EndPointManager {
 	@POST
 	@Path("/signOut")
 	public Response signOutUser(@Context HttpServletRequest request) {
-		HttpSession httpSession = request.getSession();
-		httpSession.invalidate();
-
+		HttpSession httpSession = request.getSession(false);
+		if(httpSession != null){
+			httpSession.invalidate();
+        }
+		
 		return Response.ok().build();
 	}
 
