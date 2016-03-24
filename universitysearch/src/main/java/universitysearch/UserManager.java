@@ -1,29 +1,23 @@
 package universitysearch;
 
-import java.util.List;
-import javax.ws.rs.core.MediaType;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
+import org.hibernate.*;
+import org.hibernate.criterion.Conjunction;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Restrictions;
 
+import javax.ws.rs.core.MediaType;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Conjunction;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Restrictions;
-
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
-import com.sun.jersey.core.util.MultivaluedMapImpl;
+import java.util.List;
 
 public class UserManager extends DBManager {
 	private static SessionFactory factory;
@@ -229,7 +223,7 @@ public class UserManager extends DBManager {
 
 		return userID;
 	}
-	
+
 	public User signInUser(String username, String password) {
 		Session session = factory.openSession();
 		Transaction tx = null;
@@ -268,7 +262,7 @@ public class UserManager extends DBManager {
 		} finally {
 			session.close();
 		}
-		
+
 		return null;
 	}
 	
