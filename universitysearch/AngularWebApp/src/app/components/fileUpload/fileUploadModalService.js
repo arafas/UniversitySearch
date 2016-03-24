@@ -19,7 +19,7 @@
                 animation: true,
                 templateUrl: 'app/components/fileUpload/fileUpload.html',
                 controller: 'FileUploadController',
-                size: 'sm',
+                size: 'md',
                 windowClass: 'fileUpload'
             });
         }

@@ -2,12 +2,15 @@
     <input type="text" ng-model="vm.selectedCourse" uib-typeahead="course as course.courseCode for course in vm.courses | limitTo:8"
            typeahead-template-url="customTemplate.html" class="form-control">
 
-    <div ng-disabled="vm.selectedCourse == null" class="button" ngf-select="vm.upload($files)" ngf-multiple="true">Select File</div>
+    <tags-input ng-model="vm.tags" max-length="24" add-on-space="true"></tags-input>
+
+    <div ng-disabled="vm.selectedCourse == null" class="button" accept="image/*,application/pdf"
+         ngf-pattern="'image/*,application/pdf, *.html'" ngf-select="vm.upload($files)" ngf-multiple="true">Select File</div>
     Drop File:
     <div ng-disabled="vm.selectedCourse == null" ngf-drop="vm.upload($files)" ngf-select="vm.upload($files)" ng-model="files" class="drop-box"
          ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true"
          accept="image/*,application/pdf"
-         ngf-pattern="'image/*,application/pdf'" >Drop pdfs or images here or click to upload
+         ngf-pattern="'image/*,application/pdf, *.html'" >Drop pdfs or images here or click to upload
     </div>
     <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
     Files:

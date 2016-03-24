@@ -2,6 +2,7 @@ package universitysearch;
 
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
+import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.hibernate.SessionFactory;
@@ -66,6 +67,7 @@ public class EndPointManager {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addFile(@FormDataParam("file") InputStream fileInputStream,
 							@FormDataParam("file") FormDataContentDisposition contentDispositionHeader,
+							@FormDataParam("tags") JSONArray tags,
 							@Context HttpServletRequest req, @PathParam("courseId") int courseId) {
 
 		JSONObject jsonObject;
@@ -73,13 +75,15 @@ public class EndPointManager {
 			HttpSession session = req.getSession();
 			int userId = (Integer) session.getAttribute("userId");
 			FileUpload fileUpload = new FileUpload();
-			int id = fileUpload.saveFile(fileInputStream, contentDispositionHeader, userId, courseId);
+			int id = fileUpload.saveFile(fileInputStream, contentDispositionHeader, userId, courseId, tags);
 			jsonObject = new JSONObject();
 			jsonObject.put("id", id);
 			return Response.status(200).entity(jsonObject).build();
 		} catch (JSONException e) {
+			e.printStackTrace();
 			return Response.status(500).entity("An error has occurred. Please try again").build();
 		} catch (IOException e) {
+			e.printStackTrace();
 			return Response.status(501).entity("An error has occurred saving the file. Please try again").build();
 		}
 	}

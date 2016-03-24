@@ -3,6 +3,8 @@ package universitysearch;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
 import org.hibernate.SessionFactory;
 import universitysearch.lucenesearch.IndexItem;
 import universitysearch.lucenesearch.Indexer;
@@ -22,7 +24,7 @@ public class FileUpload {
 
     public int saveFile(InputStream fileInputStream,
                         FormDataContentDisposition contentDispositionHeader,
-                        int userId, int courseId) throws IOException{
+                        int userId, int courseId, JSONArray tags) throws IOException, JSONException {
 
         File uploads = new File(System.getenv("OPENSHIFT_DATA_DIR"));
         File file2 = new File(uploads, contentDispositionHeader.getFileName());
@@ -36,8 +38,7 @@ public class FileUpload {
         SessionFactory factory = DBManager.getSessionFactory();
         fm.setFactory(factory);
 
-        int res = fm.addFile(file2.getName(), obfuscatedFilePath, "uploadedFile", digestString, fileSize, userId, courseId);
-
+        int res = fm.addFile(file2.getName(), obfuscatedFilePath, "uploadedFile", digestString, fileSize, userId, courseId, tags);
         fileInputStream.close();
         initializeFileIndexing(file2);
 
