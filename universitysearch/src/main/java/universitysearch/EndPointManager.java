@@ -2,11 +2,17 @@ package universitysearch;
 
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.hibernate.SessionFactory;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 
@@ -55,15 +61,27 @@ public class EndPointManager {
 	}
 
 	@POST
-	@Path("/fileUpload")
+	@Path("/fileUpload/{courseId}")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addFile(@FormDataParam("file") InputStream fileInputStream,
-						  @FormDataParam("file") FormDataContentDisposition contentDispositionHeader) {
+							@FormDataParam("file") FormDataContentDisposition contentDispositionHeader,
+							@Context HttpServletRequest req, @PathParam("courseId") int courseId) {
 
-		FileUpload fileUpload = new FileUpload();
-		fileUpload.saveFile(fileInputStream, contentDispositionHeader);
-		return Response.status(200).entity("pass").build();
+		JSONObject jsonObject;
+		try {
+			HttpSession session = req.getSession();
+			int userId = (Integer) session.getAttribute("userId");
+			FileUpload fileUpload = new FileUpload();
+			int id = fileUpload.saveFile(fileInputStream, contentDispositionHeader, userId, courseId);
+			jsonObject = new JSONObject();
+			jsonObject.put("id", id);
+			return Response.status(200).entity(jsonObject).build();
+		} catch (JSONException e) {
+			return Response.status(500).entity("An error has occurred. Please try again").build();
+		} catch (IOException e) {
+			return Response.status(501).entity("An error has occurred saving the file. Please try again").build();
+		}
 	}
 
 	@GET

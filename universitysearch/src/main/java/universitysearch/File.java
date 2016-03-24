@@ -6,19 +6,20 @@ private int id;
 	private String fileName, filePath, fileDesc, fileHash, blurb;
 
 
-	private int fileOwner;
+	private int fileOwner, courseId;
 	private long fileSize;
 
 	public File() {
 	}
-	
-	public File(String fName, String fPath, String fDesc, String fHash, long fSize, int fOwn) {
+
+	public File(String fName, String fPath, String fDesc, String fHash, long fSize, int fOwn, int courseId) {
 		this.fileName = fName;
 		this.filePath = fPath;
 		this.fileDesc = fDesc;
 		this.fileHash = fHash;
 		this.fileSize = fSize;
 		this.fileOwner = fOwn;
+		this.courseId = courseId;
 	}
 
 	public String getBlurb() {
@@ -76,5 +77,13 @@ private int id;
 	}
 	public void setFileOwner(int fOwn) {
 		this.fileOwner = fOwn;
+	}
+
+	public int getCourseId() {
+		return courseId;
+	}
+
+	public void setCourseId(int courseId) {
+		this.courseId = courseId;
 	}
 }

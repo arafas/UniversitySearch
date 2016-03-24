@@ -3,7 +3,8 @@
 
     angular
         .module('angularWebApp')
-        .directive('fileUpload', fileUpload);
+        .directive('fileUpload', fileUpload)
+        .controller('FileUploadController', FileUploadController);
 
     /** @ngInject */
     function fileUpload() {
@@ -12,34 +13,51 @@
             scope: {
                 extraValues: '='
             },
-            templateUrl: 'app/components/fileUpload/fileUpload.html',
+            templateUrl: 'app/components/fileUpload/templateToRenderModal.html',
             controller: FileUploadController,
             controllerAs: 'vm'
         };
 
         return directive;
 
-        /** @ngInject */
-        function FileUploadController(Upload, $http) {
-            var vm = this;
 
-            vm.files = [];
-            vm.upload = function (files) {
-                if (files && files.length) {
 
-                    for (var i = 0; i < files.length; i++) {
-                        var file = files[i];
-                        if (!file.$error) {
-                            Upload.upload({
-                                url: '/rest/API/fileUpload',
-                                data: {"file": file}
-                            });
+    }
+    /** @ngInject */
+    function FileUploadController(Upload, fileUploadModal) {
+        var vm = this;
+        vm.progressPercentage = 0;
+        vm.fileUploadSuccess = false;
+        vm.fileUploadError = false;
+        vm.selectedCourse = null;
 
-                        }
+
+        vm.courses = [{courseId: 1, courseCode: "CSC301", courseName: "Software Engineering", profId: 3},
+            {courseId: 2, courseCode: "CSC427", courseName: "Computer Security", profId: 2}];
+        vm.upload = function (files) {
+            if (files && files.length) {
+                console.log(vm.selectedCourse);
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    if (!file.$error) {
+                        Upload.upload({
+                            url: '/rest/API/fileUpload/' + vm.selectedCourse.courseId,
+                            data: {"file": file}
+                        })
+                            .success(function() {
+                                vm.fileUploadSuccess = true;
+                            })
+                            .error(function() {
+                                vm.fileUploadError = true;
+                            })
                     }
                 }
-            };
-        }
+            }
+        };
+
+        vm.openModal = function() {
+            fileUploadModal.openModal();
+        };
     }
 
 })();

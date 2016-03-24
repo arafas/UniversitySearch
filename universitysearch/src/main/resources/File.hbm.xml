@@ -17,5 +17,6 @@
         <property name="fileDesc" column="description" type="string" />
         <property name="fileHash" column="hash" type="string" />
         <property name="fileOwner" column="owner_id" type="int" />
+        <property name="courseId" column="course_id" type="int" />
     </class>
 </hibernate-mapping>
