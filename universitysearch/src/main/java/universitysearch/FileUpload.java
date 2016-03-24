@@ -72,7 +72,7 @@ public class FileUpload {
               substring(0,fileInput.getAbsolutePath().lastIndexOf(File.separator));
           // get the path of the file without the filename
           String fileName = fileInput.getName();
-          FileInputStream fileHash = new FileInputStream(fileInput);;
+          FileInputStream fileHash = new FileInputStream(fileInput);
           String fileCheck = DigestUtils.md5Hex(fileHash);
           // get the md5 of the content in the file
           String filePathHash = DigestUtils.md5Hex(System.getenv("OPENSHIFT_DATA_DIR"));

@@ -54,7 +54,6 @@ public class UserManager extends DBManager {
 		Integer userID = addUser(user);
 
 		ClientResponse x = sendEmailActivationLink(email, hash);
-
 		return userID;
 	}
 
