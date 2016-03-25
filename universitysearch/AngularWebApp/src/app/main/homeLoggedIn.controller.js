@@ -51,14 +51,15 @@
     function logout(){
 
       //var globalCookie = $cookie.get('globals');
-
-      $rootScope.globals = {};
-      //$cookies.put('globals', $rootScope.globals);
-      $cookies.remove('globals');
-      $http.defaults.headers.common.Authorization = 'Basic ';
-      //$cookies.globals = $rootScope.globals;
-      $location.path("/");
-
+      $http.post('/rest/API/signOut')
+          .then(function () {
+            $rootScope.globals = {};
+            //$cookies.put('globals', $rootScope.globals);
+            $cookies.remove('globals');
+            $http.defaults.headers.common.Authorization = 'Basic ';
+            //$cookies.globals = $rootScope.globals;
+            $location.path("/");
+          });
     }
 
 
