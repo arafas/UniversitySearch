@@ -38,12 +38,14 @@
         vm.tags = [];
 
         vm.upload = function (files) {
+            console.log(files);
             if (files && files.length) {
                 for (var i = 0; i < files.length; i++) {
                     var file = files[i];
                     if (!file.$error) {
                         vm.fileUploadSuccess = false;
                         vm.fileUploadError = false;
+                        console.log("adding course");
                         Upload.upload({
                             url: '/rest/API/fileUpload/' + vm.selectedCourse.courseId,
                             data: {"file": file, "tags": JSON.stringify(vm.tags)}

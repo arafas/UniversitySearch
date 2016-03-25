@@ -1,6 +1,5 @@
 package universitysearch;
 
-import com.sun.jersey.core.header.ContentDisposition;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -31,29 +30,28 @@ public class FileUpload {
         File uploads = new File(System.getenv("OPENSHIFT_DATA_DIR"));
         String tHash = DigestUtils.md5Hex(String.valueOf(System.currentTimeMillis()));
         File file2 = new File(uploads, tHash + "-" + contentDispositionHeader.getFileName());
-        try {
-            long fileSize = Files.copy(fileInputStream, file2.toPath());
-            FileInputStream fileHash = new FileInputStream(file2);
-            String digestString = DigestUtils.md5Hex(fileHash);
-            String filePathHash = DigestUtils.md5Hex(System.getenv("OPENSHIFT_DATA_DIR"));
-            String filePath = file2.getAbsolutePath().
-                substring(0,file2.getAbsolutePath().lastIndexOf(File.separator));
-         // get the path of the file without the filename
-            String obfuscatedFilePath = filePathHash + filePath.replace(System.getenv("OPENSHIFT_DATA_DIR"), "").replace("\\", "/") + "/";
-            FileManager fm = new FileManager();
-            // Aquire DB connection
-            SessionFactory factory = DBManager.getSessionFactory();
-            fm.setFactory(factory);
-            String fileName = file2.getName();
-            int res = fm.addFile(fileName, obfuscatedFilePath, "uploadedFile", digestString, fileSize, userId, tHash, courseId, tags );
+        long fileSize = Files.copy(fileInputStream, file2.toPath());
+        FileInputStream fileHash = new FileInputStream(file2);
+        String digestString = DigestUtils.md5Hex(fileHash);
+        String filePathHash = DigestUtils.md5Hex(System.getenv("OPENSHIFT_DATA_DIR"));
+        String filePath = file2.getAbsolutePath().
+            substring(0,file2.getAbsolutePath().lastIndexOf(File.separator));
+     // get the path of the file without the filename
+        String obfuscatedFilePath = filePathHash + filePath.replace(System.getenv("OPENSHIFT_DATA_DIR"), "").replace("\\", "/") + "/";
+        FileManager fm = new FileManager();
+        // Aquire DB connection
+        SessionFactory factory = DBManager.getSessionFactory();
+        fm.setFactory(factory);
+        String fileName = file2.getName();
+        int res = fm.addFile(fileName, obfuscatedFilePath, "uploadedFile", digestString, fileSize, userId, tHash, courseId, tags );
 
-            fileInputStream.close();
-            initializeFileIndexing(file2);
+        fileInputStream.close();
+        initializeFileIndexing(file2);
 
         return res;
     }
 
-    public void saveFile(File fileInput, FileManager fm, String coursePath, int userID) {
+    public void saveFile(File fileInput, FileManager fm, String coursePath, int userID, int courseId) throws JSONException {
       // Method used for saving files from CMD line
       String tHash = DigestUtils.md5Hex(String.valueOf(System.currentTimeMillis()));
       File uploads = new File(System.getenv("OPENSHIFT_DATA_DIR") + coursePath);
@@ -82,7 +80,8 @@ public class FileUpload {
           System.out.println(fileCheck);
           System.out.println(obfuscatedFilePath);
           System.out.println(tHash);
-          int res = fm.addFile(fileName, obfuscatedFilePath, "uploadedFile", fileCheck, fileSize, userID, tHash);
+          JSONArray tags = new JSONArray();
+          int res = fm.addFile(fileName, obfuscatedFilePath, "uploadedFile", fileCheck, fileSize, userID, tHash, courseId, tags);
           fis.close();
           fileHash.close();
           fis.close();
