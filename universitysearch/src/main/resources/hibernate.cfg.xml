@@ -20,6 +20,7 @@
         <mapping resource="File.hbm.xml" />
         <mapping resource="Course.hbm.xml" />
         <mapping resource="FileCourse.hbm.xml" />
-        <mapping resource="UserCourse.hbm.xml" />
+        <mapping resource="Tags.hbm.xml" />
+		<mapping resource="UserCourse.hbm.xml" />
     </session-factory>
 </hibernate-configuration>

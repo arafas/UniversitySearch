@@ -1,12 +1,8 @@
 package universitysearch;
 
-import java.io.InputStream;
-import java.util.Arrays;
-
+import org.codehaus.jettison.json.JSONException;
 import org.hibernate.SessionFactory;
 
-import com.sun.jersey.core.header.FormDataContentDisposition;
-import com.sun.jersey.multipart.FormDataParam;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -48,7 +44,12 @@ public class CommandLine {
       File fileDir = new File(args[5]);
       if (fileDir.isDirectory() && args.length == 6) {
         for (final File fileEntry : fileDir.listFiles()) {
-          fileUpload.saveFile(fileEntry, fm, coursePath, userID);
+          int courseId = 1;
+          try {
+            fileUpload.saveFile(fileEntry, fm, coursePath, userID, courseId);
+          } catch (JSONException e) {
+            e.printStackTrace();
+          }
         }      
       } else {
         System.out.println("ERROR: Only one directory allowed at a time");
@@ -60,8 +61,10 @@ public class CommandLine {
         FileInputStream fis = null;
         try {
           fis = new FileInputStream(file);
-          fileUpload.saveFile(file, fm, coursePath, userID);
+          fileUpload.saveFile(file, fm, coursePath, userID, 1);
         } catch (IOException e) {
+          e.printStackTrace();
+        } catch (JSONException e) {
           e.printStackTrace();
         }
       }

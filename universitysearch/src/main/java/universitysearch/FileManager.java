@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -20,15 +23,17 @@ public class FileManager extends DBManager {
 	}
 
 	/* Method to add a file to the database */
-	public Integer addFile(String fName, String fPath, String fDesc, String fHash, long fSize, int fOwn, String tHash) {
+	public Integer addFile(String fName, String fPath, String fDesc, String fHash, long fSize, int fOwn, String tHash,
+			int courseId, JSONArray tags) throws JSONException {
 		Session session = factory.openSession();
 		Transaction tx = null;
-		Integer userID = null;
+		Integer fileId = null;
 
 		try {
 			tx = session.beginTransaction();
-			File file = new File(fName, fPath, fDesc, fHash, fSize, fOwn, tHash);
-			userID = (Integer) session.save(file);
+			File file = new File(fName, fPath, fDesc, fHash, fSize, fOwn, tHash, courseId);
+			fileId = (Integer) session.save(file);
+			addTags(tags, fileId, session);
 			tx.commit();
 		} catch (HibernateException e) {
 			if (tx != null)
@@ -37,7 +42,15 @@ public class FileManager extends DBManager {
 		} finally {
 			session.close();
 		}
-		return userID;
+		return fileId;
+	}
+
+	public void addTags(JSONArray tags, int fileId, Session session) throws JSONException {
+		for (int i = 0; i < tags.length(); i++) {
+			JSONObject obj = (JSONObject) tags.get(i);
+			Tags tag = new Tags(obj.getString("text"), fileId);
+			session.save(tag);
+		}
 	}
 
 	public void removeFile(int fileID) {
@@ -107,20 +120,16 @@ public class FileManager extends DBManager {
 	}
 
 	public String getFileInfo(String fileId) {
-    	Session session = factory.openSession();
+		Session session = factory.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
+
 			Criteria criteria = session.createCriteria(File.class);
-
 			Criterion fileValue = Restrictions.eq("id", Integer.parseInt(fileId));
-			
 			criteria.add(fileValue);
-
 			List<File> fileList = criteria.list();
 
-			System.out.println(fileList.size() + " - " + fileId);
-			
 			// Check to see if user is found
 			if (fileList.size() == 1) {
 				return getJsonResultObj(fileList.get(0));
@@ -136,7 +145,7 @@ public class FileManager extends DBManager {
 		}
 
 		return null;
-    }
+	}
 
 	public String getJsonResultObj(File file) {
 		String res = "";
