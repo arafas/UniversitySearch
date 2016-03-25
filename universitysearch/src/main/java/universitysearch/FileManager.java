@@ -1,5 +1,8 @@
 package universitysearch;
 
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -7,32 +10,41 @@ import org.hibernate.Transaction;
 
 public class FileManager extends DBManager {
 	private static SessionFactory factory;
-	
+
 	public void setFactory(SessionFactory factory) {
 		this.factory = factory;
 	}
-	
+
 	/* Method to add a file to the database */
-	public Integer addFile(String fName, String fPath, String fDesc, String fHash, long fSize, int fOwn, String tHash){
+	public Integer addFile(String fName, String fPath, String fDesc, String fHash, long fSize, int fOwn, String tHash, int courseId, JSONArray tags) throws JSONException{
 		Session session = factory.openSession();
 	    Transaction tx = null;
-		Integer userID = null;
+		Integer fileId = null;
 
 		try{
 	         tx = session.beginTransaction();
-	         File file = new File (fName, fPath, fDesc, fHash, fSize, fOwn, tHash);
-	         userID = (Integer) session.save(file); 
+	         File file = new File (fName, fPath, fDesc, fHash, fSize, fOwn, tHash, courseId);
+	         fileId = (Integer) session.save(file);
+             addTags(tags, fileId, session);
 	         tx.commit();
 		}catch (HibernateException e) {
 	    	if (tx!=null)
 	        	tx.rollback();
-	        e.printStackTrace(); 
+	        e.printStackTrace();
 	 	}finally {
-	        session.close(); 
+	        session.close();
 	    }
-		return userID;
+		return fileId;
 	}
-	
+
+	public void addTags(JSONArray tags, int fileId, Session session) throws JSONException {
+		for (int i = 0; i < tags.length(); i++) {
+			JSONObject obj = (JSONObject) tags.get(i);
+			Tags tag = new Tags(obj.getString("text"), fileId);
+			session.save(tag);
+		}
+	}
+
 	public void removeFile(int fileID) {
 	    //Delete File from database based on entered ID
 	    Session session = factory.openSession();
@@ -43,17 +55,17 @@ public class FileManager extends DBManager {
 	        tx = session.beginTransaction();
 	        File file = new File();
 	        file.setId(fileID);
-	        session.delete(file); 
+	        session.delete(file);
 	        tx.commit();
 	    }catch (HibernateException e) {
 	        if (tx!=null)
 	            tx.rollback();
-	        e.printStackTrace(); 
+	        e.printStackTrace();
 	    }finally {
-	        session.close(); 
+	        session.close();
 	    }
 	}
-	
+
     public void modifyFile(int fileID, String fName, String fPath, String fDesc, String fHash, long fSize, int fOwn, String tHash) {
       // Set elements to null that you do not want updated, or for long/ints set to -1
       // fileID is required
@@ -63,7 +75,7 @@ public class FileManager extends DBManager {
           tx = session.beginTransaction();
           File file = (File) session.load(File.class, fileID);
           // This point file is loaded from DB
-          
+
           if (fName != null) {
             file.setFileName(fName);
           }
@@ -85,15 +97,15 @@ public class FileManager extends DBManager {
           if (tHash != null) {
             file.setTimeHash(tHash);
           }
-          
-          session.update(file); 
+
+          session.update(file);
           tx.commit();
       }catch (HibernateException e) {
           if (tx!=null)
               tx.rollback();
-          e.printStackTrace(); 
+          e.printStackTrace();
       }finally {
-          session.close(); 
+          session.close();
       }
   }
 }
