@@ -20,12 +20,13 @@
         return directive;
 
         /** @ngInject */
-        function SearchBarController($http, $log, $location, $uibModal, $rootScope, modalFileViewer) {
+        function SearchBarController($http, $log, $location, modalFileViewer) {
             var vm = this;
             vm.selectedTerm = null;
             vm.search = search;
             vm.onSelect = onSelect;
             vm.showGlyphiconNoResults = showGlyphiconNoResults;
+            vm.loadAdvancedSearch = loadAdvancedSearch;
             vm.open = open;
 
             function search(val) {
@@ -59,7 +60,7 @@
                     $location.path("/about");
                 } else if (item.blurb) {
                     // TODO: change this to 8080 before committing
-                    vm.filePath = "http://localhost:8080/static/files/" + item.fileName;
+                    vm.filePath = "http://localhost:8081/static/files/" + item.fileName;
                     modalFileViewer.openModal(vm.filePath);
                     vm.selectedTerm = "";
                 }
@@ -73,19 +74,9 @@
                 else return noResults;
             }
 
-            //vm.animationsEnabled = true;
-            //vm.open = function (size) {
-            //
-            //    var scope = $rootScope.$new();
-            //    scope.params = {filePath: vm.filePath};
-            //    var modalInstance = $uibModal.open({
-            //        scope: scope,
-            //        animation: vm.animationsEnabled,
-            //        templateUrl: 'app/components/searchBar/modalContent.html',
-            //        controller: 'ModalFileViewerController',
-            //        size: size
-            //    });
-            //}
+            function loadAdvancedSearch() {
+                $location.path("advancedSearch");
+            }
         }
     }
 })();

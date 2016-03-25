@@ -1,0 +1,19 @@
+<div class="gridViewContainer">
+    <div class="files_title"><span>Files</span></div>
+    <div class="files" data-ng-repeat="file in gvc.files">
+
+        <div class="file">
+            <img class="file_icon" data-ng-click="gvc.openFileModal(file)" src="assets/images/File-512.png" style="width: 100px; height: 100px;"/>
+            <div class="file_name"><span>{{file.fileName}}</span></div>
+        </div>
+
+    </div>
+
+    <hr>
+
+    <div class="courses_title"><span>Courses</span></div>
+    <div class="courses"  data-ng-repeat="file in gvc.courses">
+
+    </div>
+</div>
+

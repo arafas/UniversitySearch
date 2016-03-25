@@ -32,6 +32,10 @@
 			templateUrl : 'app/main/activate.html',
 			controller : 'ActivateController',
 			controllerAs : 'activate'
+		}).when('/advancedSearch', {
+			templateUrl : 'app/main/advancedSearch.html',
+			controller: 'AdvancedSearchController',
+			controllerAs: 'asc'
 		}).otherwise({
 			redirectTo : '/'
 		});

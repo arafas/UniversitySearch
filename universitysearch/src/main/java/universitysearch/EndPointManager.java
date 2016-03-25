@@ -2,6 +2,8 @@ package universitysearch;
 
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -106,7 +108,7 @@ public class EndPointManager {
 	@Path("/signin")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response signInUser(User user) {
+	public Response signInUser(User user, @Context HttpServletRequest request) {
 		String email = user.getEmail();
 		String password = user.getPassword();
 		
@@ -119,9 +121,39 @@ public class EndPointManager {
 		
 		if(userInfo == null) {
 			return Response.status(403).entity("Incorrect username or password. Please check if you have activated your account.").build();
+
 		} else {
-			return Response.status(200).entity(userInfo).build();
+			HttpSession jsessid = request.getSession(true);
+			jsessid.setAttribute("userId", userInfo.getId());
+			jsessid.setAttribute("loggedIn", true);
+
+            //setting session to expiry in 30 mins
+			jsessid.setMaxInactiveInterval(30*60);
+
+			JSONObject jsonObject = null;
+
+			try {
+				jsonObject = new JSONObject();
+				jsonObject.put("firstName", userInfo.getFirstName());
+				jsonObject.put("lastName", userInfo.getLastName());
+				jsonObject.put("isProf", userInfo.getIsProf());
+				jsonObject.put("email", userInfo.getEmail());
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			return Response.ok(jsonObject).build();
 		}
+	}
+
+	@POST
+	@Path("/signOut")
+	public Response signOutUser(@Context HttpServletRequest request) {
+		HttpSession httpSession = request.getSession(false);
+		if(httpSession != null){
+			httpSession.invalidate();
+        }
+
+		return Response.ok().build();
 	}
 
 	@GET
