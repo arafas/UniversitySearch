@@ -36,6 +36,10 @@
 			templateUrl : 'app/main/advancedSearch.html',
 			controller: 'AdvancedSearchController',
 			controllerAs: 'asc'
+    }).when('/uploadFile', {
+      templateUrl : 'app/main/uploadFile.html',
+      controller : 'uploadFileController',
+      controllerAs : 'upload'
 		}).otherwise({
 			redirectTo : '/'
 		});
