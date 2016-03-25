@@ -4,23 +4,23 @@ package universitysearch;
  * Created by zubairbaig on 3/24/16.
  */
 public class Tags {
-    public String tagName;
+    public String text;
     public int id, fileId;
 
     public Tags() {
     }
 
-    public Tags(String tagName, int fileId) {
-        this.tagName = tagName;
+    public Tags(String text, int fileId) {
+        this.text = text;
         this.fileId = fileId;
     }
 
-    public String getTagName() {
-        return tagName;
+    public String getText() {
+        return text;
     }
 
-    public void setTagName(String tagName) {
-        this.tagName = tagName;
+    public void setText(String text) {
+        this.text = text;
     }
 
     public int getId() {

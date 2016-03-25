@@ -3,10 +3,9 @@ package universitysearch;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.*;
+
+import java.util.List;
 
 public class FileManager extends DBManager {
 	private static SessionFactory factory;
@@ -41,8 +40,31 @@ public class FileManager extends DBManager {
 		for (int i = 0; i < tags.length(); i++) {
 			JSONObject obj = (JSONObject) tags.get(i);
 			Tags tag = new Tags(obj.getString("text"), fileId);
-			session.save(tag);
+			int id = (Integer) session.save(tag);
 		}
+	}
+
+	public void addTags(JSONArray tags, int fileId) throws JSONException {
+		Session session = factory.openSession();
+		Transaction tx = null;
+		try{
+			tx = session.beginTransaction();
+			addTags(tags, fileId, session);
+			tx.commit();
+		}catch (HibernateException e) {
+			if (tx!=null)
+				tx.rollback();
+			e.printStackTrace();
+		}finally {
+			session.close();
+		}
+	}
+
+	public List getTags (int fileId)  {
+		Session session = factory.openSession();
+		Query query = session.createQuery("from universitysearch.Tags where fileId = :id ");
+		query.setParameter("id", fileId);
+		return query.list();
 	}
 
 	public void removeFile(int fileID) {

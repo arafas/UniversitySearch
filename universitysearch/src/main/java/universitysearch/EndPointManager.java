@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.List;
 
 @Path("/API")
 public class EndPointManager {
@@ -101,7 +102,7 @@ public class EndPointManager {
 
 		return "Your account has been activated, you can now login";
 	}
-	
+
 	@POST
 	@Path("/signin")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -109,14 +110,14 @@ public class EndPointManager {
 	public Response signInUser(User user, @Context HttpServletRequest request) {
 		String email = user.getEmail();
 		String password = user.getPassword();
-		
+
 		// Aquire DB connection and add user
 		SessionFactory factory = DBManager.getSessionFactory();
 
 		UserManager UM = new UserManager();
 		UM.setFactory(factory);
 		User userInfo = UM.signInUser(email, password);
-		
+
 		if(userInfo == null) {
 			return Response.status(403).entity("Incorrect username or password. Please check if you have activated your account.").build();
 
@@ -166,5 +167,37 @@ public class EndPointManager {
 		String jsonResp = masterSearch.searchCoursesAndFiles(searchTerm);
 
 		return Response.status(200).entity(jsonResp).build();
+	}
+
+	@POST
+	@Path("/addTags/{fileId}")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response addTags (@PathParam("fileId") int fileId, @FormDataParam("tags") JSONArray tags) {
+		try {
+			SessionFactory sessionFactory = DBManager.getSessionFactory();
+			FileManager fm = new FileManager();
+			fm.setFactory(sessionFactory);
+			fm.addTags(tags, fileId);
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return Response.status(500).entity("").build();
+		}
+		return Response.ok().build();
+	}
+
+	@GET
+	@Path("/getTags/{fileId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getTags(@PathParam("fileId") int fileId) {
+
+		SessionFactory sessionFactory = DBManager.getSessionFactory();
+		FileManager fm = new FileManager();
+		fm.setFactory(sessionFactory);
+
+		List<Tags> tags = fm.getTags(fileId);
+		return Response.ok(tags).build();
+
 	}
 }
