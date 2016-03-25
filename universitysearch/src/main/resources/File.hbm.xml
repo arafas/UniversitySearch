@@ -20,5 +20,6 @@
         <properties name="HASH_UNIQUE" unique="true">
         	<property name="timeHash" column="hash_timestamp" type="string" />
         </properties>
+        <property name="courseId" column="course_id" type="int" />
     </class>
 </hibernate-mapping>
