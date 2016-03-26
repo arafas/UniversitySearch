@@ -4,7 +4,7 @@
 
         <div class="file">
             <img class="file_icon" data-ng-click="gvc.openFileModal(file)" src="assets/images/File-512.png" style="width: 100px; height: 100px;"/>
-            <div class="file_name"><span>{{file.fileName}}</span></div>
+            <div class="file_name"><span>{{file.fileName.substring(file.fileName.indexOf('-')+1)}}</span></div>
         </div>
 
     </div>
