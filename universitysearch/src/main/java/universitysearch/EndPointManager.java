@@ -68,7 +68,7 @@ public class EndPointManager {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addFile(@FormDataParam("file") InputStream fileInputStream,
 							@FormDataParam("file") FormDataContentDisposition contentDispositionHeader,
-							@FormDataParam("tags") JSONArray tags,
+							@FormDataParam("tags") JSONArray tags, @FormDataParam("courseCode") String courseCode,
 							@Context HttpServletRequest req, @PathParam("courseId") int courseId) {
 
 		JSONObject jsonObject;
@@ -76,7 +76,7 @@ public class EndPointManager {
 			HttpSession session = req.getSession();
 			int userId = (Integer) session.getAttribute("userId");
 			FileUpload fileUpload = new FileUpload();
-			int id = fileUpload.saveFile(fileInputStream, contentDispositionHeader, userId, courseId, tags);
+			int id = fileUpload.saveFile(fileInputStream, contentDispositionHeader, userId, courseId, tags, courseCode);
 			jsonObject = new JSONObject();
 			jsonObject.put("id", id);
 			return Response.status(200).entity(jsonObject).build();

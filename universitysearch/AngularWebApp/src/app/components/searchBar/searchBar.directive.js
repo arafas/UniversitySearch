@@ -60,8 +60,7 @@
                     $location.path("/about");
                 } else if (item.blurb) {
                     // TODO: change this to 8080 before committing
-                    vm.filePath = "http://localhost:8081/static/files/" + item.fileName;
-                    modalFileViewer.openModal(vm.filePath);
+                    modalFileViewer.openModal(item);
                     vm.selectedTerm = "";
                 }
             }

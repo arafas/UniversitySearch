@@ -18,11 +18,9 @@
                 })
                 .success(function(data) {
                     _.each(data, function(tag) {
-                        vm.oldTags.push(_.pick(tag, 'text'));
-                        vm.tags.push(_.pick(tag, 'text'));
-                        console.log(vm.tags);
+                        vm.oldTags.push((tag));
+                        vm.tags.push((tag));
                     });
-                    console.log(vm.oldTags);
                 })
                 .error(function() {
 

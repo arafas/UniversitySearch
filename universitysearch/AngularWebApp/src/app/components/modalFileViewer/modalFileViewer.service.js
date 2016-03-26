@@ -11,15 +11,16 @@
 
         this.openModal = openModal;
 
-        vm.getFileURI = function (fileName) {
-            var URIprefix = 'http://localhost:8081/static/files/';
+        vm.getFileURI = function (fileName, filePath) {
+            var folder = filePath.split("/")[1];
+            //TODO make sure this port is changed to 8080
+            var URIprefix = 'http://localhost:8081/static/files/' + folder + "/";
             return URIprefix + fileName;
         };
 
 
         function openModal (file) {
-            console.log(file);
-            var filePath = vm.getFileURI(file.fileName);
+            var filePath = vm.getFileURI(file.fileName, file.filePath);
 
             var scope = $rootScope.$new();
             scope.params = {filePath: filePath, fileId: file.id, courseId: file.courseId, fileName: file.fileName};

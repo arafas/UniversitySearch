@@ -7,6 +7,6 @@
     <tags-input ng-model="tags" max-length="24" add-on-space="true"></tags-input>
     <button type="button" class="btn btn-primary" data-ng-click="submitTags()">Update Tags</button><br>
 
-    <span class="course_code">File Name: {{params.fileName}}</span>
+    <span class="course_code">File Name: {{params.fileName.substring(params.fileName.indexOf('-')+1)}}</span>
   </div>
 </div>

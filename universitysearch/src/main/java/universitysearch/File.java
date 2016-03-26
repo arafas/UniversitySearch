@@ -79,7 +79,7 @@ private int id;
 	}
 
 	public String getTimeHash() {
-	    return fileHash;
+	    return timeHash;
 	}
 	public void setTimeHash(String tHash) {
 	  this.timeHash = tHash;

@@ -1,5 +1,5 @@
 <div ng-controller="FileUploadController as vm">
-    <input type="text" ng-model="vm.selectedCourse" uib-typeahead="course as course.courseCode for course in vm.courses | limitTo:8"
+    <input type="text" ng-model="vm.selectedCourse" typeahead-editable='false' uib-typeahead="course as course.courseCode for course in vm.courses | filter:$viewValue| limitTo:8"
            typeahead-template-url="customTemplate.html" class="form-control">
 
     <tags-input ng-model="vm.tags" max-length="24" add-on-space="true"></tags-input>
