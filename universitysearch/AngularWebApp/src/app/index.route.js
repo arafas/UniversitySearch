@@ -40,6 +40,10 @@
       templateUrl : 'app/main/uploadFile.html',
       controller : 'uploadFileController',
       controllerAs : 'upload'
+    }).when('/manageFile', {
+      templateUrl : 'app/main/fileManagement.html',
+      controller : 'fileManagementController',
+      controllerAs : 'manage'
 		}).otherwise({
 			redirectTo : '/'
 		});

@@ -1,19 +1,22 @@
 <html lang="en">
 <link rel="stylesheet" type="text/css"
       href="https://fonts.googleapis.com/css?family=Raleway|Lato|Droid+Sans|Roboto+Slab">
-<div class="container">
 
-    <div>
-        <acme-navbar creation-date="main.creationDate"></acme-navbar>
-    </div>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+header {
+margin-bottom:30px;
+}
+<div class = "container">
+<div>
+  <acme-navbar creation-date="main.creationDate"></acme-navbar>
+</div>
 
 
 
 
-  <!--<side-navbar creation-date="main.creationDate"></side-navbar>-->
 
+    <div class="jumbotron text-center"  ng-init="" >
 
-    <div class="jumbotron text-center"  ng-init="">
 
       <p>
 
@@ -58,14 +61,16 @@
             <acme-malarkey extra-values="['Students','Instructors']" style="color:#5cd6d6;"></acme-malarkey>
         </p>
     </div>
+  </div>
     <search-bar></search-bar>
     <div class="row">
         <file-upload></file-upload>
     </div>
    </div>
+</div>
 
     <!--<a href="http://localhost:8081/static/files/Survey_Responses.pdf" target="_self" >Attachment</a>-->
 
-</div>
+
 
 </html>

@@ -19,18 +19,36 @@
         creationDate: '='
       },
       controller: sideNavbarController,
-      controllerAs: 'vm',
+      controllerAs: 'side',
       bindToController: true
     };
 
     return directive;
 
     /** @ngInject */
-    function sideNavbarController(moment) {
+    function sideNavbarController(moment,$http,$cookies,$location) {
       var vm = this;
 
       // "vm.creation" is avaible by directive option "bindToController: true"
       vm.relativeDate = moment(vm.creationDate).fromNow();
+      //vm.user_info = $cookies.getObject('globals').currentUser.firstName; Needs to be commented out
+
+      function logout(){
+
+        //var globalCookie = $cookie.get('globals');
+        $http.post('/rest/API/signOut')
+          .then(function () {
+            $rootScope.globals = {};
+            //$cookies.put('globals', $rootScope.globals);
+            $cookies.remove('globals');
+            $http.defaults.headers.common.Authorization = 'Basic ';
+            //$cookies.globals = $rootScope.globals;
+            $location.path("/");
+          });
+
+
+      }
+
     }
   }
 

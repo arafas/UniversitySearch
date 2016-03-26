@@ -14,7 +14,7 @@
 		}
 
 		var redirectIfNotLoggedIn = $rootScope.$on('$locationChangeStart', redirect);
-		
+
 		$rootScope.$on('$destroy', redirectIfNotLoggedIn);
 
 		function redirect() {
@@ -23,6 +23,15 @@
 			if ($location.path() == '/home' && !$cookies.getObject('globals')) {
 				$location.path('/');
 			}
+      if ($location.path() == '/manageFile' && !$cookies.getObject('globals')) {
+        $location.path('/');
+      }
+      if ($location.path() == '/uploadFile' && !$cookies.getObject('globals')) {
+        $location.path('/');
+      }
+      if ($location.path() == '/advancedSearch' && !$cookies.getObject('globals')) {
+        $location.path('/');
+      }
 		}
 
 	}

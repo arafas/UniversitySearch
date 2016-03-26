@@ -8,7 +8,7 @@
     .module('angularWebApp')
     .controller('uploadFileController', uploadFileController);
   /** @ngInject */
-  function uploadFileController($http, $sce, modalFileViewer) {
+  function uploadFileController($http, $sce) {
     var vm = this;
 
 

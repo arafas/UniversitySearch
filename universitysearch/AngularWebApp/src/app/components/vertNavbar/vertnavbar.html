@@ -1,4 +1,15 @@
-<div id="sidebar-wrapper">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<nav id="sidebar-wrapper">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="sidenav">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+
+  </div>
+  <div class="collapse navbar-collapse navbar-ex1-collapse" id="sidenav">
   <ul class="sidebar-nav" style="font-family: 'Droid Sans';">
     <li class="sidebar-brand">
       <a href="#">
@@ -8,6 +19,35 @@
     <li>
 
     </li>
+    <li><!--
+      <notification-icon count = "0">
+      <div class="angular-notification-icons-container">
+        <div class="angular-notification-icons-icon overlay">
+          <div class="notification-inner">
+            <i class="fa fa-envelope"></i>
+          </div>
+        </div>
+      </div>
+      </notification-icon>-->
+    </li>
+
+    <li>
+      <img src="https://cdn4.iconfinder.com/data/icons/twitter-ui-set/128/Mail-32.png" /> <!--{{side.user_info}}--> Username
+      <notification-icon count = "0" >
+        <div id="noti">
+          <div id="noti">
+            <div>
+
+            </div>
+          </div>
+        </div>
+
+      </notification-icon>
+    </li>
+
+    <li>
+      <a ng-href="#/" ng-click="side.logout()">Logout</a>
+    </li>
     <li>
       <a ng-href="#advancedSearch">Advanced Search</a>
     </li>
@@ -15,8 +55,10 @@
       <a ng-href="#uploadFile"> File Upload</a>
     </li>
     <li>
-      <a ng-href="#/">File Management</a>
+      <a ng-href="#manageFile">File Management</a>
     </li>
 
+
   </ul>
-</div>
+  </div>
+</nav>
