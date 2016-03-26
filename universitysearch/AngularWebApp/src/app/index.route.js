@@ -40,6 +40,14 @@
 			templateUrl : 'app/main/addDeleteCourse.html',
 			controller: 'AddDeleteCourseController',
 			controllerAs: 'adc'
+		}).when('/following', {
+			templateUrl : 'app/main/following.html',
+			controller: 'FollowingController',
+			controllerAs: 'fc'
+		}).when('/course/:id', {
+			templateUrl : 'app/main/course.html',
+			controller: 'CourseController',
+			controllerAs: 'cc'
 		}).otherwise({
 			redirectTo : '/'
 		});

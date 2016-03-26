@@ -390,15 +390,56 @@ public class EndPointManager {
 
 		HttpSession jsessid = request.getSession(true);
 		int isProf = (Integer)jsessid.getAttribute("isProf");
+		Integer sessionUserId = (Integer)jsessid.getAttribute("userId");
 
 		if(isProf == 1) {
 			FileManager FM = new FileManager();
 			FM.setFactory(factory);
 
-			FM.approveFile(fileId);
+			try {
+				FM.approveFile(fileId, sessionUserId);
+				return Response.status(200).build();
+			} catch (Exception e) {
+				return Response.status(500).entity(e.getMessage()).build();
+			}
 		}
 
-		return Response.status(200).build();
+		return Response.status(500).build();
+	}
+
+	@GET
+	@Path("/course/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getCourseById(@PathParam("id") int id) {
+		SessionFactory factory = DBManager.getSessionFactory();
+		CourseManager CM = new CourseManager();
+		CM.setFactory(factory);
+		Course course;
+		try {
+			course = CM.getCourseById(id);
+			if (course == null) {
+				throw new Exception();
+			}
+			return Response.ok(course).build();
+		} catch (Exception e) {
+			return Response.status(500).build();
+		}
+	}
+
+	@GET
+	@Path("/filesForCourse/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getFilesForCourse(@PathParam("id") int id) {
+		SessionFactory factory = DBManager.getSessionFactory();
+		FileManager fm = new FileManager();
+		fm.setFactory(factory);
+
+		try {
+			List<File> files = fm.getFilesForCourse(id);
+			return Response.status(200).entity(files).build();
+		} catch (Exception e) {
+			return Response.status(500).build();
+		}
 	}
 
 }

@@ -26,6 +26,7 @@
 
             vm.files = $scope.files;
             vm.courses = $scope.courses;
+            console.log($scope.files);
 
             vm.trustSrc = function(src) {
                 return $sce.trustAsResourceUrl(src);

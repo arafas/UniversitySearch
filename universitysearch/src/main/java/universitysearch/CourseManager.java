@@ -42,6 +42,25 @@ public class CourseManager extends DBManager {
 	    }
 		return course;
 	}
+
+	public Course getCourseById(int id) throws Exception {
+		Session session = factory.openSession();
+		Transaction tx = null;
+		Course course;
+
+		try {
+			Criteria criteria = session.createCriteria(Course.class);
+			Criterion userValue = Restrictions.eq("id", id);
+			criteria.add(userValue);
+			course = (Course) criteria.uniqueResult();
+			return course;
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+			throw new Exception(e);
+		}
+	}
 	
 	public void deleteCourse(int courseId, int profId) {
 		Session session = factory.openSession();
