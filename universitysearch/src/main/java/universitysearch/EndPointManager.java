@@ -127,8 +127,6 @@ public class EndPointManager {
 			jsessid.setAttribute("isProf", userInfo.getIsProf());
 			jsessid.setAttribute("loggedIn", true);
 
-			System.out.println(userInfo.getIsProf());
-
             //setting session to expiry in 30 mins
 			jsessid.setMaxInactiveInterval(30*60);
 
@@ -342,6 +340,65 @@ public class EndPointManager {
 		}
 
 		return Response.status(200).entity(response).build();
+	}
+	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/followCourse/{courseId}")
+	public Response followCourses(@PathParam("courseId") int courseId, @Context HttpServletRequest request) {
+		SessionFactory factory = DBManager.getSessionFactory();
+
+		HttpSession jsessid = request.getSession(true);
+		Integer sessionUserId = (Integer)jsessid.getAttribute("userId");
+		
+		CourseManager CM = new CourseManager();
+		CM.setFactory(factory);
+		
+		try {
+			CM.followCourse(courseId, sessionUserId);
+			return Response.status(200).build();
+		} catch (Exception e) {
+			return Response.status(500).build();
+		}
+	}
+	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/unFollowCourse/{courseId}")
+	public Response unFollowCourses(@PathParam("courseId") int courseId, @Context HttpServletRequest request) {
+		SessionFactory factory = DBManager.getSessionFactory();
+
+		HttpSession jsessid = request.getSession(true);
+		Integer sessionUserId = (Integer)jsessid.getAttribute("userId");
+		
+		CourseManager CM = new CourseManager();
+		CM.setFactory(factory);
+		
+		try {
+			CM.unFollowCourse(courseId, sessionUserId);
+			return Response.status(200).build();
+		} catch (Exception e) {
+			return Response.status(500).build();
+		}
+	}
+	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/approve/{fileId}")
+	public Response approveFile(@PathParam("fileId") int fileId, @Context HttpServletRequest request) {
+		SessionFactory factory = DBManager.getSessionFactory();
+
+		HttpSession jsessid = request.getSession(true);
+		int isProf = (Integer)jsessid.getAttribute("isProf");
+
+		if(isProf == 1) {
+			FileManager FM = new FileManager();
+			FM.setFactory(factory);
+
+			FM.approveFile(fileId);
+		}
+
+		return Response.status(200).build();
 	}
 
 }

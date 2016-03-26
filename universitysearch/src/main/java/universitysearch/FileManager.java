@@ -16,6 +16,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.*;
@@ -195,6 +196,34 @@ public class FileManager extends DBManager {
 		}
 
 		return null;
+	}
+	
+	public void approveFile(int fileId) {
+		Session session = factory.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			Criteria criteria = session.createCriteria(File.class);
+
+			Criterion fileValue = Restrictions.eq("id", fileId);
+
+			criteria.add(fileValue);
+
+			File file = (File) criteria.uniqueResult();
+
+			if(file != null) {
+				file.setIsApprov(1);
+				session.update(file);
+			}
+			
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
 	}
 
 	public String getJsonResultObj(File file) {

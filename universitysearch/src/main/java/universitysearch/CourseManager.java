@@ -51,7 +51,7 @@ public class CourseManager extends DBManager {
 
 			// Delete file from db
 			Course course = new Course();
-			course.setProfID(profId);;
+			course.setProfID(profId);
 			course.setId(courseId);
 			session.delete(course);
 
@@ -135,6 +135,53 @@ public class CourseManager extends DBManager {
 		}
 
 		return null;
+	}
+	
+	public void followCourse(int courseId, int userId) throws Exception {
+		Session session = factory.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+
+			// Delete file from db
+			UserCourse userCourse = new UserCourse();
+			userCourse.setCourseID(courseId);
+			userCourse.setUserID(userId);
+			
+			session.save(userCourse);
+
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+			throw new Exception(e);
+		} finally {
+			session.close();
+		}
+	}
+	
+	public void unFollowCourse(int courseId, int userId) throws Exception {
+		Session session = factory.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			
+			Query query = session.createQuery("DELETE UserCourse WHERE userID=:userId AND courseID=:courseId");
+			query.setInteger("userId", userId);
+			query.setInteger("courseId", courseId);
+			
+			query.executeUpdate();
+
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+			throw new Exception(e);
+		} finally {
+			session.close();
+		}
 	}
 	
     public String getJsonResultObj(List<Course> courses) {
