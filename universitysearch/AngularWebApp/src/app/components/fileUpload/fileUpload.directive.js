@@ -48,7 +48,7 @@
                         console.log("adding course");
                         Upload.upload({
                             url: '/rest/API/fileUpload/' + vm.selectedCourse.courseId,
-                            data: {"file": file, "tags": JSON.stringify(vm.tags)}
+                            data: {"file": file, "tags": JSON.stringify(vm.tags), "courseCode": vm.selectedCourse.courseCode}
                         })
                             .success(function() {
                                 vm.fileUploadSuccess = true;

@@ -7,13 +7,23 @@
 
     /** @ngInject */
     function modalFileViewer($rootScope, $uibModal) {
+        var vm = this;
 
         this.openModal = openModal;
 
-        function openModal (filePath) {
+        vm.getFileURI = function (fileName, filePath) {
+            var folder = filePath.split("/")[1];
+            //TODO make sure this port is changed to 8080
+            var URIprefix = 'http://localhost:8081/static/files/' + folder + "/";
+            return URIprefix + fileName;
+        };
+
+
+        function openModal (file) {
+            var filePath = vm.getFileURI(file.fileName, file.filePath);
 
             var scope = $rootScope.$new();
-            scope.params = {filePath: filePath};
+            scope.params = {filePath: filePath, fileId: file.id, courseId: file.courseId, fileName: file.fileName};
             var modalInstance = $uibModal.open({
                 scope: scope,
                 animation: true,
