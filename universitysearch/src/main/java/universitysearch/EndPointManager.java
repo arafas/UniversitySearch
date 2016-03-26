@@ -248,13 +248,13 @@ public class EndPointManager {
 		HttpSession jsessid = request.getSession(true);
 		int isProf = (Integer)jsessid.getAttribute("isProf");
 		
-		// Get file info
-		FileManager FM = new FileManager();
-		FM.setFactory(factory);
-		
 		String response = "You are not authorized to delete a file";
 		
 		if(isProf == 1) {
+			// Get file info
+			FileManager FM = new FileManager();
+			FM.setFactory(factory);
+
 			FM.deleteFile(fileId);
 			response = "delete successful";
 		}
@@ -263,4 +263,61 @@ public class EndPointManager {
 		return Response.status(200).entity(response).build();
 	}
 	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/addCourse")
+	public Response addCourse(Course course, @Context HttpServletRequest request) {
+		String courseCode = course.getCourseCode();
+		String courseDesc = course.getCourseDesc();
+		String courseName = course.getCourseName();
+		
+		SessionFactory factory = DBManager.getSessionFactory();
+
+		HttpSession jsessid = request.getSession(true);
+		int isProf = (Integer)jsessid.getAttribute("isProf");
+		
+		String response = "You are not authorized to add a course";
+		
+		if(isProf == 1) {
+			// Get file info
+			CourseManager CM = new CourseManager();
+			CM.setFactory(factory);
+			
+			Integer sessionUserId = (Integer)jsessid.getAttribute("userId");
+			
+			CM.addCourse(courseName, courseDesc, courseCode, sessionUserId);
+			
+			response = "Added course successfully";
+		}
+
+		
+		return Response.status(200).entity(response).build();
+	}
+	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/deleteCourse/{courseId}")
+	public Response addCourse(@PathParam("courseId") int courseId, @Context HttpServletRequest request) {
+		SessionFactory factory = DBManager.getSessionFactory();
+
+		HttpSession jsessid = request.getSession(true);
+		int isProf = (Integer)jsessid.getAttribute("isProf");
+		
+		String response = "You are not authorized to delete this course";
+		
+		if(isProf == 1) {
+			CourseManager CM = new CourseManager();
+			CM.setFactory(factory);
+			
+			Integer sessionUserId = (Integer)jsessid.getAttribute("userId");
+			
+			CM.deleteCourse(courseId, sessionUserId);
+			
+			response = "Deleted course successfully";
+		}
+
+		
+		return Response.status(200).entity(response).build();
+	}
+
 }

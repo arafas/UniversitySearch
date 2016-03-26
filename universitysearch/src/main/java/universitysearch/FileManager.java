@@ -60,7 +60,6 @@ public class FileManager extends DBManager {
 		}
 	}
 
-
 	public void addTags(JSONArray tags, int fileId) throws JSONException {
 		Session session = factory.openSession();
 		Transaction tx = null;
