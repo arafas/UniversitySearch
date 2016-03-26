@@ -128,7 +128,7 @@ public class EndPointManager {
 			jsessid.setAttribute("loggedIn", true);
 
 			System.out.println(userInfo.getIsProf());
-			
+
             //setting session to expiry in 30 mins
 			jsessid.setMaxInactiveInterval(30*60);
 
@@ -239,7 +239,7 @@ public class EndPointManager {
 		return Response.ok(tags).build();
 
 	}
-	
+
 	@POST
 	@Path("/deleteFile/{fileId}")
 	public Response deleteFile(@PathParam("fileId") String fileId, @Context HttpServletRequest request) {
@@ -247,9 +247,9 @@ public class EndPointManager {
 
 		HttpSession jsessid = request.getSession(true);
 		int isProf = (Integer)jsessid.getAttribute("isProf");
-		
+
 		String response = "You are not authorized to delete a file";
-		
+
 		if(isProf == 1) {
 			// Get file info
 			FileManager FM = new FileManager();
@@ -259,64 +259,88 @@ public class EndPointManager {
 			response = "delete successful";
 		}
 
-		
+
 		return Response.status(200).entity(response).build();
 	}
-	
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/addCourse")
 	public Response addCourse(Course course, @Context HttpServletRequest request) {
 		String courseCode = course.getCourseCode();
 		String courseDesc = course.getCourseDesc();
 		String courseName = course.getCourseName();
-		
+
 		SessionFactory factory = DBManager.getSessionFactory();
 
 		HttpSession jsessid = request.getSession(true);
 		int isProf = (Integer)jsessid.getAttribute("isProf");
-		
+
 		String response = "You are not authorized to add a course";
-		
+		Course courseCreated;
 		if(isProf == 1) {
 			// Get file info
 			CourseManager CM = new CourseManager();
 			CM.setFactory(factory);
-			
-			Integer sessionUserId = (Integer)jsessid.getAttribute("userId");
-			
-			CM.addCourse(courseName, courseDesc, courseCode, sessionUserId);
-			
-			response = "Added course successfully";
-		}
 
-		
-		return Response.status(200).entity(response).build();
+			Integer sessionUserId = (Integer)jsessid.getAttribute("userId");
+
+			courseCreated = CM.addCourse(courseName, courseDesc, courseCode, sessionUserId);
+
+			response = "Added course successfully";
+			return Response.status(200).entity(courseCreated).build();
+		}
+		return Response.status(500).build();
 	}
-	
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
 	@Path("/deleteCourse/{courseId}")
-	public Response addCourse(@PathParam("courseId") int courseId, @Context HttpServletRequest request) {
+	public Response deleteCourse(@PathParam("courseId") int courseId, @Context HttpServletRequest request) {
 		SessionFactory factory = DBManager.getSessionFactory();
 
 		HttpSession jsessid = request.getSession(true);
 		int isProf = (Integer)jsessid.getAttribute("isProf");
-		
+
 		String response = "You are not authorized to delete this course";
-		
+
 		if(isProf == 1) {
 			CourseManager CM = new CourseManager();
 			CM.setFactory(factory);
-			
+
 			Integer sessionUserId = (Integer)jsessid.getAttribute("userId");
-			
+
 			CM.deleteCourse(courseId, sessionUserId);
-			
+
 			response = "Deleted course successfully";
 		}
 
-		
+
+		return Response.status(200).entity(response).build();
+	}
+
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/coursesForProf")
+	public Response getCoursesForProf(@Context HttpServletRequest request) {
+		SessionFactory factory = DBManager.getSessionFactory();
+
+		HttpSession jsessid = request.getSession(true);
+		int isProf = (Integer)jsessid.getAttribute("isProf");
+
+		String response = "";
+
+		if(isProf == 1) {
+			CourseManager CM = new CourseManager();
+			CM.setFactory(factory);
+
+			Integer sessionUserId = (Integer)jsessid.getAttribute("userId");
+
+			response = CM.getCoursesForProf(sessionUserId);
+		}
+
 		return Response.status(200).entity(response).build();
 	}
 

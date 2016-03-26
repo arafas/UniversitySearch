@@ -1,22 +1,13 @@
 package universitysearch;
 
-import java.io.IOException;
-import java.nio.file.DirectoryNotEmptyException;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
-import java.util.List;
-
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
-import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CourseManager extends DBManager {
 	private static SessionFactory factory;
@@ -26,15 +17,21 @@ public class CourseManager extends DBManager {
 	}
 	
 	/* Method to add a course to the database */
-	public Integer addCourse(String cName, String cDesc, String cCode, int pID){
+	public Course addCourse(String cName, String cDesc, String cCode, int pID){
 		Session session = factory.openSession();
 	    Transaction tx = null;
-		Integer userID = null;
+		Integer courseId = null;
+
+		Course course = null;
 
 		try{
 	         tx = session.beginTransaction();
-	         Course course = new Course(cName, cDesc, cCode, pID);
-	         userID = (Integer) session.save(course); 
+	         course = new Course(cName, cDesc, cCode, pID);
+	         courseId = (Integer) session.save(course);
+
+			 course.setId(courseId);
+
+
 	         tx.commit();
 		}catch (HibernateException e) {
 	    	if (tx!=null)
@@ -43,7 +40,7 @@ public class CourseManager extends DBManager {
 	 	}finally {
 	        session.close(); 
 	    }
-		return userID;
+		return course;
 	}
 	
 	public void deleteCourse(int courseId, int profId) {
@@ -76,12 +73,20 @@ public class CourseManager extends DBManager {
 			
 			// Get courses users is following
 			Criteria criteria = session.createCriteria(UserCourse.class);
-			Criterion userValue = Restrictions.eq("user_id", userId);
+			Criterion userValue = Restrictions.eq("userID", userId);
+			criteria.add(userValue);
+
 			List<UserCourse> userCourseList = criteria.list();
+
+			ArrayList<Integer> arrayList = new ArrayList<Integer>();
+			for (UserCourse uc : userCourseList) {
+				arrayList.add(uc.getCourseID());
+			}
 
 			// Get full course information
 			Criteria criteria2 = session.createCriteria(Course.class);
-			Criterion courseValue = Restrictions.eq("course_id", userCourseList);
+			Criterion courseValue = Restrictions.in("id", arrayList);
+			criteria2.add(courseValue);
 			List<Course> courseList = criteria2.list();
 			
 			// Check to see if course is found
@@ -100,6 +105,37 @@ public class CourseManager extends DBManager {
 
 		return null;
     }
+
+	public String getCoursesForProf(int profId) {
+		Session session = factory.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+
+			// Get full course information
+			Criteria criteria = session.createCriteria(Course.class);
+			Criterion profCourses = Restrictions.eq("profID", profId);
+
+			criteria.add(profCourses);
+
+			List<Course> courseList = criteria.list();
+
+			// Check to see if course is found
+			if (courseList.size() > 0) {
+				return getJsonResultObj(courseList);
+			}
+
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+
+		return null;
+	}
 	
     public String getJsonResultObj(List<Course> courses) {
         String res = "";

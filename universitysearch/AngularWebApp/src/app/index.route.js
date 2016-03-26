@@ -36,6 +36,10 @@
 			templateUrl : 'app/main/advancedSearch.html',
 			controller: 'AdvancedSearchController',
 			controllerAs: 'asc'
+		}).when('/addDeleteCourse', {
+			templateUrl : 'app/main/addDeleteCourse.html',
+			controller: 'AddDeleteCourseController',
+			controllerAs: 'adc'
 		}).otherwise({
 			redirectTo : '/'
 		});
