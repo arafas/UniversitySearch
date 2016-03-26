@@ -390,15 +390,21 @@ public class EndPointManager {
 
 		HttpSession jsessid = request.getSession(true);
 		int isProf = (Integer)jsessid.getAttribute("isProf");
+		Integer sessionUserId = (Integer)jsessid.getAttribute("userId");
 
 		if(isProf == 1) {
 			FileManager FM = new FileManager();
 			FM.setFactory(factory);
 
-			FM.approveFile(fileId);
+			try {
+				FM.approveFile(fileId, sessionUserId);
+				return Response.status(200).build();
+			} catch (Exception e) {
+				return Response.status(500).entity(e.getMessage()).build();
+			}
 		}
 
-		return Response.status(200).build();
+		return Response.status(500).build();
 	}
 
 }

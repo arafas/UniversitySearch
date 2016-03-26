@@ -11,11 +11,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
@@ -198,31 +193,52 @@ public class FileManager extends DBManager {
 		return null;
 	}
 	
-	public void approveFile(int fileId) {
+	public void approveFile(int fileId, int profId) throws Exception {
 		Session session = factory.openSession();
-		Transaction tx = null;
-		try {
-			tx = session.beginTransaction();
-			Criteria criteria = session.createCriteria(File.class);
+		
+		
+		Criteria criteria = session.createCriteria(File.class);
+		Criterion fileValue = Restrictions.eq("id", fileId);
+		criteria.add(fileValue);
+		
+		File file = (File) criteria.uniqueResult();
 
-			Criterion fileValue = Restrictions.eq("id", fileId);
+		if(file == null) {
+			throw new Exception("File doesn't exist");
+		}
+		
+		Criteria criteria2 = session.createCriteria(Course.class);
+		Criterion courseValue = Restrictions.eq("id", file.getCourseId());
+		criteria2.add(courseValue);
+		
+		Course course = (Course) criteria2.uniqueResult();
+		
+		if(course == null) {
+			throw new Exception("Course associated with file not found");
+		}
+		
+		// If prof has authorization to approve file
+		if(profId == course.getProfID()) {
+		
+			Transaction tx = null;
+			try {
+				tx = session.beginTransaction();
 
-			criteria.add(fileValue);
-
-			File file = (File) criteria.uniqueResult();
-
-			if(file != null) {
-				file.setIsApprov(1);
-				session.update(file);
+				if(file != null) {
+					file.setIsApprov(1);
+					session.update(file);
+				}
+				
+				tx.commit();
+			} catch (HibernateException e) {
+				if (tx != null)
+					tx.rollback();
+				e.printStackTrace();
+			} finally {
+				session.close();
 			}
-			
-			tx.commit();
-		} catch (HibernateException e) {
-			if (tx != null)
-				tx.rollback();
-			e.printStackTrace();
-		} finally {
-			session.close();
+		} else {
+			throw new Exception("You are not authorized to approve this file because you did not create this course");
 		}
 	}
 
