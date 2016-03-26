@@ -169,6 +169,42 @@ public class EndPointManager {
 		return Response.status(200).entity(jsonResp).build();
 	}
 
+	@GET
+	@Path("/following")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response search(@Context HttpServletRequest request) {
+		SessionFactory factory = DBManager.getSessionFactory();
+
+		HttpSession jsessid = request.getSession(true);
+
+		CourseManager CM = new CourseManager();
+		CM.setFactory(factory);
+
+		String jsonResp = "";
+		Integer sessionUserId = (Integer)jsessid.getAttribute("userId");
+
+		// Get courses user is following
+		if(sessionUserId != null) {
+			jsonResp = CM.getFollowingCourses(sessionUserId);
+		}
+
+		return Response.status(200).entity(jsonResp).build();
+	}
+
+	@GET
+	@Path("/file/{fileId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response search(@PathParam("fileId") String fileId, @Context HttpServletRequest request) {
+		SessionFactory factory = DBManager.getSessionFactory();
+
+		// Get file info
+		FileManager FM = new FileManager();
+		FM.setFactory(factory);
+		String jsonResp = FM.getFileInfo(fileId);
+
+		return Response.status(200).entity(jsonResp).build();
+	}
+
 	@POST
 	@Path("/addTags/{fileId}")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
