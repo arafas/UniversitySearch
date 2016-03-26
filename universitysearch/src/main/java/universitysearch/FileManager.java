@@ -1,6 +1,10 @@
 package universitysearch;
 
 import java.io.IOException;
+import java.nio.file.DirectoryNotEmptyException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
 import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
@@ -14,6 +18,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.*;
+
+import java.util.List;
 
 public class FileManager extends DBManager {
 	private static SessionFactory factory;
@@ -49,42 +56,85 @@ public class FileManager extends DBManager {
 		for (int i = 0; i < tags.length(); i++) {
 			JSONObject obj = (JSONObject) tags.get(i);
 			Tags tag = new Tags(obj.getString("text"), fileId);
-			session.save(tag);
+			int id = (Integer) session.save(tag);
 		}
 	}
 
-	public void removeFile(int fileID) {
-		// Delete File from database based on entered ID
+	public void addTags(JSONArray tags, int fileId) throws JSONException {
+		Session session = factory.openSession();
+		Transaction tx = null;
+		try{
+			tx = session.beginTransaction();
+			addTags(tags, fileId, session);
+			tx.commit();
+		}catch (HibernateException e) {
+			if (tx!=null)
+				tx.rollback();
+			e.printStackTrace();
+		}finally {
+			session.close();
+		}
+	}
+
+	public List getTags (int fileId)  {
+		Session session = factory.openSession();
+		Query query = session.createQuery("from universitysearch.Tags where fileId = :id ");
+		query.setParameter("id", fileId);
+		return query.list();
+	}
+	
+	public void deleteFile(String fileId) {
 		Session session = factory.openSession();
 		Transaction tx = null;
 		try {
-			// SomeEntity ent = session.get(SomeEntity.class, '1234');
-			// session.delete(ent);
 			tx = session.beginTransaction();
+
+			// Get file info
+			String fileInfo = getFileInfo(fileId);
+			JSONObject jsonObject = new JSONObject(fileInfo);
+			
+			// Delete file from db
 			File file = new File();
-			file.setId(fileID);
+			file.setId(Integer.parseInt(fileId));
 			session.delete(file);
+			
+			// Delete physical file from db
+			java.io.File actualFile = new java.io.File(System.getenv("OPENSHIFT_DATA_DIR") + "/" + jsonObject.getString("filePath").substring(jsonObject.getString("filePath").indexOf('/'), jsonObject.getString("filePath").length()) + jsonObject.getString("fileName"));
+			Path filePath = actualFile.toPath();
+			
+			try {
+			    Files.delete(filePath);
+			} catch (NoSuchFileException x) {
+			    System.err.format("%s: no such" + " file or directory%n", filePath);
+			} catch (DirectoryNotEmptyException x) {
+			    System.err.format("%s not empty%n", filePath);
+			} catch (IOException x) {
+			    // File permission problems are caught here.
+			    System.err.println(x);
+			}
+
 			tx.commit();
 		} catch (HibernateException e) {
 			if (tx != null)
 				tx.rollback();
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			session.close();
 		}
 	}
 
-	public void modifyFile(int fileID, String fName, String fPath, String fDesc, String fHash, long fSize, int fOwn,
-			String tHash) {
-		// Set elements to null that you do not want updated, or for long/ints
-		// set to -1
-		// fileID is required
-		Session session = factory.openSession();
-		Transaction tx = null;
-		try {
-			tx = session.beginTransaction();
-			File file = (File) session.load(File.class, fileID);
-			// This point file is loaded from DB
+    public void modifyFile(int fileID, String fName, String fPath, String fDesc, String fHash, long fSize, int fOwn, String tHash) {
+      // Set elements to null that you do not want updated, or for long/ints set to -1
+      // fileID is required
+      Session session = factory.openSession();
+      Transaction tx = null;
+      try{
+          tx = session.beginTransaction();
+          File file = (File) session.load(File.class, fileID);
+          // This point file is loaded from DB
 
 			if (fName != null) {
 				file.setFileName(fName);

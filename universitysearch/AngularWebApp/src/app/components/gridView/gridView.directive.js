@@ -31,13 +31,9 @@
                 return $sce.trustAsResourceUrl(src);
             };
 
-            vm.getFileURI = function (file) {
-                var URIprefix = 'http://localhost:8081/static/files/';
-                return URIprefix + file.fileName;
-            };
 
             vm.openFileModal = function (file) {
-                modalFileViewer.openModal(vm.getFileURI(file));
+                modalFileViewer.openModal(file);
             };
         }
     }

@@ -11,7 +11,7 @@
         </id>
 
         <properties name="FILE_TAG_UNIQUE" unique="true">
-            <property name="tagName" column="tag_name" type="string" />
+            <property name="text" column="text" type="string" />
             <property name="fileId" column="file_id" type="int" />
         </properties>
     </class>

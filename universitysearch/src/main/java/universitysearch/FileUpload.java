@@ -25,10 +25,15 @@ public class FileUpload {
 
     public int saveFile(InputStream fileInputStream,
                         FormDataContentDisposition contentDispositionHeader,
-                        int userId, int courseId, JSONArray tags) throws IOException, JSONException {
+                        int userId, int courseId, JSONArray tags, String courseCode) throws IOException, JSONException {
 
-        File uploads = new File(System.getenv("OPENSHIFT_DATA_DIR"));
+        File dir = new File(System.getenv("OPENSHIFT_DATA_DIR") + "/" + courseCode);
+        if (!dir.exists()) {
+            dir.mkdir();
+        }
+        File uploads = new File(System.getenv("OPENSHIFT_DATA_DIR") + "/" + courseCode);
         String tHash = DigestUtils.md5Hex(String.valueOf(System.currentTimeMillis()));
+
         File file2 = new File(uploads, tHash + "-" + contentDispositionHeader.getFileName());
         long fileSize = Files.copy(fileInputStream, file2.toPath());
         FileInputStream fileHash = new FileInputStream(file2);
@@ -81,7 +86,7 @@ public class FileUpload {
           System.out.println(obfuscatedFilePath);
           System.out.println(tHash);
           JSONArray tags = new JSONArray();
-          int res = fm.addFile(fileName, obfuscatedFilePath, "uploadedFile", fileCheck, fileSize, userID, tHash, courseId, tags);
+          int res = fm.addFile(file2.getName(), obfuscatedFilePath, "uploadedFile", fileCheck, fileSize, userID, tHash, courseId, tags);
           fis.close();
           fileHash.close();
           fis.close();
