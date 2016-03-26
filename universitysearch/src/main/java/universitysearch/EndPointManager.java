@@ -124,8 +124,11 @@ public class EndPointManager {
 		} else {
 			HttpSession jsessid = request.getSession(true);
 			jsessid.setAttribute("userId", userInfo.getId());
+			jsessid.setAttribute("isProf", userInfo.getIsProf());
 			jsessid.setAttribute("loggedIn", true);
 
+			System.out.println(userInfo.getIsProf());
+			
             //setting session to expiry in 30 mins
 			jsessid.setMaxInactiveInterval(30*60);
 
@@ -236,4 +239,28 @@ public class EndPointManager {
 		return Response.ok(tags).build();
 
 	}
+	
+	@POST
+	@Path("/deleteFile/{fileId}")
+	public Response deleteFile(@PathParam("fileId") String fileId, @Context HttpServletRequest request) {
+		SessionFactory factory = DBManager.getSessionFactory();
+
+		HttpSession jsessid = request.getSession(true);
+		int isProf = (Integer)jsessid.getAttribute("isProf");
+		
+		// Get file info
+		FileManager FM = new FileManager();
+		FM.setFactory(factory);
+		
+		String response = "You are not authorized to delete a file";
+		
+		if(isProf == 1) {
+			FM.deleteFile(fileId);
+			response = "delete successful";
+		}
+
+		
+		return Response.status(200).entity(response).build();
+	}
+	
 }
