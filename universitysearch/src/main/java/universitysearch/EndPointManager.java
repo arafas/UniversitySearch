@@ -381,5 +381,24 @@ public class EndPointManager {
 			return Response.status(500).build();
 		}
 	}
+	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/approve/{fileId}")
+	public Response approveFile(@PathParam("fileId") int fileId, @Context HttpServletRequest request) {
+		SessionFactory factory = DBManager.getSessionFactory();
+
+		HttpSession jsessid = request.getSession(true);
+		int isProf = (Integer)jsessid.getAttribute("isProf");
+
+		if(isProf == 1) {
+			FileManager FM = new FileManager();
+			FM.setFactory(factory);
+
+			FM.approveFile(fileId);
+		}
+
+		return Response.status(200).build();
+	}
 
 }
