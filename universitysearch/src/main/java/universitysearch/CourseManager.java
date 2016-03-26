@@ -1,9 +1,15 @@
 package universitysearch;
 
 import java.io.IOException;
+import java.nio.file.DirectoryNotEmptyException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
 import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -24,10 +30,7 @@ public class CourseManager extends DBManager {
 		Session session = factory.openSession();
 	    Transaction tx = null;
 		Integer userID = null;
-		//User user = new User(email, pass, fName, lName, isPr, isAd, emailVer);
-		//String addUser = "INSERT INTO `universitysearch`.`users` (`email`, `password`, `first_name`, `last_name`) VALUES ('" + 
-		//email + "', '"+ pass + "', '" + fName + "', '" + lName + ")" ; 
-        
+
 		try{
 	         tx = session.beginTransaction();
 	         Course course = new Course(cName, cDesc, cCode, pID);
@@ -41,6 +44,28 @@ public class CourseManager extends DBManager {
 	        session.close(); 
 	    }
 		return userID;
+	}
+	
+	public void deleteCourse(int courseId, int profId) {
+		Session session = factory.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+
+			// Delete file from db
+			Course course = new Course();
+			course.setProfID(profId);;
+			course.setId(courseId);
+			session.delete(course);
+
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
 	}
 	
 	public String getFollowingCourses(int userId) {
@@ -75,7 +100,7 @@ public class CourseManager extends DBManager {
 
 		return null;
     }
-
+	
     public String getJsonResultObj(List<Course> courses) {
         String res = "";
         ObjectMapper mapper = new ObjectMapper();
@@ -86,4 +111,6 @@ public class CourseManager extends DBManager {
         }
         return res;
     }
+
+	
 }
