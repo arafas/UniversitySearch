@@ -293,7 +293,6 @@ public class EndPointManager {
 	}
 
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
 	@Path("/deleteCourse/{courseId}")
 	public Response deleteCourse(@PathParam("courseId") int courseId, @Context HttpServletRequest request) {
@@ -343,7 +342,6 @@ public class EndPointManager {
 	}
 	
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/followCourse/{courseId}")
 	public Response followCourses(@PathParam("courseId") int courseId, @Context HttpServletRequest request) {
 		SessionFactory factory = DBManager.getSessionFactory();
@@ -363,7 +361,6 @@ public class EndPointManager {
 	}
 	
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/unFollowCourse/{courseId}")
 	public Response unFollowCourses(@PathParam("courseId") int courseId, @Context HttpServletRequest request) {
 		SessionFactory factory = DBManager.getSessionFactory();
@@ -383,7 +380,6 @@ public class EndPointManager {
 	}
 	
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/approve/{fileId}")
 	public Response approveFile(@PathParam("fileId") int fileId, @Context HttpServletRequest request) {
 		SessionFactory factory = DBManager.getSessionFactory();
@@ -405,6 +401,33 @@ public class EndPointManager {
 		}
 
 		return Response.status(500).build();
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/isApproved/{fileId}")
+	public Response isApproved(@PathParam("fileId") int fileId, @Context HttpServletRequest request) {
+		SessionFactory factory = DBManager.getSessionFactory();
+
+		FileManager FM = new FileManager();
+		FM.setFactory(factory);
+
+		try {
+			int isApproved = FM.isApproved(fileId);
+			
+			JSONObject jsonObject = null;
+
+			try {
+				jsonObject = new JSONObject();
+				jsonObject.put("isApproved", isApproved);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			
+			return Response.status(200).entity(jsonObject).build();
+		} catch (Exception e) {
+			return Response.status(500).entity(e.getMessage()).build();
+		}
 	}
 
 }

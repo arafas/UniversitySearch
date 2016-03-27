@@ -252,4 +252,20 @@ public class FileManager extends DBManager {
 		}
 		return res;
 	}
+
+	public int isApproved(int fileId) throws Exception {
+		Session session = factory.openSession();
+		
+		Criteria criteria = session.createCriteria(File.class);
+		Criterion fileValue = Restrictions.eq("id", fileId);
+		criteria.add(fileValue);
+		
+		File file = (File) criteria.uniqueResult();
+
+		if(file == null) {
+			throw new Exception("File doesn't exist");
+		}
+		
+		return file.getIsApprov();
+	}
 }
