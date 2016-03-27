@@ -29,9 +29,9 @@
       if ($location.path() == '/uploadFile' && !$cookies.getObject('globals')) {
         $location.path('/');
       }
-      if ($location.path() == '/advancedSearch' && !$cookies.getObject('globals')) {
+      /*if ($location.path() == '/advancedSearch' && !$cookies.getObject('globals')) {
         $location.path('/');
-      }
+      }*/
 		}
 
 	}
