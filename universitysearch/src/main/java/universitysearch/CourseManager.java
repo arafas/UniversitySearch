@@ -202,6 +202,26 @@ public class CourseManager extends DBManager {
 			session.close();
 		}
 	}
+
+	public List<Course> getAllCourses() throws Exception {
+		Session session = factory.openSession();
+		Transaction tx = null;
+		List<Course> courses;
+		try {
+			tx = session.beginTransaction();
+			courses = session.createCriteria(Course.class).list();
+			tx.commit();
+
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+			throw new Exception(e);
+		} finally {
+			session.close();
+		}
+		return courses;
+	}
 	
     public String getJsonResultObj(List<Course> courses) {
         String res = "";

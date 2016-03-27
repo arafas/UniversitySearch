@@ -31,7 +31,6 @@
                         $http.get("/rest/API/following")
                             .then(function (resp) {
                                 _.each(resp.data, function (course) {
-                                    console.log(resp.data);
                                     if (course.id == vm.courseId) {
                                         vm.following = true;
                                         vm.followText = "Following";

@@ -245,20 +245,19 @@ public class EndPointManager {
 
 		HttpSession jsessid = request.getSession(true);
 		int isProf = (Integer)jsessid.getAttribute("isProf");
-
-		String response = "You are not authorized to delete a file";
-
 		if(isProf == 1) {
 			// Get file info
 			FileManager FM = new FileManager();
 			FM.setFactory(factory);
 
 			FM.deleteFile(fileId);
-			response = "delete successful";
+			return Response.status(200).build();
+		} else {
+			return Response.status(401).build();
 		}
 
 
-		return Response.status(200).entity(response).build();
+
 	}
 
 	@POST
@@ -396,7 +395,7 @@ public class EndPointManager {
 				FM.approveFile(fileId, sessionUserId);
 				return Response.status(200).build();
 			} catch (Exception e) {
-				return Response.status(500).entity(e.getMessage()).build();
+				return Response.status(401).entity(e.getMessage()).build();
 			}
 		}
 
@@ -483,6 +482,22 @@ public class EndPointManager {
 			return Response.status(200).entity(result).build();
 		} catch (Exception e) {
 			return Response.status(500).entity(e.getMessage()).build();
+		}
+	}
+
+	@GET
+	@Path("/courses")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getCourses() {
+		SessionFactory factory = DBManager.getSessionFactory();
+		CourseManager cm = new CourseManager();
+		cm.setFactory(factory);
+
+		try {
+			List<Course> files = cm.getAllCourses();
+			return Response.status(200).entity(files).build();
+		} catch (Exception e) {
+			return Response.status(500).build();
 		}
 	}
 

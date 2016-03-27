@@ -26,7 +26,7 @@
 
             vm.files = $scope.files;
             vm.courses = $scope.courses;
-            console.log($scope.files);
+
 
             vm.trustSrc = function(src) {
                 return $sce.trustAsResourceUrl(src);
@@ -34,8 +34,22 @@
 
 
             vm.openFileModal = function (file) {
-                modalFileViewer.openModal(file);
+                modalFileViewer.openModal(file, $scope.files);
             };
+
+            $scope.$on("FILES_CHANGED", function (evt, files) {
+                vm.files = files;
+            });
+
+            $scope.$on("FILE_CHANGED", function (evt, file) {
+                vm.approvedFile = file;
+                vm.files = _.each (vm.files, function (file) {
+
+                    if (vm.approvedFile == file.id) {
+                        file.isApprov = true;
+                    }
+                });
+            })
         }
     }
 })();

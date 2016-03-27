@@ -88,7 +88,16 @@ public class MasterSearch extends DBManager{
                 searchResult.addCourse(course);
             }
 
+            String tagSql = "FROM File where id IN (SELECT fileId FROM Tags t where t.text LIKE :query)";
+            org.hibernate.Query tagQuery = session.createQuery(tagSql);
+            tagQuery.setString("query", query + "%");
+            List<File> files = tagQuery.list();
+            for (File file : files) {
+                searchResult.addFile(file);
+            }
             return getJsonResultObj(searchResult);
+
+
 
 
         } catch (IOException e) {

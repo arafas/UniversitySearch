@@ -1,21 +1,22 @@
 package universitysearch;
 
-import java.io.IOException;
-import java.nio.file.DirectoryNotEmptyException;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
-import java.util.List;
-
+import org.apache.lucene.index.Term;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.*;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-import org.hibernate.criterion.Conjunction;
+import org.hibernate.*;
+import org.hibernate.Query;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.*;
+import universitysearch.lucenesearch.Indexer;
+import universitysearch.lucenesearch.Searcher;
 
+import java.io.IOException;
+import java.nio.file.*;
 import java.util.List;
 
 public class FileManager extends DBManager {
@@ -88,6 +89,8 @@ public class FileManager extends DBManager {
 			// Get file info
 			String fileInfo = getFileInfo(fileId);
 			JSONObject jsonObject = new JSONObject(fileInfo);
+
+
 			
 			// Delete file from db
 			File file = new File();
@@ -100,6 +103,15 @@ public class FileManager extends DBManager {
 			
 			try {
 			    Files.delete(filePath);
+
+				// Delete from lucene
+				Path path = Paths.get(System.getenv("OPENSHIFT_DATA_DIR") + "/index");
+				Searcher searcher = new Searcher(path);
+				org.apache.lucene.search.Query query = searcher.contentQueryParser.parse(actualFile.getName());
+				Indexer indexer = new Indexer(path);
+				indexer.deleteDocuments(query);
+				indexer.close();
+
 			} catch (NoSuchFileException x) {
 			    System.err.format("%s: no such" + " file or directory%n", filePath);
 			} catch (DirectoryNotEmptyException x) {
@@ -107,6 +119,8 @@ public class FileManager extends DBManager {
 			} catch (IOException x) {
 			    // File permission problems are caught here.
 			    System.err.println(x);
+			} catch (ParseException e) {
+				e.printStackTrace();
 			}
 
 			tx.commit();
