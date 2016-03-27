@@ -464,5 +464,26 @@ public class EndPointManager {
 			return Response.status(500).build();
 		}
 	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/notifications")
+	public Response getNotifications(@Context HttpServletRequest request) {
+		SessionFactory factory = DBManager.getSessionFactory();
+
+		HttpSession jsessid = request.getSession(true);
+		int isProf = (Integer)jsessid.getAttribute("isProf");
+		Integer sessionUserId = (Integer)jsessid.getAttribute("userId");
+
+		FileManager FM = new FileManager();
+		FM.setFactory(factory);
+
+		try {
+			String result = FM.getNotifications(sessionUserId);
+			return Response.status(200).entity(result).build();
+		} catch (Exception e) {
+			return Response.status(500).entity(e.getMessage()).build();
+		}
+	}
 
 }

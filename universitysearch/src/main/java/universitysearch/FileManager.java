@@ -257,18 +257,7 @@ public class FileManager extends DBManager {
 			throw new Exception(e);
 		}
 	}
-
-	public String getJsonResultObj(File file) {
-		String res = "";
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			res = mapper.writeValueAsString(file);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return res;
-	}
-
+	
 	public int isApproved(int fileId) throws Exception {
 		Session session = factory.openSession();
 		
@@ -283,5 +272,59 @@ public class FileManager extends DBManager {
 		}
 		
 		return file.getIsApprov();
+	}
+
+	public String getNotifications(Integer sessionUserId) {
+		Session session = factory.openSession();
+		String files = null;
+		
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+
+//			Criteria criteria = session.createCriteria(File.class);
+//			Criterion fileValue = Restrictions.eq("id", Integer.parseInt(fileId));
+//			criteria.add(fileValue);
+//			List<File> fileList = criteria.list();
+			
+			
+			String sql = "SELECT * FROM notifications as n NATURAL JOIN files WHERE user_id=:userId";
+			SQLQuery sqlQuery = session.createSQLQuery(sql);
+			sqlQuery.setParameter("userId", sessionUserId);
+			sqlQuery.addEntity(File.class);
+			files = getJsonResultObj(sqlQuery.list());
+
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		
+		return files;
+	}
+
+	public String getJsonResultObj(File file) {
+		String res = "";
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			res = mapper.writeValueAsString(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return res;
+	}
+	
+	public String getJsonResultObj(List<Object> files) {
+		String res = "";
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			res = mapper.writeValueAsString(files);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return res;
 	}
 }
