@@ -430,4 +430,39 @@ public class EndPointManager {
 		}
 	}
 
+	@GET
+	@Path("/course/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getCourseById(@PathParam("id") int id) {
+		SessionFactory factory = DBManager.getSessionFactory();
+		CourseManager CM = new CourseManager();
+		CM.setFactory(factory);
+		Course course;
+		try {
+			course = CM.getCourseById(id);
+			if (course == null) {
+				throw new Exception();
+			}
+			return Response.ok(course).build();
+		} catch (Exception e) {
+			return Response.status(500).build();
+		}
+	}
+
+	@GET
+	@Path("/filesForCourse/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getFilesForCourse(@PathParam("id") int id) {
+		SessionFactory factory = DBManager.getSessionFactory();
+		FileManager fm = new FileManager();
+		fm.setFactory(factory);
+
+		try {
+			List<File> files = fm.getFilesForCourse(id);
+			return Response.status(200).entity(files).build();
+		} catch (Exception e) {
+			return Response.status(500).build();
+		}
+	}
+
 }

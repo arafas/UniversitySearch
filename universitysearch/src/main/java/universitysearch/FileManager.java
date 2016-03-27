@@ -242,6 +242,22 @@ public class FileManager extends DBManager {
 		}
 	}
 
+	public List<File> getFilesForCourse(int id) throws Exception {
+		Session session = factory.openSession();
+		Transaction tx = null;
+		try {
+			Criteria criteria = session.createCriteria(File.class);
+			Criterion fileValue = Restrictions.eq("courseId", id);
+			criteria.add(fileValue);
+			List<File> fileList = criteria.list();
+
+			return fileList;
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			throw new Exception(e);
+		}
+	}
+
 	public String getJsonResultObj(File file) {
 		String res = "";
 		ObjectMapper mapper = new ObjectMapper();
