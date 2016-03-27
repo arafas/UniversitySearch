@@ -25,6 +25,8 @@
 
             return $http.get(url)
                 .then(function (response) {
+                    vm.courses.length = 0;
+                    vm.files.length = 0;
                     if (_.size(response.data.courses) > 0) {
                         _.each(response.data.courses, function (course) {
                             return vm.courses.push(course);

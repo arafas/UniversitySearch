@@ -2,6 +2,7 @@ package universitysearch;
 
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
+import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.hibernate.SessionFactory;
@@ -12,8 +13,10 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.List;
 
 @Path("/API")
 public class EndPointManager {
@@ -60,15 +63,30 @@ public class EndPointManager {
 	}
 
 	@POST
-	@Path("/fileUpload")
+	@Path("/fileUpload/{courseId}")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addFile(@FormDataParam("file") InputStream fileInputStream,
-						  @FormDataParam("file") FormDataContentDisposition contentDispositionHeader) {
+							@FormDataParam("file") FormDataContentDisposition contentDispositionHeader,
+							@FormDataParam("tags") JSONArray tags, @FormDataParam("courseCode") String courseCode,
+							@Context HttpServletRequest req, @PathParam("courseId") int courseId) {
 
-		FileUpload fileUpload = new FileUpload();
-		fileUpload.saveFile(fileInputStream, contentDispositionHeader);
-		return Response.status(200).entity("pass").build();
+		JSONObject jsonObject;
+		try {
+			HttpSession session = req.getSession();
+			int userId = (Integer) session.getAttribute("userId");
+			FileUpload fileUpload = new FileUpload();
+			int id = fileUpload.saveFile(fileInputStream, contentDispositionHeader, userId, courseId, tags, courseCode);
+			jsonObject = new JSONObject();
+			jsonObject.put("id", id);
+			return Response.status(200).entity(jsonObject).build();
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return Response.status(500).entity("An error has occurred. Please try again").build();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return Response.status(501).entity("An error has occurred saving the file. Please try again").build();
+		}
 	}
 
 	@GET
@@ -84,7 +102,7 @@ public class EndPointManager {
 
 		return "Your account has been activated, you can now login";
 	}
-	
+
 	@POST
 	@Path("/signin")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -92,25 +110,28 @@ public class EndPointManager {
 	public Response signInUser(User user, @Context HttpServletRequest request) {
 		String email = user.getEmail();
 		String password = user.getPassword();
-		
+
 		// Aquire DB connection and add user
 		SessionFactory factory = DBManager.getSessionFactory();
 
 		UserManager UM = new UserManager();
 		UM.setFactory(factory);
 		User userInfo = UM.signInUser(email, password);
-		
+
 		if(userInfo == null) {
 			return Response.status(403).entity("Incorrect username or password. Please check if you have activated your account.").build();
 
 		} else {
 			HttpSession jsessid = request.getSession(true);
 			jsessid.setAttribute("userId", userInfo.getId());
+			jsessid.setAttribute("isProf", userInfo.getIsProf());
 			jsessid.setAttribute("loggedIn", true);
+
+			System.out.println(userInfo.getIsProf());
 			
             //setting session to expiry in 30 mins
 			jsessid.setMaxInactiveInterval(30*60);
-			
+
 			JSONObject jsonObject = null;
 
 			try {
@@ -133,7 +154,7 @@ public class EndPointManager {
 		if(httpSession != null){
 			httpSession.invalidate();
         }
-		
+
 		return Response.ok().build();
 	}
 
@@ -150,4 +171,96 @@ public class EndPointManager {
 
 		return Response.status(200).entity(jsonResp).build();
 	}
+
+	@GET
+	@Path("/following")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response search(@Context HttpServletRequest request) {
+		SessionFactory factory = DBManager.getSessionFactory();
+
+		HttpSession jsessid = request.getSession(true);
+
+		CourseManager CM = new CourseManager();
+		CM.setFactory(factory);
+
+		String jsonResp = "";
+		Integer sessionUserId = (Integer)jsessid.getAttribute("userId");
+
+		// Get courses user is following
+		if(sessionUserId != null) {
+			jsonResp = CM.getFollowingCourses(sessionUserId);
+		}
+
+		return Response.status(200).entity(jsonResp).build();
+	}
+
+	@GET
+	@Path("/file/{fileId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response search(@PathParam("fileId") String fileId, @Context HttpServletRequest request) {
+		SessionFactory factory = DBManager.getSessionFactory();
+
+		// Get file info
+		FileManager FM = new FileManager();
+		FM.setFactory(factory);
+		String jsonResp = FM.getFileInfo(fileId);
+
+		return Response.status(200).entity(jsonResp).build();
+	}
+
+	@POST
+	@Path("/addTags/{fileId}")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response addTags (@PathParam("fileId") int fileId, @FormDataParam("tags") JSONArray tags) {
+		try {
+			SessionFactory sessionFactory = DBManager.getSessionFactory();
+			FileManager fm = new FileManager();
+			fm.setFactory(sessionFactory);
+			fm.addTags(tags, fileId);
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return Response.status(500).entity("").build();
+		}
+		return Response.ok().build();
+	}
+
+	@GET
+	@Path("/getTags/{fileId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getTags(@PathParam("fileId") int fileId) {
+
+		SessionFactory sessionFactory = DBManager.getSessionFactory();
+		FileManager fm = new FileManager();
+		fm.setFactory(sessionFactory);
+
+		List<Tags> tags = fm.getTags(fileId);
+		return Response.ok(tags).build();
+
+	}
+	
+	@POST
+	@Path("/deleteFile/{fileId}")
+	public Response deleteFile(@PathParam("fileId") String fileId, @Context HttpServletRequest request) {
+		SessionFactory factory = DBManager.getSessionFactory();
+
+		HttpSession jsessid = request.getSession(true);
+		int isProf = (Integer)jsessid.getAttribute("isProf");
+		
+		// Get file info
+		FileManager FM = new FileManager();
+		FM.setFactory(factory);
+		
+		String response = "You are not authorized to delete a file";
+		
+		if(isProf == 1) {
+			FM.deleteFile(fileId);
+			response = "delete successful";
+		}
+
+		
+		return Response.status(200).entity(response).build();
+	}
+	
 }
