@@ -7,38 +7,58 @@
 </head>
 <body>
 
-<div class="container">
+<div class="container" id="wrapper" ng-init="">
 
     <div>
         <acme-navbar creation-date="reg.creationDate"></acme-navbar>
     </div>
 
-    <div class="jumbotron text-center" ng-init="">
-        <h1 style="font-family: 'Roboto Slab';">Advanced Search</h1><br>
+
+  <side-navbar></side-navbar>
+    <div class="jumbotron text-center">
+
+      <br>
+      <br>
 
 
 
-    </div>
 
-    <div class="search_body">
+
+
+
+
+
+        <h2 style="font-family: 'Roboto Slab';">Advanced Search</h2><br>
+
+
+      <div class="search_body" style="font-family: 'Lato';">
         Find Documents or courses with...<br>
 
         All these words: <input type="text" data-ng-model="asc.all">Type all important words <br>
         These exact words or phrases: <input type="text" data-ng-model="asc.exact">Put exact words in quotes: "software engineering" <br>
         Any of these words: <input type="text" data-ng-model="asc.any">Separate all relevant terms with OR: engineering OR sociology<br>
         None of these words: <input type="text" data-ng-model="asc.none">Put a hyphen immediately before each word not to be included in the search: -cat<br>
+       <p>
 
-        <button class="btn btn-primary btn-sm" data-ng-click="asc.advancedSearch()">Search</button><br>
+
+
+       </p>
+        <button class="btn btn-lg btn-success" data-ng-click="asc.advancedSearch()">Search</button><br>
 
         <span class="lead">Search Results</span>
 
         <div class="search_results">
 
-            <grid-view files="asc.files">
+          <grid-view files="asc.files">
 
-            </grid-view>
+          </grid-view>
         </div>
+      </div>
+
+
     </div>
+
+
 
 
 </body>

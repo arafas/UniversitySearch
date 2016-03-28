@@ -18,6 +18,8 @@
     "angular-ui-validate": "^1.2.2",
     "angular-md5": "^0.1.10",
     "underscore": "^1.8.3",
+    "angular-notification-icons": "^0.4.3",
+    "angular-ui-grid": "^3.1.1",
     "ng-tags-input": "^3.0.0"
   },
   "devDependencies": {
@@ -36,6 +38,6 @@
     }
   },
   "resolutions": {
-    "angular": "~1.4.2"
+    "angular": "1.4.10"
   }
 }
