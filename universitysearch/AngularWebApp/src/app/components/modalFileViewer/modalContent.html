@@ -7,6 +7,8 @@
     <tags-input ng-model="tags" max-length="24" add-on-space="true"></tags-input>
     <button type="button" class="btn btn-primary" data-ng-click="submitTags()">Update Tags</button><br>
 
-    <span class="course_code">File Name: {{params.fileName.substring(params.fileName.indexOf('-')+1)}}</span>
+    <span class="course_code">File Name: {{params.fileName.substring(params.fileName.indexOf('-')+1)}}</span><br>
+    <button data-ng-show="isProf" type="button btn btn-primary" data-ng-click="deleteFile()">Delete File</button>
+    <button data-ng-disabled="approved" data-ng-show="isProf" type="button btn btn-primary" data-ng-click="approveFile()">{{approvedText}}</button>
   </div>
 </div>

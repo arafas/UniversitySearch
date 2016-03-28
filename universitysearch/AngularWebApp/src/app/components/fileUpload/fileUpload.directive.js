@@ -24,7 +24,7 @@
 
     }
     /** @ngInject */
-    function FileUploadController(Upload, fileUploadModal) {
+    function FileUploadController(Upload, fileUploadModal, $http) {
         var vm = this;
         vm.progressPercentage = 0;
         vm.fileUploadSuccess = false;
@@ -32,22 +32,26 @@
         vm.selectedCourse = null;
 
 
-        vm.courses = [{courseId: 1, courseCode: "CSC301", courseName: "Software Engineering", profId: 3},
-            {courseId: 2, courseCode: "CSC427", courseName: "Computer Security", profId: 2}];
+        vm.courses = [];
 
         vm.tags = [];
 
+        $http.get("/rest/API/courses")
+            .then(function(resp) {
+                _.each(resp.data, function(course) {
+                    vm.courses.push(course);
+                });
+            });
+
         vm.upload = function (files) {
-            console.log(files);
             if (files && files.length) {
                 for (var i = 0; i < files.length; i++) {
                     var file = files[i];
                     if (!file.$error) {
                         vm.fileUploadSuccess = false;
                         vm.fileUploadError = false;
-                        console.log("adding course");
                         Upload.upload({
-                            url: '/rest/API/fileUpload/' + vm.selectedCourse.courseId,
+                            url: '/rest/API/fileUpload/' + vm.selectedCourse.id,
                             data: {"file": file, "tags": JSON.stringify(vm.tags), "courseCode": vm.selectedCourse.courseCode}
                         })
                             .success(function() {

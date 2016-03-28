@@ -249,7 +249,6 @@ public class UserManager extends DBManager {
 
 			// Check to see if user is found
 			if (userList.size() > 0) {
-				System.out.println("FOUND!!");
 				User user = (User) userList.get(0);
 				return user;
 			}

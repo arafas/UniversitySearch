@@ -127,8 +127,6 @@ public class EndPointManager {
 			jsessid.setAttribute("isProf", userInfo.getIsProf());
 			jsessid.setAttribute("loggedIn", true);
 
-			System.out.println(userInfo.getIsProf());
-			
             //setting session to expiry in 30 mins
 			jsessid.setMaxInactiveInterval(30*60);
 
@@ -239,7 +237,7 @@ public class EndPointManager {
 		return Response.ok(tags).build();
 
 	}
-	
+
 	@POST
 	@Path("/deleteFile/{fileId}")
 	public Response deleteFile(@PathParam("fileId") String fileId, @Context HttpServletRequest request) {
@@ -247,20 +245,260 @@ public class EndPointManager {
 
 		HttpSession jsessid = request.getSession(true);
 		int isProf = (Integer)jsessid.getAttribute("isProf");
-		
-		// Get file info
-		FileManager FM = new FileManager();
-		FM.setFactory(factory);
-		
-		String response = "You are not authorized to delete a file";
-		
 		if(isProf == 1) {
+			// Get file info
+			FileManager FM = new FileManager();
+			FM.setFactory(factory);
+
 			FM.deleteFile(fileId);
-			response = "delete successful";
+			return Response.status(200).build();
+		} else {
+			return Response.status(401).build();
 		}
 
-		
+
+
+	}
+
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/addCourse")
+	public Response addCourse(Course course, @Context HttpServletRequest request) {
+		String courseCode = course.getCourseCode();
+		String courseDesc = course.getCourseDesc();
+		String courseName = course.getCourseName();
+
+		SessionFactory factory = DBManager.getSessionFactory();
+
+		HttpSession jsessid = request.getSession(true);
+		int isProf = (Integer)jsessid.getAttribute("isProf");
+
+		String response = "You are not authorized to add a course";
+		Course courseCreated;
+		if(isProf == 1) {
+			// Get file info
+			CourseManager CM = new CourseManager();
+			CM.setFactory(factory);
+
+			Integer sessionUserId = (Integer)jsessid.getAttribute("userId");
+
+			courseCreated = CM.addCourse(courseName, courseDesc, courseCode, sessionUserId);
+
+			response = "Added course successfully";
+			return Response.status(200).entity(courseCreated).build();
+		}
+		return Response.status(500).build();
+	}
+
+	@POST
+	@Produces(MediaType.TEXT_PLAIN)
+	@Path("/deleteCourse/{courseId}")
+	public Response deleteCourse(@PathParam("courseId") int courseId, @Context HttpServletRequest request) {
+		SessionFactory factory = DBManager.getSessionFactory();
+
+		HttpSession jsessid = request.getSession(true);
+		int isProf = (Integer)jsessid.getAttribute("isProf");
+
+		String response = "You are not authorized to delete this course";
+
+		if(isProf == 1) {
+			CourseManager CM = new CourseManager();
+			CM.setFactory(factory);
+
+			Integer sessionUserId = (Integer)jsessid.getAttribute("userId");
+
+			CM.deleteCourse(courseId, sessionUserId);
+
+			response = "Deleted course successfully";
+		}
+
+
+		return Response.status(200).entity(response).build();
+	}
+
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/coursesForProf")
+	public Response getCoursesForProf(@Context HttpServletRequest request) {
+		SessionFactory factory = DBManager.getSessionFactory();
+
+		HttpSession jsessid = request.getSession(true);
+		int isProf = (Integer)jsessid.getAttribute("isProf");
+
+		String response = "";
+
+		if(isProf == 1) {
+			CourseManager CM = new CourseManager();
+			CM.setFactory(factory);
+
+			Integer sessionUserId = (Integer)jsessid.getAttribute("userId");
+
+			response = CM.getCoursesForProf(sessionUserId);
+		}
+
 		return Response.status(200).entity(response).build();
 	}
 	
+	@POST
+	@Path("/followCourse/{courseId}")
+	public Response followCourses(@PathParam("courseId") int courseId, @Context HttpServletRequest request) {
+		SessionFactory factory = DBManager.getSessionFactory();
+
+		HttpSession jsessid = request.getSession(true);
+		Integer sessionUserId = (Integer)jsessid.getAttribute("userId");
+		
+		CourseManager CM = new CourseManager();
+		CM.setFactory(factory);
+		
+		try {
+			CM.followCourse(courseId, sessionUserId);
+			return Response.status(200).build();
+		} catch (Exception e) {
+			return Response.status(500).build();
+		}
+	}
+	
+	@POST
+	@Path("/unFollowCourse/{courseId}")
+	public Response unFollowCourses(@PathParam("courseId") int courseId, @Context HttpServletRequest request) {
+		SessionFactory factory = DBManager.getSessionFactory();
+
+		HttpSession jsessid = request.getSession(true);
+		Integer sessionUserId = (Integer)jsessid.getAttribute("userId");
+		
+		CourseManager CM = new CourseManager();
+		CM.setFactory(factory);
+		
+		try {
+			CM.unFollowCourse(courseId, sessionUserId);
+			return Response.status(200).build();
+		} catch (Exception e) {
+			return Response.status(500).build();
+		}
+	}
+	
+	@POST
+	@Path("/approve/{fileId}")
+	public Response approveFile(@PathParam("fileId") int fileId, @Context HttpServletRequest request) {
+		SessionFactory factory = DBManager.getSessionFactory();
+
+		HttpSession jsessid = request.getSession(true);
+		int isProf = (Integer)jsessid.getAttribute("isProf");
+		Integer sessionUserId = (Integer)jsessid.getAttribute("userId");
+
+		if(isProf == 1) {
+			FileManager FM = new FileManager();
+			FM.setFactory(factory);
+
+			try {
+				FM.approveFile(fileId, sessionUserId);
+				return Response.status(200).build();
+			} catch (Exception e) {
+				return Response.status(401).entity(e.getMessage()).build();
+			}
+		}
+
+		return Response.status(500).build();
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/isApproved/{fileId}")
+	public Response isApproved(@PathParam("fileId") int fileId, @Context HttpServletRequest request) {
+		SessionFactory factory = DBManager.getSessionFactory();
+
+		FileManager FM = new FileManager();
+		FM.setFactory(factory);
+
+		try {
+			int isApproved = FM.isApproved(fileId);
+			
+			JSONObject jsonObject = null;
+
+			try {
+				jsonObject = new JSONObject();
+				jsonObject.put("isApproved", isApproved);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			
+			return Response.status(200).entity(jsonObject).build();
+		} catch (Exception e) {
+			return Response.status(500).entity(e.getMessage()).build();
+		}
+	}
+
+	@GET
+	@Path("/course/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getCourseById(@PathParam("id") int id) {
+		SessionFactory factory = DBManager.getSessionFactory();
+		CourseManager CM = new CourseManager();
+		CM.setFactory(factory);
+		Course course;
+		try {
+			course = CM.getCourseById(id);
+			if (course == null) {
+				throw new Exception();
+			}
+			return Response.ok(course).build();
+		} catch (Exception e) {
+			return Response.status(500).build();
+		}
+	}
+
+	@GET
+	@Path("/filesForCourse/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getFilesForCourse(@PathParam("id") int id) {
+		SessionFactory factory = DBManager.getSessionFactory();
+		FileManager fm = new FileManager();
+		fm.setFactory(factory);
+
+		try {
+			List<File> files = fm.getFilesForCourse(id);
+			return Response.status(200).entity(files).build();
+		} catch (Exception e) {
+			return Response.status(500).build();
+		}
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/notifications")
+	public Response getNotifications(@Context HttpServletRequest request) {
+		SessionFactory factory = DBManager.getSessionFactory();
+
+		HttpSession jsessid = request.getSession(true);
+		int isProf = (Integer)jsessid.getAttribute("isProf");
+		Integer sessionUserId = (Integer)jsessid.getAttribute("userId");
+
+		FileManager FM = new FileManager();
+		FM.setFactory(factory);
+
+		try {
+			String result = FM.getNotifications(sessionUserId);
+			return Response.status(200).entity(result).build();
+		} catch (Exception e) {
+			return Response.status(500).entity(e.getMessage()).build();
+		}
+	}
+
+	@GET
+	@Path("/courses")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getCourses() {
+		SessionFactory factory = DBManager.getSessionFactory();
+		CourseManager cm = new CourseManager();
+		cm.setFactory(factory);
+
+		try {
+			List<Course> files = cm.getAllCourses();
+			return Response.status(200).entity(files).build();
+		} catch (Exception e) {
+			return Response.status(500).build();
+		}
+	}
+
 }

@@ -6,10 +6,13 @@
         .controller('ModalFileViewerController', ModalFileViewerController);
     /** @ngInject */
 
-    function ModalFileViewerController($scope, $uibModalInstance, $http, Upload, $sce) {
+    function ModalFileViewerController($scope, $uibModalInstance, $http, Upload, $sce, $cookies, modalFileViewer) {
         var vm = $scope;
         vm.tags = [];
         vm.oldTags = [];
+        vm.isProf = $cookies.getObject("globals").currentUser.isProf;
+        vm.approved = false;
+        vm.approvedText = "Approve File";
 
         vm.getTags = function () {
             $http({
@@ -69,6 +72,35 @@
         vm.trustSrc = function(src) {
             return $sce.trustAsResourceUrl(src);
         };
+
+        vm.deleteFile = function () {
+
+            $http.post("/rest/API/deleteFile/" + vm.params.fileId)
+                .then (function() {
+                    vm.params.files = _.reject(vm.params.files, function (file) {
+                        return file.id == vm.params.fileId;
+                    });
+                    vm.params.modalInstance.updateFilesArray(vm.params.files);
+                    vm.params.modalInstance.close();
+                })
+        };
+
+        vm.approveFile = function(fileId) {
+            $http.post("/rest/API/approve/" + vm.params.fileId)
+                .then(function() {
+                    vm.approved = true;
+                    vm.approvedText = "File Approved";
+                    vm.params.modalInstance.updateFile(vm.params.fileId);
+                })
+        };
+
+        $http.get("/rest/API/isApproved/" + vm.params.fileId)
+            .then(function(resp) {
+                if (resp.data.isApproved == 1) {
+                    vm.approved = true;
+                    vm.approvedText = "File Approved";
+                }
+            });
 
         vm.getTags();
     }
