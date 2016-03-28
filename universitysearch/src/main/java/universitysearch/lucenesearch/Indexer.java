@@ -8,6 +8,7 @@ import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.search.Query;
 import org.apache.lucene.store.FSDirectory;
 
 import java.io.IOException;
@@ -39,6 +40,14 @@ public class Indexer {
 
         // add the document to the index
         writer.addDocument(doc);
+    }
+
+    public void deleteDocuments(Query term) {
+        try {
+            writer.deleteDocuments(term);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

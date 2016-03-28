@@ -1,25 +1,22 @@
 package universitysearch;
 
-import java.io.IOException;
-import java.nio.file.DirectoryNotEmptyException;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
-import java.util.List;
-
+import org.apache.lucene.index.Term;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.*;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.*;
+import org.hibernate.Query;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.*;
+import universitysearch.lucenesearch.Indexer;
+import universitysearch.lucenesearch.Searcher;
 
+import java.io.IOException;
+import java.nio.file.*;
 import java.util.List;
 
 public class FileManager extends DBManager {
@@ -92,6 +89,8 @@ public class FileManager extends DBManager {
 			// Get file info
 			String fileInfo = getFileInfo(fileId);
 			JSONObject jsonObject = new JSONObject(fileInfo);
+
+
 			
 			// Delete file from db
 			File file = new File();
@@ -104,6 +103,15 @@ public class FileManager extends DBManager {
 			
 			try {
 			    Files.delete(filePath);
+
+				// Delete from lucene
+				Path path = Paths.get(System.getenv("OPENSHIFT_DATA_DIR") + "/index");
+				Searcher searcher = new Searcher(path);
+				org.apache.lucene.search.Query query = searcher.contentQueryParser.parse(actualFile.getName());
+				Indexer indexer = new Indexer(path);
+				indexer.deleteDocuments(query);
+				indexer.close();
+
 			} catch (NoSuchFileException x) {
 			    System.err.format("%s: no such" + " file or directory%n", filePath);
 			} catch (DirectoryNotEmptyException x) {
@@ -111,6 +119,8 @@ public class FileManager extends DBManager {
 			} catch (IOException x) {
 			    // File permission problems are caught here.
 			    System.err.println(x);
+			} catch (ParseException e) {
+				e.printStackTrace();
 			}
 
 			tx.commit();
@@ -196,12 +206,136 @@ public class FileManager extends DBManager {
 
 		return null;
 	}
+	
+	public void approveFile(int fileId, int profId) throws Exception {
+		Session session = factory.openSession();
+		
+		
+		Criteria criteria = session.createCriteria(File.class);
+		Criterion fileValue = Restrictions.eq("id", fileId);
+		criteria.add(fileValue);
+		
+		File file = (File) criteria.uniqueResult();
+
+		if(file == null) {
+			throw new Exception("File doesn't exist");
+		}
+		
+		Criteria criteria2 = session.createCriteria(Course.class);
+		Criterion courseValue = Restrictions.eq("id", file.getCourseId());
+		criteria2.add(courseValue);
+		
+		Course course = (Course) criteria2.uniqueResult();
+		
+		if(course == null) {
+			throw new Exception("Course associated with file not found");
+		}
+		
+		// If prof has authorization to approve file
+		if(profId == course.getProfID()) {
+		
+			Transaction tx = null;
+			try {
+				tx = session.beginTransaction();
+
+				if(file != null) {
+					file.setIsApprov(1);
+					session.update(file);
+				}
+				
+				tx.commit();
+			} catch (HibernateException e) {
+				if (tx != null)
+					tx.rollback();
+				e.printStackTrace();
+			} finally {
+				session.close();
+			}
+		} else {
+			throw new Exception("You are not authorized to approve this file because you did not create this course");
+		}
+	}
+
+	public List<File> getFilesForCourse(int id) throws Exception {
+		Session session = factory.openSession();
+		Transaction tx = null;
+		try {
+			Criteria criteria = session.createCriteria(File.class);
+			Criterion fileValue = Restrictions.eq("courseId", id);
+			criteria.add(fileValue);
+			List<File> fileList = criteria.list();
+
+			return fileList;
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			throw new Exception(e);
+		}
+	}
+	
+	public int isApproved(int fileId) throws Exception {
+		Session session = factory.openSession();
+		
+		Criteria criteria = session.createCriteria(File.class);
+		Criterion fileValue = Restrictions.eq("id", fileId);
+		criteria.add(fileValue);
+		
+		File file = (File) criteria.uniqueResult();
+
+		if(file == null) {
+			throw new Exception("File doesn't exist");
+		}
+		
+		return file.getIsApprov();
+	}
+
+	public String getNotifications(Integer sessionUserId) {
+		Session session = factory.openSession();
+		String files = null;
+		
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+
+//			Criteria criteria = session.createCriteria(File.class);
+//			Criterion fileValue = Restrictions.eq("id", Integer.parseInt(fileId));
+//			criteria.add(fileValue);
+//			List<File> fileList = criteria.list();
+			
+			
+			String sql = "SELECT * FROM notifications as n NATURAL JOIN files WHERE user_id=:userId";
+			SQLQuery sqlQuery = session.createSQLQuery(sql);
+			sqlQuery.setParameter("userId", sessionUserId);
+			sqlQuery.addEntity(File.class);
+			files = getJsonResultObj(sqlQuery.list());
+
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		
+		return files;
+	}
 
 	public String getJsonResultObj(File file) {
 		String res = "";
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			res = mapper.writeValueAsString(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return res;
+	}
+	
+	public String getJsonResultObj(List<Object> files) {
+		String res = "";
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			res = mapper.writeValueAsString(files);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

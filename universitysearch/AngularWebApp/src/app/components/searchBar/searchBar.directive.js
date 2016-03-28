@@ -61,7 +61,8 @@
                     return;
                 }
                 if (item.courseCode) {
-                    $location.path("/about");
+                    $location.path("/course/" + item.id);
+                    vm.selectedTerm = "";
                 } else if (item.blurb) {
                     // TODO: change this to 8080 before committing
                     modalFileViewer.openModal(item);

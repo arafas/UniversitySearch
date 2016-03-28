@@ -4,7 +4,7 @@ public class File {
 private int id;
 	private String fileName, filePath, fileDesc, fileHash, timeHash, blurb;
 
-	private int fileOwner, courseId;
+	private int fileOwner, courseId, isApprov;
 	private long fileSize;
 
 	public File() {
@@ -19,6 +19,7 @@ private int id;
 		this.fileOwner = fOwn;
 		this.timeHash = tHash;
 		this.courseId = courseId;
+		this.isApprov = 0;
 	}
 
 	public String getBlurb() {
@@ -91,5 +92,13 @@ private int id;
 
 	public void setCourseId(int courseId) {
 		this.courseId = courseId;
+	}
+	
+	public int getIsApprov() {
+		return isApprov;
+	}
+
+	public void setIsApprov(int isApprov) {
+		this.isApprov = isApprov;
 	}
 }
