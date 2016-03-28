@@ -1,5 +1,5 @@
 <div class="gridViewContainer">
-    <div class="files_title"><span>Files</span></div>
+    <div data-ng-show="gvc.files.length > 0" class="files_title"><span>Files</span></div>
     <div class="files" data-ng-repeat="file in gvc.files">
 
         <div class="file">
@@ -11,7 +11,7 @@
 
     <hr>
 
-    <div class="courses_title"><span>Courses</span></div>
+    <div data-ng-show="gvc.courses.length > 0" class="courses_title"><span>Courses</span></div>
     <div class="courses"  data-ng-repeat="file in gvc.courses">
 
     </div>

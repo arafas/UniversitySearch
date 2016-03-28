@@ -16,7 +16,8 @@
       restrict: 'E',
       templateUrl: 'app/components/vertNavbar/vertnavbar.html',
       scope: {
-        creationDate: '='
+        creationDate: '=',
+        firstName: '='
       },
       controller: sideNavbarController,
       controllerAs: 'side',

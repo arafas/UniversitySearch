@@ -1,46 +1,44 @@
 <div id="searchResultTemplate.html">
-  <table class="">
-    <tr data-ng-if="match.model.course_divider">
-      <td>
-        Courses
-      </td>
-    </tr>
+    <div style="cursor:not-allowed" colspan="4" data-ng-if="match.model.course_divider">
+      <div class="courses_header" >
+        <em>Courses</em>
+      </div>
+    </div>
 
-    <tr data-ng-if="match.model.courseCode">
-      <td class="course_code">
+    <div class="course_result_container" data-ng-if="match.model.courseCode">
+      <div class="course_code">
         <div>
           <a data-ng-bind-html="match.model.courseCode"></a>
         </div>
-      </td>
-      <td class="course_name">
+      </div>
+      <div class="course_name">
         <div>
-          <a>{{ match.model.courseName }}</a>
+          <a>{{ match.model.courseName }}</a><br>
         </div>
-      </td>
-    </tr>
+      </div>
+    </div>
 
-    <tr data-ng-if="match.model.file_divider">
-      <td>
-        Files
-      </td>
-    </tr>
+    <div style="cursor:not-allowed" data-ng-if="match.model.file_divider">
+      <div class="files_header">
+        <em>Files</em>
+      </div>
+    </div>
 
-    <tr data-ng-if="match.model.filePath">
-      <td class="file_name">
+    <div class="file_result_container" data-ng-if="match.model.filePath">
+      <div class="file_name">
         <div>
           <a>{{ match.model.fileName.substring(match.model.fileName.indexOf('-')+1) }}</a>
         </div>
-      </td>
-      <td class="file_desc">
+      </div>
+      <div class="file_desc">
         <div>
           <a>{{ match.model.fileDesc }}</a>
         </div>
-      </td>
-      <td class="file_blurb">
+      </div>
+      <div class="file_blurb">
         <div>
-          <p data-ng-bind-html="match.model.blurb"></p>
+          <p style="font-size: medium;" data-ng-bind-html="match.model.blurb"></p>
         </div>
-      </td>
-    </tr>
-  </table>
+      </div>
+    </div>
 </div>

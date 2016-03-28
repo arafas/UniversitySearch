@@ -56,6 +56,10 @@
 
             function onSelect(item, model, label) {
                 // TODO: make a call to either load the file selected or route to the course selected
+                if (item.course_divider || item.file_divider) {
+                    vm.selectedTerm = "";
+                    return;
+                }
                 if (item.courseCode) {
                     $location.path("/about");
                 } else if (item.blurb) {

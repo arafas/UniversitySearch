@@ -50,6 +50,7 @@
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
   transition: all 0.5s ease;
+  top: 50px;
 }
 
 #wrapper.toggled #sidebar-wrapper {
@@ -72,7 +73,7 @@
 .sidebar-nav {
   position: absolute;
   top: 0;
-  width: 350px;
+  //width: 350px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -81,6 +82,7 @@
 .sidebar-nav li {
   text-indent: 20px;
   line-height: 40px;
+  color: #fff;
 }
 
 .sidebar-nav li a {
@@ -119,7 +121,7 @@
 
 @media(min-width:768px) {
   #wrapper {
-    padding-left: 250px;
+    padding-left: 200px;
   }
 
   #wrapper.toggled {
@@ -127,7 +129,7 @@
   }
 
   #sidebar-wrapper {
-    width: 200px;
+    width: 209px;
   }
 
   #wrapper.toggled #sidebar-wrapper {

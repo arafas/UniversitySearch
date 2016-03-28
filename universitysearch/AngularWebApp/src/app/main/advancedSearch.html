@@ -19,47 +19,47 @@
 
       <br>
       <br>
-
-
-
-
-
-
-
-
-
         <h2 style="font-family: 'Roboto Slab';">Advanced Search</h2><br>
+    </div>
 
+    <div class="search_body" style="font-family: 'Lato';">
+        <h4>Find Documents or courses with...</h4><br>
 
-      <div class="search_body" style="font-family: 'Lato';">
-        Find Documents or courses with...<br>
+        <div class="search_field_container">
+            <div class="search_field">
+                <label class="label1">All these words:</label>
+                <input class="advanced_search_input" uib-popover="Type all important words" popover-trigger="focus" type="text" data-ng-model="asc.all">
+            </div>
+            <div class="search_field">
+                <label  class="label2">These exact words or phrases: </label>
+                <input class="advanced_search_input" uib-popover='Put exact words in quotes: "software engineering"' type="text" popover-trigger="focus" data-ng-model="asc.exact">
+            </div>
+            <div class="search_field">
+                <label  class="label3">Any of these words: </label>
+                <input type="text" class="advanced_search_input"
+                       uib-popover="Separate all relevant terms with OR: engineering OR sociology"
+                       popover-trigger="focus" data-ng-model="asc.any">
+            </div>
+            <div class="search_field">
+                <label  class="label4">None of these words:</label>
+                <input type="text" class="advanced_search_input"
+                       uib-popover="Put a hyphen just before each word not to be included in the search: -cat"
+                       popover-trigger="focus" data-ng-model="asc.none">
+            </div>
+        </div>
+    </div>
 
-        All these words: <input type="text" data-ng-model="asc.all">Type all important words <br>
-        These exact words or phrases: <input type="text" data-ng-model="asc.exact">Put exact words in quotes: "software engineering" <br>
-        Any of these words: <input type="text" data-ng-model="asc.any">Separate all relevant terms with OR: engineering OR sociology<br>
-        None of these words: <input type="text" data-ng-model="asc.none">Put a hyphen immediately before each word not to be included in the search: -cat<br>
-       <p>
+    <div class="search_button_container">
+        <button class="search btn btn-lg btn-success" data-ng-click="asc.advancedSearch()">Search</button><br>
+    </div>
 
-
-
-       </p>
-        <button class="btn btn-lg btn-success" data-ng-click="asc.advancedSearch()">Search</button><br>
-
+    <div class="search_results_container">
         <span class="lead">Search Results</span>
 
         <div class="search_results">
-
-          <grid-view files="asc.files">
-
-          </grid-view>
+            <grid-view files="asc.files"></grid-view>
         </div>
-      </div>
-
-
     </div>
-
-
-
 
 </body>
 </html>

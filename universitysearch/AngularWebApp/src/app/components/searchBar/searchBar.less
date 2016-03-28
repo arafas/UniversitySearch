@@ -1,5 +1,59 @@
+.search_bar {
+  width: 75%;
+}
+
+.courses_header, .files_header {
+  background: lightgrey;
+  padding-left: 45%;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  font-weight: bold;
+}
+
 mark {
   background-color: yellow;
   color: black;
   padding:0;
 }
+
+.course_result_container, .file_result_container{
+  display: inline-block;
+  width: 100%;
+  cursor: pointer;
+  padding: 5px;
+  border-bottom: 1px solid grey;
+
+  .course_code, .file_name {
+    padding-left: 20px;
+    margin-right: 20px;
+    float: left;
+  }
+  .course_name, .file_desc {
+    float: left;
+    margin-left: 20px;
+    margin-right: 10px;
+  }
+  .file_blurb {
+    float: left;
+    margin-left: 20px;
+  }
+  p {
+    font-size: smaller;
+
+  }
+}
+
+.course_result_container:hover, .file_result_container:hover {
+  color: #fff;
+  text-decoration: none;
+  outline: 0;
+  background-color: #337ab7;
+
+  a {
+    color: #fff;
+    text-decoration: none;
+    outline: 0;
+    background-color: #337ab7;
+  }
+}
+
