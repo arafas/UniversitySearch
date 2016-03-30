@@ -295,18 +295,38 @@ public class FileManager extends DBManager {
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-
-//			Criteria criteria = session.createCriteria(File.class);
-//			Criterion fileValue = Restrictions.eq("id", Integer.parseInt(fileId));
-//			criteria.add(fileValue);
-//			List<File> fileList = criteria.list();
-			
 			
 			String sql = "SELECT * FROM notifications as n NATURAL JOIN files WHERE user_id=:userId";
 			SQLQuery sqlQuery = session.createSQLQuery(sql);
 			sqlQuery.setParameter("userId", sessionUserId);
 			sqlQuery.addEntity(File.class);
 			files = getJsonResultObj(sqlQuery.list());
+
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		
+		return files;
+	}
+	
+	public String removeNotification(int fileId, Integer sessionUserId) {
+		Session session = factory.openSession();
+		String files = null;
+		
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			
+			String sql = "DELETE FROM notifications WHERE user_id=:userId AND file_id=:fileId";
+			SQLQuery sqlQuery = session.createSQLQuery(sql);
+			sqlQuery.setParameter("userId", sessionUserId);
+			sqlQuery.setParameter("fileId", fileId);
+			sqlQuery.executeUpdate();
 
 			tx.commit();
 		} catch (HibernateException e) {
