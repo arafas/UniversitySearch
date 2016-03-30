@@ -500,5 +500,24 @@ public class EndPointManager {
 			return Response.status(500).build();
 		}
 	}
+	
+	@POST
+	@Path("/removeNotification/{fileId}")
+	public Response removeNotification(@PathParam("fileId") int fileId, @Context HttpServletRequest request) {
+		SessionFactory factory = DBManager.getSessionFactory();
+
+		HttpSession jsessid = request.getSession(true);
+		Integer sessionUserId = (Integer)jsessid.getAttribute("userId");
+		
+		FileManager FM = new FileManager();
+		FM.setFactory(factory);
+		
+		try {
+			FM.removeNotification(fileId, sessionUserId);
+			return Response.status(200).build();
+		} catch (Exception e) {
+			return Response.status(500).build();
+		}
+	}
 
 }
