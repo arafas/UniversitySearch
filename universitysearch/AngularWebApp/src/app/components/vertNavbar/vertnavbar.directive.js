@@ -27,12 +27,12 @@
     return directive;
 
     /** @ngInject */
-    function sideNavbarController(moment,$http,$cookies,$location) {
+    function sideNavbarController(moment,$http,$cookies,$location, $scope) {
       var vm = this;
-
+      vm.notificationsNum = 0;
       // "vm.creation" is avaible by directive option "bindToController: true"
       vm.relativeDate = moment(vm.creationDate).fromNow();
-      //vm.user_info = $cookies.getObject('globals').currentUser.firstName; Needs to be commented out
+      vm.user_info = $cookies.getObject('globals').currentUser.firstName;
 
       function logout(){
 
@@ -49,6 +49,19 @@
 
 
       }
+
+      vm.redirectToNotifications = function() {
+        console.log("loading advanced search");
+        $location.path("notifications");
+      }
+
+      $http.get('rest/API/notifications')
+          .then(function (response) {
+            if (response.data.length > 0) {
+              vm.notificationsNum = response.data.length;
+              $scope.$emit("NOTIFICATIONS_ARRAY", response.data);
+            }
+          });
 
     }
   }

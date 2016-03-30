@@ -12,16 +12,12 @@
   <div class="collapse navbar-collapse navbar-ex1-collapse" id="sidenav">
   <ul class="sidebar-nav" style="font-family: 'Droid Sans';">
 
-    <li>
-      <img src="https://cdn4.iconfinder.com/data/icons/twitter-ui-set/128/Mail-32.png" /> {{side.firstName}}
-      <notification-icon count = "1" clear-trigger="click" animation="bounce" >
-        <div id="noti">
-          <div id="noti">
-            <div>
-
-            </div>
-          </div>
-        </div>
+    <li id="user_notifications_bar">
+      <img src="https://cdn4.iconfinder.com/data/icons/twitter-ui-set/128/Mail-32.png" />
+      {{side.user_info}}
+      <notification-icon data-ng-show="side.notificationsNum > 0" data-ng-click="side.redirectToNotifications()" id="custom-style"
+                         count = "side.notificationsNum" clear-trigger="click" animation="bounce" >
+         <span class="glyphicon glyphicon-bell">
 
       </notification-icon>
     </li>
@@ -33,12 +29,8 @@
       <a ng-href="#advancedSearch">Advanced Search</a>
     </li>
     <li>
-      <a ng-href="#uploadFile"> File Upload</a>
+      <file-upload></file-upload>
     </li>
-    <li>
-      <a ng-href="#manageFile">File Management</a>
-    </li>
-
 
   </ul>
   </div>
