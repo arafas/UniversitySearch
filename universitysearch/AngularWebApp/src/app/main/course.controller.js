@@ -20,7 +20,6 @@
         $http.get("/rest/API/course/" + vm.courseId)
             .then(function (response) {
                 vm.course = response.data;
-                console.log(vm.course);
                 $http.get("/rest/API/filesForCourse/" + vm.courseId)
                     .then(function (response) {
                         if (_.size(response.data) > 0) {

@@ -54,7 +54,8 @@
                     data: {tags: JSON.stringify(vm.newTags)}
                 })
                 .success(function() {
-                    vm.fileUploadSuccess = true;
+                    vm.tagSuccess = true;
+
                 })
                 .error(function() {
                     vm.fileUploadError = true;

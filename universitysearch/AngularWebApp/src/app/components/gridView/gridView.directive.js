@@ -63,7 +63,6 @@
             });
 
             $scope.$watchCollection('files', function () {
-                console.log("files changed in grid view");
                 _.each (vm.files, function (file) {
                     $http.get("/rest/API/course/" + file.courseId)
                         .then (function (resp) {

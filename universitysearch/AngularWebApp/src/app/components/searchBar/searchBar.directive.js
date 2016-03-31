@@ -55,7 +55,6 @@
             }
 
             function onSelect(item, model, label) {
-                console.log(item);
                 if (item.course_divider || item.file_divider) {
                     vm.selectedTerm = "";
                     return;
