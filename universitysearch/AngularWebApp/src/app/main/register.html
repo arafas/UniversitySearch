@@ -34,11 +34,11 @@
           <p><input type="text" name="firstName" ng-model="user.firstName" required></p>
           <p><input type="text" name="lastName" ng-model="user.lastName" required></p>
           <p><input type="text" name="utorid" ng-model="user.utorid" required></p>
-          <p><input type="text" name="studentNumber" ng-model="user.studentNumber" required></p>
+          <p><input type="text" name="studentNumber" ng-model="user.studentNumber" required ng-pattern="/\d+/"></p>
           <!--
           <p><label> U of T Email: </label><input type="text" name="user.email" ng-model="email" ng-pattern="^[A-Z0-9._%+-]" required> <label>@mail.utoronto.ca</label></p>
           -->
-          <p><input type="text" name="email" ng-model="user.email" required ng-pattern="/.*@mail.utoronto.ca$/"></p>
+          <p><input type="text" name="email" ng-model="user.email" required ng-pattern="/@(mail[.])?utoronto[.]{1}ca$/"></p>
           <p><input type="password" name="password" ng-model="user.password" required></p>
           <p><input type="password" name="password2" ng-model="password2" ui-validate="'$value==user.password'" ui-validate-watch="'user.password'" required></p>
         </div>

@@ -28,6 +28,10 @@
     <li>
       <a ng-href="#advancedSearch">Advanced Search</a>
     </li>
+
+    <li ng-if="side.isProf">
+      <a ng-href="#addDeleteCourse">Add/Remove a Course</a>
+    </li>
     <li>
       <file-upload></file-upload>
     </li>

@@ -1,13 +1,18 @@
-<input class="search_bar form-control" type="text" data-ng-model="sbc.selectedTerm" placeholder="Search for course or file/contents"
-       data-typeahead-template-url="app/components/searchBar/searchBarResultTemplate.html"
-       data-uib-typeahead="selectedTerm for selectedTerm in sbc.search($viewValue)"
-       data-typeahead-loading="loadingSearch" data-typeahead-no-results="noResults"
-       typeahead-on-select="sbc.onSelect($item, $model, $label)">
+<div class="search_parent">
+  <div id="search_bar_feedback" data-ng-show="sbc.showGlyphiconNoResults(noResults, sbc.selectedTerm)">
+    <i class="glyphicon glyphicon-remove"></i> No Results Found
+  </div>
 
-<i data-ng-show="loadingSearch" class="glyphicon glyphicon-refresh"></i>
-<div data-ng-show="sbc.showGlyphiconNoResults(noResults, sbc.selectedTerm)">
-  <i class="glyphicon glyphicon-remove"></i> No Results Found
+  <i style="position: absolute; top: 17px; right: 275px;" data-ng-show="loadingSearch" class="glyphicon glyphicon-refresh"></i>
+  <input class="search_bar form-control" type="text" data-ng-model="sbc.selectedTerm" placeholder="Search for course or file/contents"
+         data-typeahead-template-url="app/components/searchBar/searchBarResultTemplate.html"
+         data-uib-typeahead="selectedTerm for selectedTerm in sbc.search($viewValue)"
+         data-typeahead-loading="loadingSearch" data-typeahead-no-results="noResults"
+         typeahead-on-select="sbc.onSelect($item, $model, $label)" >
 </div>
+
+
+<!--</div>-->
 <!--<div id="advanced_search">-->
   <!--<a ng-click="sbc.loadAdvancedSearch()" style="font-family: 'Lato';">Advanced Search</a>-->
 <!--</div>-->

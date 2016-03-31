@@ -12,6 +12,6 @@
             _.each(data, function (file) {
                 vm.filesUploaded.push(file);
             })
-        })
+        });
     }
 })();

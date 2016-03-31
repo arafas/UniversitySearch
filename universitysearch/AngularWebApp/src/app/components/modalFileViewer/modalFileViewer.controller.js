@@ -6,7 +6,7 @@
         .controller('ModalFileViewerController', ModalFileViewerController);
     /** @ngInject */
 
-    function ModalFileViewerController($scope, $uibModalInstance, $http, Upload, $sce, $cookies, modalFileViewer) {
+    function ModalFileViewerController($scope, $uibModalInstance, $http, Upload, $sce, $cookies) {
         var vm = $scope;
         vm.tags = [];
         vm.oldTags = [];
@@ -101,6 +101,13 @@
                     vm.approvedText = "File Approved";
                 }
             });
+
+
+        $http.post("/rest/API/removeNotification/" + vm.params.fileId)
+            .then (function (resp) {
+                vm.params.modalInstance.removeFileNotification(vm.params.fileId);
+            });
+
 
         vm.getTags();
     }
