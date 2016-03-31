@@ -27,9 +27,10 @@
       if ($location.path() == '/following' && !$cookies.getObject('globals')) {
         $location.path('/');
       }*/
-      if ($location.path() == '/'  && $cookies.getObject('globals')){
-                $location.path('/following');
-      }
+
+          if (($location.path() == '/' || $location.path() == '/register') && ($cookies.getObject('globals'))) {
+              $location.path('/following');
+          }
 
 
 		}
