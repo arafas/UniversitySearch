@@ -1,16 +1,28 @@
-<div>
-    <div class="button" ngf-select="vm.upload($files)" ngf-multiple="true">Select File</div>
+<div ng-controller="FileUploadController as vm">
+    <input type="text" ng-model="vm.selectedCourse" typeahead-editable='false' uib-typeahead="course as course.courseCode for course in vm.courses | filter:$viewValue| limitTo:8"
+           typeahead-template-url="customTemplate.html" class="form-control">
+
+    <tags-input ng-model="vm.tags" max-length="24" add-on-space="true"></tags-input>
+
+    <div ng-disabled="vm.selectedCourse == null" class="button" ngf-pattern="'application/pdf, .txt, .html'"
+         accept="application/pdf, .txt, .html" ngf-select="vm.upload($files)" ngf-multiple="true">Select File</div>
     Drop File:
-    <div ngf-drop="vm.upload($files)" ngf-select="vm.upload($files)" ng-model="files" class="drop-box"
+    <div ng-disabled="vm.selectedCourse == null" ngf-drop="vm.upload($files)" ngf-select="vm.upload($files)" ng-model="files" class="drop-box"
          ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true"
-         accept="image/*,application/pdf"
-         ngf-pattern="'image/*,application/pdf'" >Drop pdfs or images here or click to upload
+         accept="application/pdf, .txt, .html"
+         ngf-pattern="'application/pdf, .txt, .html'" >Drop pdfs or images here or click to upload
     </div>
     <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
     Files:
     <ul>
         <li ng-repeat="f in files" style="font:smaller">{{f.name}} {{f.$error}} {{f.$errorParam}}</li>
     </ul>
-    Upload Log:
-    <pre>{{log}}</pre>
+    <uib-alert data-ng-show="vm.fileUploadSuccess" style="background-color:#D8EECC; color:#90884F">Upload Success!</uib-alert>
+    <uib-alert data-ng-show="vm.fileUploadError" style="background-color:#EED6D6;color:#963148">File Upload Error! -- Unsuccessful -- </uib-alert>
 </div>
+
+<script type="text/ng-template" id="customTemplate.html">
+    <a>
+        <span class="courses_dropdown">{{match.model.courseCode}} -- {{match.model.courseName}}</span>
+    </a>
+</script>

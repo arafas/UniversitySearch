@@ -1,0 +1,27 @@
+<div class="gridViewContainer">
+    <div class="files_title"><span>Files</span></div>
+    <div class="files" data-ng-repeat="file in gvc.files">
+
+        <div class="file">
+            <div class="file_icon_container">
+                <img class="file_icon" data-ng-click="gvc.openFileModal(file)" src="assets/images/File-512.png" style="width: 100px; height: 100px;"/>
+                <div class="approved_icon">
+                    <img data-ng-show="file.isApprov" class="course_icon" src="assets/images/green_check.png" style="width: 50px; height: 50px;"/>
+                </div>
+            </div>
+            <div class="file_name"><span>{{file.fileName.substring(file.fileName.indexOf('-')+1)}}</span></div>
+        </div>
+
+    </div>
+
+    <hr>
+
+    <div class="courses_title"><span>Courses</span></div>
+    <div class="courses"  data-ng-repeat="course in gvc.courses">
+        <div class="course">
+            <img class="course_icon" data-ng-href="#course/{{course.courseId}}" src="assets/images/File-512.png" style="width: 100px; height: 100px;"/>
+            <div class="course_code"><span>{{course.courseCode}}</span></div>
+        </div>
+    </div>
+</div>
+

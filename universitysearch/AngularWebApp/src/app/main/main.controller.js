@@ -77,7 +77,7 @@
           //$cookies.globals = $rootScope.globals;
           $http.defaults.headers.common['Authorization'] = 'Basic ' + username;
           $cookies.putObject('globals', $rootScope.globals);
-          $location.path("/home");
+          $location.path("/following");
           /*rootScope.globals = {
            currentUser: {
            username: username

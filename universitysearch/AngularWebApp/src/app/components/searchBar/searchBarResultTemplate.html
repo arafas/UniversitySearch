@@ -28,7 +28,7 @@
     <tr data-ng-if="match.model.filePath">
       <td class="file_name">
         <div>
-          <a>{{ match.model.fileName }}</a>
+          <a>{{ match.model.fileName.substring(match.model.fileName.indexOf('-')+1) }}</a>
         </div>
       </td>
       <td class="file_desc">

@@ -32,6 +32,30 @@
 			templateUrl : 'app/main/activate.html',
 			controller : 'ActivateController',
 			controllerAs : 'activate'
+		}).when('/advancedSearch', {
+			templateUrl : 'app/main/advancedSearch.html',
+			controller: 'AdvancedSearchController',
+			controllerAs: 'asc'
+        }).when('/uploadFile', {
+          templateUrl : 'app/main/uploadFile.html',
+          controller : 'uploadFileController',
+          controllerAs : 'upload'
+        }).when('/manageFile', {
+          templateUrl : 'app/main/fileManagement.html',
+          controller : 'fileManagementController',
+          controllerAs : 'manage'
+		}).when('/addDeleteCourse', {
+			templateUrl : 'app/main/addDeleteCourse.html',
+			controller: 'AddDeleteCourseController',
+			controllerAs: 'adc'
+		}).when('/following', {
+			templateUrl : 'app/main/following.html',
+			controller: 'FollowingController',
+			controllerAs: 'fc'
+		}).when('/course/:id', {
+			templateUrl : 'app/main/course.html',
+			controller: 'CourseController',
+			controllerAs: 'cc'
 		}).otherwise({
 			redirectTo : '/'
 		});

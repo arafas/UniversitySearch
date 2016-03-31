@@ -7,13 +7,24 @@
 
     /** @ngInject */
     function modalFileViewer($rootScope, $uibModal) {
+        var vm = this;
 
         this.openModal = openModal;
 
-        function openModal (filePath) {
+        vm.getFileURI = function (fileName, filePath) {
+            var folder = filePath.split("/")[1];
+            //TODO make sure this port is changed to 8080
+            var URIprefix = 'http://localhost:8081/static/files/' + folder + "/";
+            return URIprefix + fileName;
+        };
+
+
+        function openModal (file, files) {
+            var filePath = vm.getFileURI(file.fileName, file.filePath);
+
 
             var scope = $rootScope.$new();
-            scope.params = {filePath: filePath};
+            scope.params = {filePath: filePath, fileId: file.id, courseId: file.courseId, fileName: file.fileName, files: files};
             var modalInstance = $uibModal.open({
                 scope: scope,
                 animation: true,
@@ -22,6 +33,15 @@
                 size: 'xl',
                 windowClass: 'fileViewer'
             });
+            modalInstance.updateFilesArray = function(files) {
+                $rootScope.$broadcast("FILES_CHANGED", files);
+            };
+            modalInstance.updateFile = function (file) {
+                console.log(file);
+                $rootScope.$broadcast("FILE_CHANGED", file);
+            };
+            scope.params.modalInstance = modalInstance;
         }
+
     }
 })();
