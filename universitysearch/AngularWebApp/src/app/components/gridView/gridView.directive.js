@@ -27,7 +27,6 @@
             vm.files = $scope.files;
             vm.courses = $scope.courses;
 
-
             vm.trustSrc = function(src) {
                 return $sce.trustAsResourceUrl(src);
             };
@@ -49,6 +48,10 @@
                         file.isApprov = true;
                     }
                 });
+            });
+
+            $scope.$watch('courses', function () {
+                console.log("courses loaded");
             })
         }
     }

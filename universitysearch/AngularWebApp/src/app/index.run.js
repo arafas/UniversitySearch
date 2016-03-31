@@ -20,7 +20,6 @@
 			// redirect to login page if attempting to access user home page but
 			// not logged in
             // register listener to watch route changes
-
             if (($location.path() != '/' || $location.path() != '/register') && !$cookies.getObject('globals')) {
                 $location.path('/');
             }

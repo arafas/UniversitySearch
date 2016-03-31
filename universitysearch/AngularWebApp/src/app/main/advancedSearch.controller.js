@@ -8,7 +8,7 @@
         .module('angularWebApp')
         .controller('AdvancedSearchController', AdvancedSearchController);
     /** @ngInject */
-    function AdvancedSearchController($http, $sce, modalFileViewer) {
+    function AdvancedSearchController($http, $location) {
         var vm = this;
         vm.advancedSearch = advancedSearch;
         vm.buildSearchQuery = buildSearchQuery;
