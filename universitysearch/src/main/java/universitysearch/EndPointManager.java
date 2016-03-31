@@ -69,6 +69,7 @@ public class EndPointManager {
 	public Response addFile(@FormDataParam("file") InputStream fileInputStream,
 							@FormDataParam("file") FormDataContentDisposition contentDispositionHeader,
 							@FormDataParam("tags") JSONArray tags, @FormDataParam("courseCode") String courseCode,
+							@FormDataParam("courseDesc") String courseDesc,
 							@Context HttpServletRequest req, @PathParam("courseId") int courseId) {
 
 		JSONObject jsonObject;
@@ -76,7 +77,7 @@ public class EndPointManager {
 			HttpSession session = req.getSession();
 			int userId = (Integer) session.getAttribute("userId");
 			FileUpload fileUpload = new FileUpload();
-			int id = fileUpload.saveFile(fileInputStream, contentDispositionHeader, userId, courseId, tags, courseCode);
+			int id = fileUpload.saveFile(fileInputStream, contentDispositionHeader, userId, courseId, tags, courseCode, courseDesc);
 			jsonObject = new JSONObject();
 			jsonObject.put("id", id);
 			return Response.status(200).entity(jsonObject).build();
@@ -176,7 +177,7 @@ public class EndPointManager {
 	public Response search(@Context HttpServletRequest request) {
 		SessionFactory factory = DBManager.getSessionFactory();
 
-		HttpSession jsessid = request.getSession(true);
+		HttpSession jsessid = request.getSession();
 
 		CourseManager CM = new CourseManager();
 		CM.setFactory(factory);
@@ -243,7 +244,7 @@ public class EndPointManager {
 	public Response deleteFile(@PathParam("fileId") String fileId, @Context HttpServletRequest request) {
 		SessionFactory factory = DBManager.getSessionFactory();
 
-		HttpSession jsessid = request.getSession(true);
+		HttpSession jsessid = request.getSession();
 		int isProf = (Integer)jsessid.getAttribute("isProf");
 		if(isProf == 1) {
 			// Get file info
@@ -271,7 +272,7 @@ public class EndPointManager {
 
 		SessionFactory factory = DBManager.getSessionFactory();
 
-		HttpSession jsessid = request.getSession(true);
+		HttpSession jsessid = request.getSession();
 		int isProf = (Integer)jsessid.getAttribute("isProf");
 
 		String response = "You are not authorized to add a course";
@@ -297,7 +298,7 @@ public class EndPointManager {
 	public Response deleteCourse(@PathParam("courseId") int courseId, @Context HttpServletRequest request) {
 		SessionFactory factory = DBManager.getSessionFactory();
 
-		HttpSession jsessid = request.getSession(true);
+		HttpSession jsessid = request.getSession();
 		int isProf = (Integer)jsessid.getAttribute("isProf");
 
 		String response = "You are not authorized to delete this course";
@@ -323,7 +324,7 @@ public class EndPointManager {
 	public Response getCoursesForProf(@Context HttpServletRequest request) {
 		SessionFactory factory = DBManager.getSessionFactory();
 
-		HttpSession jsessid = request.getSession(true);
+		HttpSession jsessid = request.getSession();
 		int isProf = (Integer)jsessid.getAttribute("isProf");
 
 		String response = "";
@@ -345,7 +346,7 @@ public class EndPointManager {
 	public Response followCourses(@PathParam("courseId") int courseId, @Context HttpServletRequest request) {
 		SessionFactory factory = DBManager.getSessionFactory();
 
-		HttpSession jsessid = request.getSession(true);
+		HttpSession jsessid = request.getSession();
 		Integer sessionUserId = (Integer)jsessid.getAttribute("userId");
 		
 		CourseManager CM = new CourseManager();
@@ -364,7 +365,7 @@ public class EndPointManager {
 	public Response unFollowCourses(@PathParam("courseId") int courseId, @Context HttpServletRequest request) {
 		SessionFactory factory = DBManager.getSessionFactory();
 
-		HttpSession jsessid = request.getSession(true);
+		HttpSession jsessid = request.getSession();
 		Integer sessionUserId = (Integer)jsessid.getAttribute("userId");
 		
 		CourseManager CM = new CourseManager();
@@ -383,7 +384,7 @@ public class EndPointManager {
 	public Response approveFile(@PathParam("fileId") int fileId, @Context HttpServletRequest request) {
 		SessionFactory factory = DBManager.getSessionFactory();
 
-		HttpSession jsessid = request.getSession(true);
+		HttpSession jsessid = request.getSession();
 		int isProf = (Integer)jsessid.getAttribute("isProf");
 		Integer sessionUserId = (Integer)jsessid.getAttribute("userId");
 
@@ -395,7 +396,7 @@ public class EndPointManager {
 				FM.approveFile(fileId, sessionUserId);
 				return Response.status(200).build();
 			} catch (Exception e) {
-				return Response.status(401).entity(e.getMessage()).build();
+				return Response.status(401).build();
 			}
 		}
 
@@ -470,7 +471,7 @@ public class EndPointManager {
 	public Response getNotifications(@Context HttpServletRequest request) {
 		SessionFactory factory = DBManager.getSessionFactory();
 
-		HttpSession jsessid = request.getSession(true);
+		HttpSession jsessid = request.getSession();
 		int isProf = (Integer)jsessid.getAttribute("isProf");
 		Integer sessionUserId = (Integer)jsessid.getAttribute("userId");
 
@@ -506,7 +507,7 @@ public class EndPointManager {
 	public Response removeNotification(@PathParam("fileId") int fileId, @Context HttpServletRequest request) {
 		SessionFactory factory = DBManager.getSessionFactory();
 
-		HttpSession jsessid = request.getSession(true);
+		HttpSession jsessid = request.getSession();
 		Integer sessionUserId = (Integer)jsessid.getAttribute("userId");
 		
 		FileManager FM = new FileManager();

@@ -15,19 +15,14 @@
 
         $http.get('/rest/API/coursesForProf')
             .then(function (resp) {
-                console.log(resp);
                 vm.courses = resp.data;
-                console.log(vm.courses);
-
             });
 
         vm.addCourse = function(course) {
             course.courseCode = course.courseCode.toUpperCase();
             return $http.post('rest/API/addCourse', course)
                 .then(function (resp) {
-                    console.log(resp);
                     vm.courses.push(resp.data);
-                    console.log(vm.courses);
                 });
         };
 

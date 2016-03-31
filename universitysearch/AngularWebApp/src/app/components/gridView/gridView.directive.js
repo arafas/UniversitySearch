@@ -21,19 +21,31 @@
         return directive;
 
         /** @ngInject */
-        function GridViewController($scope, modalFileViewer) {
+        function GridViewController($scope, modalFileViewer, $http, $location) {
             var vm = this;
 
             vm.files = $scope.files;
             vm.courses = $scope.courses;
-
             vm.trustSrc = function(src) {
                 return $sce.trustAsResourceUrl(src);
             };
 
+            vm.routeToCoursePage = function (id) {
+                $location.path("/courses" + id);
+            };
 
             vm.openFileModal = function (file) {
                 modalFileViewer.openModal(file, $scope.files);
+            };
+
+            vm.getCourseCode = function (id) {
+                vm.courseById = id;
+                _.each(vm.files, function (file) {
+                    if (file.courseId == vm.courseById) {
+                        vm.courseCode =  file.courseCode;
+                    }
+                });
+                return vm.courseCode;
             };
 
             $scope.$on("FILES_CHANGED", function (evt, files) {
@@ -50,8 +62,14 @@
                 });
             });
 
-            $scope.$watch('courses', function () {
-                console.log("courses loaded");
+            $scope.$watchCollection('files', function () {
+                console.log("files changed in grid view");
+                _.each (vm.files, function (file) {
+                    $http.get("/rest/API/course/" + file.courseId)
+                        .then (function (resp) {
+                            file.courseCode = resp.data.courseCode;
+                        });
+                });
             })
         }
     }

@@ -37,7 +37,6 @@
                 $rootScope.$broadcast("FILES_CHANGED", files);
             };
             modalInstance.updateFile = function (file) {
-                console.log(file);
                 $rootScope.$broadcast("FILE_CHANGED", file);
             };
             modalInstance.removeFileNotification = function (fileId) {

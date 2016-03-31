@@ -25,7 +25,7 @@ public class FileUpload {
 
     public int saveFile(InputStream fileInputStream,
                         FormDataContentDisposition contentDispositionHeader,
-                        int userId, int courseId, JSONArray tags, String courseCode) throws IOException, JSONException {
+                        int userId, int courseId, JSONArray tags, String courseCode, String courseDesc) throws IOException, JSONException {
 
         File dir = new File(System.getenv("OPENSHIFT_DATA_DIR") + "/" + courseCode);
         if (!dir.exists()) {
@@ -48,7 +48,7 @@ public class FileUpload {
         SessionFactory factory = DBManager.getSessionFactory();
         fm.setFactory(factory);
         String fileName = file2.getName();
-        int res = fm.addFile(fileName, obfuscatedFilePath, "uploadedFile", digestString, fileSize, userId, tHash, courseId, tags );
+        int res = fm.addFile(fileName, obfuscatedFilePath, courseDesc, digestString, fileSize, userId, tHash, courseId, tags );
 
         fileInputStream.close();
         initializeFileIndexing(file2);

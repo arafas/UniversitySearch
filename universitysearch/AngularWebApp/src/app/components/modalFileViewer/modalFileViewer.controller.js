@@ -91,6 +91,10 @@
                     vm.approved = true;
                     vm.approvedText = "File Approved";
                     vm.params.modalInstance.updateFile(vm.params.fileId);
+                }, function(resp) {
+                    if (resp.status == 401) {
+                        vm.showApprovalError = true;
+                    }
                 })
         };
 
