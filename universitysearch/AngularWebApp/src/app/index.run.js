@@ -13,14 +13,15 @@
 																// ignore:line
 		}
 
-		var redirectIfNotLoggedIn = $rootScope.$on('$locationChangeStart', redirect);
 
         $rootScope.$on( "$routeChangeStart", function(event, next, current) {
-            console.log(next);
+            console.log(next.templateUrl);
             console.log($rootScope.globals);
             if ( $rootScope.globals.currentUser == null ) {
                 // no logged user, we should be going to #login
-                if ( next.templateUrl == "/" ) {
+
+                if ( next.templateUrl == "app/main/register.html" ) {
+                    $location.path( "register" );
                     // already going to #login, no redirect needed
                 } else {
                     // not going to #login, we should redirect now
@@ -29,30 +30,5 @@
             }
         });
 
-		$rootScope.$on('$destroy', redirectIfNotLoggedIn);
-
-		function redirect() {
-			// redirect to login page if attempting to access user home page but
-			// not logged in
-            // register listener to watch route changes
-
-            //if ($location.path() == '/home' && !$cookies.getObject('globals')) {
-             //   $location.path('/');
-            //}
-            //if ($location.path() == '/manageFile' && !$cookies.getObject('globals')) {
-            //$location.path('/');
-            //}
-            //if ($location.path() == '/uploadFile' && !$cookies.getObject('globals')) {
-            //$location.path('/');
-            //}
-            //if ($location.path() == '/advancedSearch' && !$cookies.getObject('globals')) {
-             //   $location.path('/');
-            //}
-      /*if ($location.path() == '/advancedSearch' && !$cookies.getObject('globals')) {
-        $location.path('/');
-      }*/
 		}
-
-	}
-
 })();
