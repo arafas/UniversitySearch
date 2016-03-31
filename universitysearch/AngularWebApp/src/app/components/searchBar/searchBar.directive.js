@@ -68,6 +68,15 @@
                 }
             }
 
+            vm.showNoResults = function(noResults) {
+                if (noResults && !(vm.selectedTerm === "")) {
+                    return "No results found!";
+                } else if (vm.selectedTerm === "") {
+                    return "";
+                }
+            };
+
+
             function showGlyphiconNoResults(noResults, input) {
 
                 if (input == null || (input.toString().length == 0)) {

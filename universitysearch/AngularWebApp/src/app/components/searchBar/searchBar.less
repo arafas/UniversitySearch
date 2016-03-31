@@ -1,15 +1,24 @@
 .search_bar {
   width: 50%;
   padding-right: 155px;
-
-
+  float: left;
 }
 .search_parent {
+    position:relative;
+
   #search_bar_feedback {
     position: absolute;
     top: 15px;
     right: 275px;
   }
+}
+.search_parent::after {
+  margin-left: -124px;
+  content: attr(data-placeholder);
+  pointer-events: none;
+  margin-bottom: -25px;
+  line-height: 2.5;
+  opacity: 0.7;
 }
 .courses_header, .files_header {
   background: lightgrey;
