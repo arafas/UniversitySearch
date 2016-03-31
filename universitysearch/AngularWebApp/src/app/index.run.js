@@ -12,23 +12,18 @@
 			$http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.username; // jshint
 																// ignore:line
 		}
+		var redirectIfNotLoggedIn = $rootScope.$on('$locationChangeStart', redirect);
 
+		$rootScope.$on('$destroy', redirectIfNotLoggedIn);
 
-        $rootScope.$on( "$routeChangeStart", function(event, next, current) {
-            console.log(next.templateUrl);
-            console.log($rootScope.globals);
-            if ( $rootScope.globals.currentUser == null ) {
-                // no logged user, we should be going to #login
+		function redirect() {
+			// redirect to login page if attempting to access user home page but
+			// not logged in
+            // register listener to watch route changes
 
-                if ( next.templateUrl == "app/main/register.html" ) {
-                    $location.path( "register" );
-                    // already going to #login, no redirect needed
-                } else {
-                    // not going to #login, we should redirect now
-                    $location.path( "/" );
-                }
+            if (($location.path() != '/' || $location.path() != '/register') && !$cookies.getObject('globals')) {
+                $location.path('/');
             }
-        });
-
 		}
+	}
 })();
