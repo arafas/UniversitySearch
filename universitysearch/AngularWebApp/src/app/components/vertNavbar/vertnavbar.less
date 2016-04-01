@@ -50,6 +50,7 @@
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
   transition: all 0.5s ease;
+  top: 50px;
 }
 
 #wrapper.toggled #sidebar-wrapper {
@@ -70,17 +71,17 @@
 /* Sidebar Styles */
 
 .sidebar-nav {
-  position: absolute;
+  //position: absolute;
   top: 0;
-  width: 350px;
-  margin: 0;
+  //width: 350px;
   padding: 0;
   list-style: none;
+  margin-left: 15px;
 }
 
 .sidebar-nav li {
-  text-indent: 20px;
   line-height: 40px;
+  color: #fff;
 }
 
 .sidebar-nav li a {
@@ -88,6 +89,8 @@
   text-decoration: none;
   /*color: #999999;*/
   color: #fff;
+  padding-left: 15px;
+  padding-right: 20px;
 }
 
 .sidebar-nav li a:hover {
@@ -119,7 +122,7 @@
 
 @media(min-width:768px) {
   #wrapper {
-    padding-left: 250px;
+    padding-left: 200px;
   }
 
   #wrapper.toggled {
@@ -127,7 +130,7 @@
   }
 
   #sidebar-wrapper {
-    width: 200px;
+    width: 209px;
   }
 
   #wrapper.toggled #sidebar-wrapper {
@@ -155,53 +158,38 @@
 
 }
 
-/*
-.angular-notification-icons-icon.my-custom-animation-add-active {
-  background: yellow;
-  color: black;
+#custom-style {
+  text-indent: 0;
+  margin-left: 5px;
+  cursor: pointer;
+  .angular-notifications-container {
+    .angular-notifications-icon {
+      height: 20px;
+      line-height: 1;
+      padding-top: 2px;
+      top: -4px;
+      left: 5px;
+    }
+  }
+}
+#sidenav {
+  background: #222 none repeat scroll 0 0;
+  height: 100% !important;
+  left: 250px;
+  margin-left: -250px;
+  overflow-y: auto;
+  position: fixed;
+  top: 50px;
+  transition: all 0.5s ease 0s;
+  z-index: 1;
 }
 
-.angular-notification-icons-icon.my-custom-animation {
-  transition:0.5s linear all;
+#user_notifications_bar {
+  padding-top:10px;
+  padding-left: 10px;
 }
 
-.angular-notification-icons-icon.my-custom-animation-add-active {
-  background: yellow;
-  color: black;
+#add_remove_button {
+  padding: 15px;
 }
 
-.custom-style .angular-notification-icons-icon {
-  left: -10px;
-  background: yellow;
-  color: black;
-  width: 30px;
-  height: 30px;
-  font-weight: bolder;
-  font-size: 1.2em;
-}
-
-/*
-.angular-notification-icons-icon {
-  left: -3px;
-  //background: dodgerblue;
-  color: #fff;
-  //width: 20px;
-  //height: 20px;
-  //font-weight: bolder;
-  //font-size: 1.2em;
-
-}
-
-.angular-notification-icons-icon .overlay {
-  left: -3px;
-  background: dodgerblue;
-  color: #fff;
-  //width: 30px;
-  //height: 30px;
-  //font-weight: bolder;
-  //font-size: 1.2em;
-
-}
-
-
-*/

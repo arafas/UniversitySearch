@@ -1,43 +1,22 @@
 <html lang="en">
-<link rel="stylesheet" type="text/css"
-      href="https://fonts.googleapis.com/css?family=Raleway|Lato|Droid+Sans|Roboto+Slab">
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-header {
-margin-bottom:30px;
-}
-<div class = "container">
-<div>
-  <acme-navbar creation-date="main.creationDate"></acme-navbar>
-</div>
-
-
-
-
-
-    <div class="jumbotron text-center"  ng-init="" >
-
-
-      <p>
-
-
-
-
-
-      </p>
-
-
-
-      <h1 style="font-family: 'Roboto Slab';">Find and Share Files.</h1>
+<body id="boldback">
+<div class = "container bold">
+    <div class="jumbotron text-center bold"  ng-init="" >
+      <h1 style="font-family: 'Raleway';">University Search</h1>
+      <h2 style="font-family: 'Roboto Slab';">Find and Share Files.</h2>
       <p class="lead" style="font-family: 'Lato';">
       <!--<img src="assets/images/LogoReversedBlue.jpg" alt="I'm Yeoman"><br>-->
+
         <p></p>
-        <p>A Wealth of Information at your Fingertips.</p>
+      <p> <acme-malarkey extra-values="['University of Toronto']" style="color:#5cd6d6;"></acme-malarkey></p>
+        <!--<p>A wealth of information at your fingertips..</p>-->
         </p>
         <p></p>
         <ng-form name="login" style="font-family: 'Lato';" novalidate>
-            <p>Email: <input type="text" ng-model="email" required></p>
-            <p>Password: <input type="password" ng-model="password" required></p>
+
+            <p>Email: <input style="margin-left: 49px;" type="text" ng-model="email" required></p>
+            <p>Password: <input style="margin-left: 12px;"  type="password" ng-model="password" required></p>
             <!--<li ng-repeat="phone in main.phones | orderBy:main.orderProp">{{phone}}</li>-->
             <!--<p>{{name}}</p>-->
             <p><!-- class="animated infinite" ng-class="main.classAnimation">-->
@@ -51,8 +30,8 @@ margin-bottom:30px;
         <p><!-- class="animated infinite" ng-class="main.classAnimation">-->
             <!--rather than ng-click="main.showToastr()"-->
             <button type="button" class="btn btn-lg btn-success" ng-click="main.register()"
-                    ng-keydown="$event.which === 13 && main.register()" style="font-family: 'Droid Sans';">Click to
-                Register
+                    ng-keydown="$event.which === 13 && main.register()" style="font-family: 'Droid Sans';">
+                Register!
             </button>
         </p>
         <p style="font-family: 'Raleway';">
@@ -60,18 +39,11 @@ margin-bottom:30px;
             for
             <acme-malarkey extra-values="['Students','Instructors']" style="color:#5cd6d6;"></acme-malarkey>
         </p>
+
     </div>
   </div>
-    <search-bar></search-bar>
-    <div class="row">
-        <file-upload></file-upload>
-    </div>
    </div>
 </div>
-
-    <button type="button"><a ng-href="#addDeleteCourse">Add/Remove Course</a></button>
-    <!--<a href="http://localhost:8081/static/files/Survey_Responses.pdf" target="_self" >Attachment</a>-->
-
-
+</body>
 
 </html>

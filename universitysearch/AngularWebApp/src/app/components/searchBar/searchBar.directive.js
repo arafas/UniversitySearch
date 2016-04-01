@@ -55,16 +55,27 @@
             }
 
             function onSelect(item, model, label) {
-                // TODO: make a call to either load the file selected or route to the course selected
+                if (item.course_divider || item.file_divider) {
+                    vm.selectedTerm = "";
+                    return;
+                }
                 if (item.courseCode) {
                     $location.path("/course/" + item.id);
                     vm.selectedTerm = "";
-                } else if (item.blurb) {
-                    // TODO: change this to 8080 before committing
+                } else if (item.fileName) {
                     modalFileViewer.openModal(item);
                     vm.selectedTerm = "";
                 }
             }
+
+            vm.showNoResults = function(noResults) {
+                if (noResults && !(vm.selectedTerm === "")) {
+                    return "No results found!";
+                } else if (vm.selectedTerm === "") {
+                    return "";
+                }
+            };
+
 
             function showGlyphiconNoResults(noResults, input) {
 

@@ -30,6 +30,7 @@
         vm.fileUploadSuccess = false;
         vm.fileUploadError = false;
         vm.selectedCourse = null;
+        vm.courseDesc = "";
 
 
         vm.courses = [];
@@ -52,7 +53,10 @@
                         vm.fileUploadError = false;
                         Upload.upload({
                             url: '/rest/API/fileUpload/' + vm.selectedCourse.id,
-                            data: {"file": file, "tags": JSON.stringify(vm.tags), "courseCode": vm.selectedCourse.courseCode}
+                            data: {"file": file, "tags": JSON.stringify(vm.tags),
+                                "courseCode": vm.selectedCourse.courseCode,
+                                "courseDesc": vm.courseDesc
+                            }
                         })
                             .success(function() {
                                 vm.fileUploadSuccess = true;

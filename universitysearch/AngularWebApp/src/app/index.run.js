@@ -12,7 +12,6 @@
 			$http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.username; // jshint
 																// ignore:line
 		}
-
 		var redirectIfNotLoggedIn = $rootScope.$on('$locationChangeStart', redirect);
 
 		$rootScope.$on('$destroy', redirectIfNotLoggedIn);
@@ -20,20 +19,10 @@
 		function redirect() {
 			// redirect to login page if attempting to access user home page but
 			// not logged in
-			if ($location.path() == '/home' && !$cookies.getObject('globals')) {
-				$location.path('/');
-			}
-      if ($location.path() == '/manageFile' && !$cookies.getObject('globals')) {
-        $location.path('/');
-      }
-      if ($location.path() == '/uploadFile' && !$cookies.getObject('globals')) {
-        $location.path('/');
-      }
-      /*if ($location.path() == '/advancedSearch' && !$cookies.getObject('globals')) {
-        $location.path('/');
-      }*/
+            // register listener to watch route changes
+            if (($location.path() != '/' || $location.path() != '/register') && (!$cookies.getObject('globals'))) {
+                $location.path('/');
+            }
 		}
-
 	}
-
 })();

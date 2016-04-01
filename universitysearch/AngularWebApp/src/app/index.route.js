@@ -56,6 +56,10 @@
 			templateUrl : 'app/main/course.html',
 			controller: 'CourseController',
 			controllerAs: 'cc'
+		}).when('/notifications', {
+			templateUrl : 'app/main/notifications.html',
+			controller: 'NotificationsController',
+			controllerAs: 'nc'
 		}).otherwise({
 			redirectTo : '/'
 		});

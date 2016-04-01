@@ -69,7 +69,6 @@
       $http.post('/rest/API/signin', {email: email, password: passhash})
         .success(function (response) {
           var data = response;
-          console.log(response);
           $rootScope.globals = {
             currentUser: response
 

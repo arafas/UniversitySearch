@@ -1,23 +1,18 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<nav class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+<div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
 <!--<nav class="navbar sidebar-nav navbar-inverse">-->
   <!--<div class="col-sm-3 col-sm-pull-9 sidebarStyle">-->
   <div class="container-fluid">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-6">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-6" ng-click="isCollapsed = !isCollapsed">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="sidenav">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
+
       <a class="navbar-brand" href="https://www.utm.utoronto.ca/">
         <img src="assets/images/uofttiny.png" />
         <!--<span class="glyphicon glyphicon-home">University Search</span> -->
@@ -27,30 +22,20 @@
       </a>
     </div>
 
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
-
-    <!--div class="text-xs-center text-sm-left ">
-    <ul class="nav nav-pills nav-stacked">-->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6" uib-collapse="isCollapsed">
 
         <ul ng-init="selectedTab = 'home'" class="nav navbar-nav" style="font-family: 'Droid Sans';">
-          <!--div class="text-xs-center text-sm-left ">
-          <ul class="nav nav-pills nav-stacked">-->
 
-          <li ng-class="{'active':selectedTab === 'home'}" ng-click="selectedTab = 'home'"><a ng-href="#/">Home</a></li>
+          <li ng-class="{'active':selectedTab === 'home'}" ng-click="selectedTab = 'home'"><a ng-href="#following">Home</a></li>
           <li ng-class="{'active':selectedTab === 'about'}" ng-click="selectedTab = 'about'"><a ng-href="#about">About</a></li>
           <li ng-class="{'active':selectedTab === 'contact'}" ng-click="selectedTab = 'contact'"><a ng-href="#contact">Contact</a></li>
         </ul>
 
+      <div class="search_bar_container">
+        <search-bar></search-bar>
+      </div>
 
-        <!--<li class="active"><a ng-href="#">Home</a></li>
-        <li><a ng-href="#about">About</a></li>
-        <li><a ng-href="#contact">Contact</a></li>
-      </ul>-->
-
-      <!--<ul class="nav navbar-nav navbar-right acme-navbar-text">
-        <li></li>
-        <!--<li>Application was created {{ vm.relativeDate }}.</li>
-      </ul>-->
     </div>
+
   </div>
-</nav>
+</div>
