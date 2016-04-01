@@ -49,7 +49,7 @@ public class EndPointManager {
 		String lName = user.getLastName();
 		String utorid = user.getUtorid();
 		String studentNumber = user.getStudentNumber();
-		String email = user.getEmail() + "@mail.utoronto.ca";
+		String email = user.getEmail();
 		String pass = user.getPassword();
 
 		// Aquire DB connection and add user

@@ -46,13 +46,13 @@
 
 
       <p class="animated infinite" ng-class="main.classAnimation">
-        <button type="submit" class="btn btn-lg btn-success" style="font-family: 'Droid Sans';" ng-disabled=!signUp.$valid ng-click=reg.add(user)>Verify</button>
+        <button type="submit" class="btn btn-lg btn-success" style="font-family: 'Droid Sans';" ng-disabled=!signUp.$valid ng-click=add(user)>Verify</button>
       </p>
 
       <span ng-show="user.password != password2">Passwords do not match.</span>
     </ng-form>
 
-    <p>{{reg.registerResponse}}</p>
+    <p>{{registerResponse}}</p>
 
 
   </div>
