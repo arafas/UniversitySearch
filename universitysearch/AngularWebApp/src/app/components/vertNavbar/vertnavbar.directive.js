@@ -34,6 +34,7 @@
       vm.relativeDate = moment(vm.creationDate).fromNow();
       vm.user_info = $cookies.getObject('globals').currentUser.firstName;
       vm.isProf = $cookies.getObject('globals').currentUser.isProf;
+      $scope.sideBarCollapsed = true;
 
       vm.logout =  function (){
 

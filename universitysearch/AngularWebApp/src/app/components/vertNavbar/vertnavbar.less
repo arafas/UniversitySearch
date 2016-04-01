@@ -71,7 +71,7 @@
 /* Sidebar Styles */
 
 .sidebar-nav {
-  position: absolute;
+  //position: absolute;
   top: 0;
   //width: 350px;
   padding: 0;
@@ -172,6 +172,17 @@
     }
   }
 }
+#sidenav {
+  background: #222 none repeat scroll 0 0;
+  height: 100% !important;
+  left: 250px;
+  margin-left: -250px;
+  overflow-y: auto;
+  position: fixed;
+  top: 50px;
+  transition: all 0.5s ease 0s;
+  z-index: 1;
+}
 
 #user_notifications_bar {
   padding-top:10px;
@@ -181,3 +192,4 @@
 #add_remove_button {
   padding: 15px;
 }
+
