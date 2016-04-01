@@ -103,14 +103,16 @@ public class CourseManager extends DBManager {
 			}
 
 			// Get full course information
-			Criteria criteria2 = session.createCriteria(Course.class);
-			Criterion courseValue = Restrictions.in("id", arrayList);
-			criteria2.add(courseValue);
-			List<Course> courseList = criteria2.list();
-			
-			// Check to see if course is found
-			if (courseList.size() > 0) {
-				return getJsonResultObj(courseList);
+			if(!arrayList.isEmpty()) {
+				Criteria criteria2 = session.createCriteria(Course.class);
+				Criterion courseValue = Restrictions.in("id", arrayList);
+				criteria2.add(courseValue);
+				List<Course> courseList = criteria2.list();
+				
+				// Check to see if course is found
+				if (courseList.size() > 0) {
+					return getJsonResultObj(courseList);
+				}
 			}
 
 			tx.commit();
