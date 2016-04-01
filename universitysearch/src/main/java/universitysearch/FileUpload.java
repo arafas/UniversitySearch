@@ -78,13 +78,6 @@ public class FileUpload {
           String filePathHash = DigestUtils.md5Hex(System.getenv("OPENSHIFT_DATA_DIR"));
           String obfuscatedFilePath = filePathHash  + coursePath;
           // obscure the path to the data directory
-
-          System.out.println(fileSize);
-          System.out.println(filePath.replace("\\", "/"));
-          System.out.println(fileName);
-          System.out.println(fileCheck);
-          System.out.println(obfuscatedFilePath);
-          System.out.println(tHash);
           JSONArray tags = new JSONArray();
           int res = fm.addFile(file2.getName(), obfuscatedFilePath, "uploadedFile", fileCheck, fileSize, userID, tHash, courseId, tags);
           fis.close();

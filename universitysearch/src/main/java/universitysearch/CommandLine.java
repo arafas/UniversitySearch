@@ -9,21 +9,25 @@ import java.io.IOException;
 
 public class CommandLine {
   public static void main(String[] args) {
-    // USAGE1: -F -U userID -P coursePath file1 file2 ... fileN
+    // USAGE1: -F -U userID -C courseID -P coursePath file1 file2 ... fileN
     //          -F means you're uploading files, can be an unlimited amount
     //          -U is the userID that's uploading the files
     //          -P is the coursePath on the webserver
     //              -coursePath must be in form of /path/to/file/ with leading and ending /'s
-    // USAGE2: -D -U userID -P coursePath directory
+    // USAGE2: -D -U userID -C courseID -P coursePath directory
     //          -D means you're uploading an entire directory, there can only be one
     FileUpload fileUpload = new FileUpload();
     FileManager fm = new FileManager();
     String coursePath = "";
     boolean foundType = false;
     int userID = -1;
+    int courseID = -1;
     for (int i = 0; i < args.length; i++) {
       if (args[i].equals("-U")) {
         userID = Integer.parseInt(args[i+1]);
+      }
+      if (args[i].equals("-C")) {
+        courseID = Integer.parseInt(args[i+1]);
       }
       if (args[i].equals("-P")) {
         coursePath = args[i+1];
@@ -32,8 +36,8 @@ public class CommandLine {
     if (args[0].equals("-F") || args[0].equals("-D")) {
       foundType = true;
     }
-    if (coursePath.equals("") || userID == -1 || foundType == false) {
-      System.out.println("ERROR: coursePath, userID, uploadType is empty");
+    if (coursePath.equals("") || userID == -1 || foundType == false || courseID == -1) {
+      System.out.println("ERROR: coursePath, userID, courseID, uploadType is empty");
       System.exit(-1);
     }
     // Aquire DB connection
@@ -41,12 +45,11 @@ public class CommandLine {
     fm.setFactory(factory);
     if (args[0].equals("-D")) {
       // Checking if directory being uploaded
-      File fileDir = new File(args[5]);
-      if (fileDir.isDirectory() && args.length == 6) {
+      File fileDir = new File(args[7]);
+      if (fileDir.isDirectory() && args.length == 8) {
         for (final File fileEntry : fileDir.listFiles()) {
-          int courseId = 1;
           try {
-            fileUpload.saveFile(fileEntry, fm, coursePath, userID, courseId);
+            fileUpload.saveFile(fileEntry, fm, coursePath, userID, courseID);
           } catch (JSONException e) {
             e.printStackTrace();
           }
@@ -56,12 +59,12 @@ public class CommandLine {
         System.exit(-1);
       }
     } else if (args[0].equals("-F")) {  
-      for (int i = 5; i < args.length; i++) {
+      for (int i = 7; i < args.length; i++) {
         File file = new File(args[i]);
         FileInputStream fis = null;
         try {
           fis = new FileInputStream(file);
-          fileUpload.saveFile(file, fm, coursePath, userID, 1);
+          fileUpload.saveFile(file, fm, coursePath, userID, courseID);
         } catch (IOException e) {
           e.printStackTrace();
         } catch (JSONException e) {
